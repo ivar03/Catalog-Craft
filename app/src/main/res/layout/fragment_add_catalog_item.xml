@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.AddCatalogItemFragment"
+    android:background="@color/my_white1">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollIndicators="right">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add Details for your product:"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_gray"
+                    android:layout_marginStart="16dp"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="10dp"
+                        android:hint="Category *"
+                        android:textColorHint="@color/light_orange"
+                        android:textColor="@color/light_orange"
+                        android:textSize="16dp"
+                        android:inputType="text"
+                        android:background="@drawable/edittext_bg"
+                        android:padding="15dp"/>
+                    <View
+                        android:id="@+id/mic_category"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/mic_icon"
+                        android:backgroundTint="@color/light_orange"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginTop="20dp"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/productName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="10dp"
+                        android:hint="Product Name *"
+                        android:textColorHint="@color/light_orange"
+                        android:textColor="@color/light_orange"
+                        android:textSize="18dp"
+                        android:inputType="text"
+                        android:background="@drawable/edittext_bg"
+                        android:padding="15dp"/>
+                    <View
+                        android:id="@+id/mic_pname"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/mic_icon"
+                        android:backgroundTint="@color/light_orange"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginTop="20dp"/>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/MRP"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="10dp"
+                            android:hint="MRP *"
+                            android:textColorHint="@color/light_orange"
+                            android:textColor="@color/light_orange"
+                            android:textSize="16dp"
+                            android:inputType="number"
+                            android:background="@drawable/edittext_bg"
+                            android:padding="15dp"/>
+                        <View
+                            android:id="@+id/mic_mrp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/mic_icon"
+                            android:backgroundTint="@color/light_orange"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/sellPrize"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginTop="10dp"
+                            android:hint="Sell Price *"
+                            android:textColorHint="@color/light_orange"
+                            android:textColor="@color/light_orange"
+                            android:textSize="16dp"
+                            android:inputType="number"
+                            android:background="@drawable/edittext_bg"
+                            android:padding="15dp"/>
+                        <View
+                            android:id="@+id/mic_sprice"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/mic_icon"
+                            android:backgroundTint="@color/light_orange"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/buyPrize"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="10dp"
+                            android:hint="Buy Prize "
+                            android:textColorHint="@color/light_orange"
+                            android:textColor="@color/light_orange"
+                            android:textSize="16dp"
+                            android:inputType="number"
+                            android:background="@drawable/edittext_bg"
+                            android:padding="15dp"/>
+                        <View
+                            android:id="@+id/mic_bprice"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/mic_icon"
+                            android:backgroundTint="@color/light_orange"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/hsnCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="10dp"
+                            android:hint="HSN Code "
+                            android:textColorHint="@color/light_orange"
+                            android:textColor="@color/light_orange"
+                            android:textSize="16sp"
+                            android:inputType="text"
+                            android:background="@drawable/edittext_bg"
+                            android:padding="15dp"/>
+                        <View
+                            android:id="@+id/mic_hsncode"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/mic_icon"
+                            android:backgroundTint="@color/light_orange"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/gst"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="10dp"
+                            android:hint="GST % *"
+                            android:textColorHint="@color/light_orange"
+                            android:textColor="@color/light_orange"
+                            android:textSize="16dp"
+                            android:inputType="number"
+                            android:background="@drawable/edittext_bg"
+                            android:padding="15dp"/>
+                        <View
+                            android:id="@+id/mic_gst"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/mic_icon"
+                            android:backgroundTint="@color/light_orange"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/unit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:hint="Unit *"
+                            android:textColorHint="@color/light_orange"
+                            android:textColor="@color/light_orange"
+                            android:textSize="16dp"
+                            android:inputType="number"
+                            android:background="@drawable/edittext_bg"
+                            android:padding="15dp"/>
+                        <View
+                            android:id="@+id/mic_unit"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/mic_icon"
+                            android:backgroundTint="@color/light_orange"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/quantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="10dp"
+                        android:hint="Quantity *"
+                        android:textColorHint="@color/light_orange"
+                        android:textColor="@color/light_orange"
+                        android:textSize="16dp"
+                        android:inputType="number"
+                        android:background="@drawable/edittext_bg"
+                        android:padding="15dp"/>
+                    <View
+                        android:id="@+id/mic_quantity"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/mic_icon"
+                        android:backgroundTint="@color/light_orange"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginTop="20dp"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/uploadImages"
+                android:layout_below="@+id/form"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/uploadView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Upload Your Image: "
+                        android:textSize="20sp"
+                        android:textColor="@color/light_orange"
+                        android:layout_margin="30dp"
+                        android:id="@+id/uploadImage_tv"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/uploadImage_tv"
+                        android:text="Tap below to upload your images "
+                        android:layout_marginHorizontal="40dp"
+                        android:textColor="@color/dark_gray"
+                        android:textStyle="bold"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/first_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/uploadImage_tv"
+                        android:orientation="vertical"
+                        android:layout_marginHorizontal="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginHorizontal="20dp"
+                            android:layout_marginTop="30dp">
+
+                            <ImageView
+                                android:id="@+id/image1"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:background="@drawable/edittext_bg"
+                                android:src="@drawable/images_icon"
+                                android:padding="16dp"
+                                android:layout_weight="1"
+                                android:layout_margin="3dp"/>
+                            <ImageView
+                                android:id="@+id/image2"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/images_icon"
+                                android:padding="16dp"
+                                android:layout_weight="1"
+                                android:layout_margin="3dp"
+                                android:background="@drawable/edittext_bg"/>
+                            <ImageView
+                                android:id="@+id/image3"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/images_icon"
+                                android:padding="16dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/edittext_bg"
+                                android:layout_margin="3dp"/>
+
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/second_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/first_row"
+                        android:orientation="vertical"
+                        android:layout_marginHorizontal="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginHorizontal="20dp"
+                            android:layout_marginTop="30dp">
+
+                            <ImageView
+                                android:id="@+id/image4"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:background="@drawable/edittext_bg"
+                                android:src="@drawable/images_icon"
+                                android:padding="16dp"
+                                android:layout_weight="1"
+                                android:layout_margin="3dp"/>
+                            <ImageView
+                                android:id="@+id/image5"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/images_icon"
+                                android:padding="16dp"
+                                android:layout_weight="1"
+                                android:layout_margin="3dp"
+                                android:background="@drawable/edittext_bg"/>
+                            <ImageView
+                                android:id="@+id/image6"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/images_icon"
+                                android:padding="16dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/edittext_bg"
+                                android:layout_margin="3dp"/>
+
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/uploadImgBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:text="UPLOAD"
+                        android:textStyle="bold"
+                        android:textColor="#945133"
+                        android:textSize="17sp"
+                        android:backgroundTint="@color/light_orange"
+                        android:layout_below="@+id/second_row"
+                        android:layout_marginVertical="20dp"
+                        android:layout_marginHorizontal="100dp"
+                        android:gravity="center" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
