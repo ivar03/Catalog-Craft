@@ -30,7 +30,7 @@ class RegisterFragment : Fragment() {
     private lateinit var loginBtn: TextView
     private lateinit var registerBtn: Button
 
-    private val URL = "http://panel.mait.ac.in:8012/auth/register"
+    private val URL = "http://panel.mait.ac.in:8012/auth/register/"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

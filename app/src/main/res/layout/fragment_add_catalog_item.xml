@@ -28,6 +28,7 @@
                     android:layout_height="wrap_content"
                     android:text="Add Details for your product:"
                     android:textStyle="bold"
+                    android:textSize="20sp"
                     android:textColor="@color/dark_gray"
                     android:layout_marginStart="16dp"/>
 

@@ -17,20 +17,17 @@ class CatalogItemListAdapter(private var catalogArray: JSONArray) :
 
         private  val URL = "http://panel.mait.ac.in:8012"
 
-    private var mListener: onItemClickListener = object : onItemClickListener {
-        override fun onItemClick(position: Int) {
-        }
-    }
-
-    interface onItemClickListener {
+    interface OnItemClickListener {
         fun onItemClick(position: Int)
     }
 
-    fun setOnItemClickListener(listener: onItemClickListener) {
+    private var mListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
         mListener = listener
     }
 
-    class MyViewHolder(itemView: View, listener: onItemClickListener) :
+    class MyViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         val product_image_1: ShapeableImageView = itemView.findViewById(R.id.productImageView)
         val product_name: TextView = itemView.findViewById(R.id.productNameTextView)
@@ -38,18 +35,13 @@ class CatalogItemListAdapter(private var catalogArray: JSONArray) :
         val seller: TextView = itemView.findViewById(R.id.storeNameTextView)
         val category: TextView = itemView.findViewById(R.id.categoryNameTextView)
 
-        init {
-            itemView.setOnClickListener {
-                listener.onItemClick(adapterPosition)
-            }
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView =
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.catalog_item_list_view, parent, false)
-        return MyViewHolder(itemView, mListener)
+        return MyViewHolder(itemView)
     }
 
     override fun getItemCount(): Int {
@@ -91,5 +83,8 @@ class CatalogItemListAdapter(private var catalogArray: JSONArray) :
         holder.mrp.text = mrp
         holder.seller.text = if (seller.isNotEmpty()) seller else "Unknown Store"
         holder.category.text = category
+        holder.itemView.setOnClickListener {
+            mListener?.onItemClick(position)
+        }
     }
 }

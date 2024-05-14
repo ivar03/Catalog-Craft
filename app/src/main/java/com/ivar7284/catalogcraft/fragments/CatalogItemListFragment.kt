@@ -1,6 +1,7 @@
 package com.ivar7284.catalogcraft.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.ivar7284.catalogcraft.MainCatalogItemActivity
 import com.ivar7284.catalogcraft.R
 import com.ivar7284.catalogcraft.adapter.CatalogItemListAdapter
 import org.json.JSONArray
@@ -26,7 +28,7 @@ class CatalogItemListFragment : Fragment() {
     private lateinit var catalogListAdapter: CatalogItemListAdapter
     private lateinit var sharedPreferences: SharedPreferences
 
-    val URL = "http://panel.mait.ac.in:8012/catalogue/get-all"
+    val URL = "http://panel.mait.ac.in:8012/catalogue/get-all/"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,11 +39,22 @@ class CatalogItemListFragment : Fragment() {
         recyclerView = view.findViewById(R.id.itemList_rv)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         catalogListAdapter = CatalogItemListAdapter(JSONArray())
+        catalogListAdapter.setOnItemClickListener(object : CatalogItemListAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val clickedItem = catalogListAdapter.getItem(position)
+
+                val intent = Intent(requireContext(), MainCatalogItemActivity::class.java)
+                intent.putExtra("productData", clickedItem.toString())
+                startActivity(intent)
+            }
+        })
+
         recyclerView.adapter = catalogListAdapter
 
         sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
         fetchData()
+
 
         return view
     }
@@ -69,4 +82,5 @@ class CatalogItemListFragment : Fragment() {
         }
         requestQueue.add(jsonArrayObject)
     }
+
 }

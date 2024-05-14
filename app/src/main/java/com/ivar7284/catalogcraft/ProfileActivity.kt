@@ -3,6 +3,8 @@ package com.ivar7284.catalogcraft
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
@@ -14,11 +16,20 @@ import org.json.JSONObject
 
 class ProfileActivity : AppCompatActivity() {
 
+    private lateinit var backBtn: LinearLayout
+
     private val URL = "http://panel.mait.ac.in:8012/auth/user-details/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
+
+        //back button
+        backBtn = findViewById(R.id.PBackBtn)
+        backBtn.setOnClickListener {
+            finish()
+        }
 
         val accessToken = getAccessToken()
 
