@@ -1,5 +1,6 @@
 package com.ivar7284.catalogcraft.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -66,12 +68,28 @@ class AddCatalogItemFragment : Fragment() {
 
     private val req = JSONObject()
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_catalog_item, container, false)
 
+        //top navigation
+        val form = view.findViewById<LinearLayout>(R.id.form_fill_ll)
+        val barCode = view.findViewById<LinearLayout>(R.id.bar_code_ll)
+        form.setOnClickListener {
+            val addCatalogItemFragment = AddCatalogItemFragment()
+            val fragmentManager: FragmentManager? = fragmentManager
+            fragmentManager?.beginTransaction()?.replace(R.id.homeFrame, addCatalogItemFragment)?.commit()
+        }
+        barCode.setOnClickListener {
+            val barcodeFragment = BarCodeFragment()
+            val fragmentManager: FragmentManager? = fragmentManager
+            fragmentManager?.beginTransaction()?.replace(R.id.homeFrame, barcodeFragment)?.commit()
+        }
+
+        //form stuff
         quantity = view.findViewById(R.id.quantity)
         gst = view.findViewById(R.id.gst)
         unit = view.findViewById(R.id.unit)

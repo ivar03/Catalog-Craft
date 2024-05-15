@@ -6,10 +6,65 @@
     tools:context=".fragments.AddCatalogItemFragment"
     android:background="@color/my_white1">
 
+    <LinearLayout
+        android:id="@+id/topNav"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/orange_yellow">
+        <LinearLayout
+            android:id="@+id/form_fill_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@color/middle_orange">
+            <TextView
+                android:id="@+id/form_fill_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:textAlignment="center"
+                android:text="Form Filling"
+                android:textStyle="bold"
+                android:textColor="#945133"
+                android:textSize="18sp"/>
+        </LinearLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:layout_marginTop="5dp"/>
+
+        <LinearLayout
+            android:id="@+id/bar_code_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/orange_yellow">
+            <TextView
+                android:id="@+id/bar_code_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textAlignment="center"
+                android:text="Bar Code Scanning"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="18sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollIndicators="right">
+        android:scrollIndicators="right"
+        android:layout_below="@+id/topNav">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -20,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="vertical">
                 <TextView
