@@ -46,6 +46,7 @@ class AddCatalogItemFragment : Fragment() {
     private lateinit var hsnCode_layout: TextInputLayout
     private lateinit var yourPrice_layout: TextInputLayout
     private lateinit var upc_layout: TextInputLayout
+    private lateinit var mrp_layout: TextInputLayout
     private lateinit var sellerSku_layout: TextInputLayout
     private lateinit var productName_layout: TextInputLayout
     private lateinit var categoryName_layout: TextInputLayout
@@ -59,15 +60,19 @@ class AddCatalogItemFragment : Fragment() {
     private lateinit var yourPrice: TextInputEditText
     private lateinit var sellerSku: TextInputEditText
     private lateinit var description: TextInputEditText
+    private lateinit var mrp: TextInputEditText
     private lateinit var sellingOffer: TextInputEditText
     private lateinit var upc: TextInputEditText
     private lateinit var productName: TextInputEditText
     private lateinit var categoryName: TextInputEditText
 
+    private lateinit var dropdown: TextView
+
     private lateinit var pnameMic: View
     private lateinit var sellerskuMic: View
     private lateinit var yourpriceMic: View
     private lateinit var hsncodeMic: View
+    private lateinit var mrpMic: View
     private lateinit var gstMic: View
     private lateinit var additionaldescriptionMic: View
     private lateinit var quantityMic: View
@@ -117,6 +122,7 @@ class AddCatalogItemFragment : Fragment() {
         yourPrice_layout = view.findViewById(R.id.yourPriceInputLayout)
         sellerSku_layout = view.findViewById(R.id.sellerSkuInputLayout)
         upc_layout = view.findViewById(R.id.upcInputLayout)
+        mrp_layout = view.findViewById(R.id.mrpInputLayout)
         sellingOffer_layout = view.findViewById(R.id.sellingOfferInputLayout)
         additionalDescription_layout = view.findViewById(R.id.additionalDescriptionInputLayout)
         productName_layout = view.findViewById(R.id.productNameInputLayout)
@@ -129,6 +135,7 @@ class AddCatalogItemFragment : Fragment() {
         hsnCode = view.findViewById(R.id.hsnCode)
         sellerSku = view.findViewById(R.id.sellerSku)
         upc = view.findViewById(R.id.UPC)
+        mrp = view.findViewById(R.id.mrp)
         description = view.findViewById(R.id.description)
         productName = view.findViewById(R.id.productName)
         additionalDescription = view.findViewById(R.id.additionalDescription)
@@ -141,6 +148,7 @@ class AddCatalogItemFragment : Fragment() {
         yourpriceMic = view.findViewById(R.id.mic_yourPrice)
         hsncodeMic = view.findViewById(R.id.mic_hsncode)
         gstMic = view.findViewById(R.id.mic_gst)
+        mrpMic = view.findViewById(R.id.mic_mrp)
         descriptionMic = view.findViewById(R.id.mic_description)
         quantityMic = view.findViewById(R.id.mic_quantity)
         sellingofferMic = view.findViewById(R.id.mic_sellingOffer)
@@ -193,6 +201,13 @@ class AddCatalogItemFragment : Fragment() {
                 upc_layout.helperText = "info"
             }else{
                 upc_layout.helperText = null
+            }
+        }
+        mrp.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                mrp_layout.helperText = "info"
+            }else{
+                mrp_layout.helperText = null
             }
         }
         sellerSku.setOnFocusChangeListener { _, hasFocus ->
@@ -259,6 +274,7 @@ class AddCatalogItemFragment : Fragment() {
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
+            mrpMic.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -281,6 +297,7 @@ class AddCatalogItemFragment : Fragment() {
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
+            mrpMic.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -302,6 +319,7 @@ class AddCatalogItemFragment : Fragment() {
             upcMic.isActivated = false
             sellerskuMic.isActivated = true
             yourpriceMic.isActivated = false
+            mrpMic.isActivated = false
             gstMic.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
@@ -325,6 +343,7 @@ class AddCatalogItemFragment : Fragment() {
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = true
             gstMic.isActivated = false
+            mrpMic.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -346,6 +365,7 @@ class AddCatalogItemFragment : Fragment() {
             upcMic.isActivated = false
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
+            mrpMic.isActivated = false
             gstMic.isActivated = false
             hsncodeMic.isActivated = true
             descriptionMic.isActivated = false
@@ -369,6 +389,30 @@ class AddCatalogItemFragment : Fragment() {
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = true
+            mrpMic.isActivated = false
+            hsncodeMic.isActivated = false
+            descriptionMic.isActivated = false
+            quantityMic.isActivated = false
+//            categoryMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = false
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak ttp text")
+            try {
+                startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
+            }catch (e:Exception){
+                Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+        mrpMic.setOnClickListener {
+            pnameMic.isActivated = false
+            upcMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
+            gstMic.isActivated = false
+            mrpMic.isActivated = true
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -391,6 +435,7 @@ class AddCatalogItemFragment : Fragment() {
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
+            mrpMic.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = true
             quantityMic.isActivated = false
@@ -411,6 +456,7 @@ class AddCatalogItemFragment : Fragment() {
             pnameMic.isActivated = false
             upcMic.isActivated = false
             sellerskuMic.isActivated = false
+            mrpMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
             hsncodeMic.isActivated = false
@@ -435,6 +481,7 @@ class AddCatalogItemFragment : Fragment() {
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
+            mrpMic.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -457,6 +504,7 @@ class AddCatalogItemFragment : Fragment() {
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
+            mrpMic.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -472,6 +520,13 @@ class AddCatalogItemFragment : Fragment() {
             }catch (e:Exception){
                 Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
             }
+        }
+
+        //additional details
+        val additionalFieldsContainer: LinearLayout = view.findViewById(R.id.additional_fields_container)
+        dropdown = view.findViewById(R.id.dropdown_menu)
+        dropdown.setOnClickListener {
+            additionalFieldsContainer.visibility = View.VISIBLE
         }
 
 //        categoryMic.setOnClickListener {
@@ -561,6 +616,7 @@ class AddCatalogItemFragment : Fragment() {
         val yourPriceText = yourPrice.text.toString()
         val hsnCodeText = hsnCode.text.toString()
         val gstText = gst.text.toString()
+        val mrpText = mrp.text.toString()
         val descriptionText = description.text.toString()
         val quantityText = quantity.text.toString()
         val additionalDescriptionText = additionalDescription.text.toString()
@@ -572,6 +628,7 @@ class AddCatalogItemFragment : Fragment() {
         val sellerSkuRequestBody = createPartFromString(sellerSkuText)
         val yourPriceRequestBody = createPartFromString(yourPriceText)
         val hsnCodeRequestBody = createPartFromString(hsnCodeText)
+        val mrpRequestBody = createPartFromString(mrpText)
         val gstRequestBody = createPartFromString(gstText)
         val descriptionRequestBody = createPartFromString(descriptionText)
         val quantityRequestBody = createPartFromString(quantityText)
@@ -594,6 +651,7 @@ class AddCatalogItemFragment : Fragment() {
                     sellerSkuRequestBody,
                     yourPriceRequestBody,
                     hsnCodeRequestBody,
+                    mrpRequestBody,
                     gstRequestBody,
                     descriptionRequestBody,
                     quantityRequestBody,
@@ -638,6 +696,10 @@ class AddCatalogItemFragment : Fragment() {
                     upcMic.isActivated -> {
                         // Fill mrp EditText with input as numbers
                         upc.setText(filterNumbers(res[0]))
+                    }
+                    mrpMic.isActivated -> {
+                        // Fill mrp EditText with input as numbers
+                        mrp.setText(filterNumbers(res[0]))
                     }
                     sellerskuMic.isActivated -> {
                         // Fill sell price EditText with input as numbers

@@ -282,6 +282,50 @@
                         android:layout_marginTop="20dp"/>
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/mrpInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:boxStrokeColor="@color/middle_orange"
+                        app:helperTextTextColor="@color/middle_orange"
+                        app:helperTextTextAppearance="@color/middle_orange"
+                        app:counterTextColor="@color/middle_orange"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="10dp"
+                        app:hintEnabled="false"
+                        android:textColorHint="@color/light_orange">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/mrp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:textColor="@color/light_orange"
+                            android:textSize="16sp"
+                            android:hint="MRP"
+                            android:textColorHint="@color/middle_orange"
+                            android:background="@drawable/edittext_bg"
+                            android:padding="15dp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <View
+                        android:id="@+id/mic_mrp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/mic_icon"
+                        android:backgroundTint="@color/light_orange"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginTop="20dp"/>
+                </RelativeLayout>
+
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -351,7 +395,7 @@
                             android:id="@+id/quantity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:textColor="@color/light_orange"
                             android:hint="Quantity"
                             android:textColorHint="@color/middle_orange"
@@ -555,7 +599,7 @@
                                     android:id="@+id/sellingOffer"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Product Tax Code"
+                                    android:hint="Selling Offer"
                                     android:textColorHint="@color/middle_orange"
                                     android:textColor="@color/light_orange"
                                     android:textSize="16sp"

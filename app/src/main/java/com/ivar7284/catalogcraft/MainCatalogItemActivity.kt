@@ -36,7 +36,7 @@ class MainCatalogItemActivity : AppCompatActivity() {
         Log.i("intent data", productData.toString())
 
         // Extract necessary details from productData
-        val productName = productData.optString("product_name")
+        val productName = productData.optString("product_name").uppercase()
         val mrp = productData.optString("mrp")
         val category = productData.optString("category")
         val seller = productData.optString("seller")

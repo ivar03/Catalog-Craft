@@ -32,56 +32,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/PBackBtn"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:layout_marginHorizontal="40dp"
         android:layout_marginVertical="20dp"
         android:orientation="horizontal">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/profilePic"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:background="@drawable/account_icon"
-            android:backgroundTint="@color/light_orange"
-            android:elevation="10dp"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@color/light_orange"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:gravity="center"
-            >
-            <TextView
-                android:id="@+id/PName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Full Name"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:textColorHint="@color/dark_gray"
-                android:textColor="@color/dark_gray"
-                android:textSize="25sp"/>
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="#34847A73"
+            android:src="@drawable/account_icon"
+            app:tint="@color/my_white1"/>
 
         </LinearLayout>
 
-
+    <LinearLayout
+        android:id="@+id/pName_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/llProfile"
+        android:gravity="center"
+        android:layout_marginHorizontal="60dp">
+        <TextView
+            android:id="@+id/PName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Full Name"
+            android:textStyle="bold"
+            android:textAlignment="viewStart"
+            android:textColorHint="@color/dark_gray"
+            android:textColor="@color/dark_gray"
+            android:textSize="18sp"/>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/Details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/llProfile"
-        android:text="Details: "
-        android:textColor="@color/dark_gray"
-        android:layout_marginTop="10dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginHorizontal="60dp"/>
 
     <LinearLayout
         android:id="@+id/PDetails"
@@ -89,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginHorizontal="60dp"
-        android:layout_below="@+id/Details"
+        android:layout_below="@+id/pName_ll"
         android:orientation="vertical">
         <TextView
             android:id="@+id/Pphone"
