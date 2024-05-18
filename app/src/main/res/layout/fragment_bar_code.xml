@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.BarCodeFragment"
@@ -13,50 +14,55 @@
         android:orientation="horizontal"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
-        android:background="@color/orange_yellow">
-        <LinearLayout
-            android:id="@+id/form_fill_ll"
+        android:background="@color/my_white1">
+
+        <EditText
+            android:id="@+id/search_catalog_et"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@color/orange_yellow">
-            <TextView
-                android:id="@+id/form_fill_tv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp"
-                android:textAlignment="center"
-                android:text="Form Filling"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:textSize="18sp"/>
-        </LinearLayout>
+            android:layout_weight=".25"
+            android:hint="Search"
+            android:textColorHint="@color/dark_gray"
+            android:textColor="@color/dark_gray"
+            android:padding="10dp"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/search_icon"
+            android:drawableTint="@color/dark_gray"
+            android:background="@drawable/search_bg"
+            android:backgroundTint="#E2D7CD"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="20dp"
+            />
+
         <View
             android:layout_width="1dp"
-            android:layout_height="50dp"
-            android:background="@color/white"
-            android:layout_marginTop="5dp"/>
+            android:layout_height="40dp"
+            android:background="@color/dark_gray"
+            android:layout_marginTop="10dp"/>
 
         <LinearLayout
-            android:id="@+id/bar_code_ll"
+            android:id="@+id/form_ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@color/middle_orange">
-            <TextView
-                android:id="@+id/bar_code_tv"
-                android:layout_width="match_parent"
+            android:background="@color/zxing_transparent">
+            <ImageView
+                android:id="@+id/form_iv"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:textAlignment="center"
-                android:text="Bar Code Scanning"
+                android:padding="10dp"
                 android:textStyle="bold"
-                android:textColor="#945133"
-                android:textSize="18sp"/>
+                android:src="@drawable/form_icon"
+                android:background="@drawable/circle"
+                android:backgroundTint="#E2D7CD"
+                android:textColor="@color/white"
+                android:layout_margin="10dp"
+                android:textSize="18sp"
+                app:tint="@color/dark_gray"/>
         </LinearLayout>
     </LinearLayout>
 

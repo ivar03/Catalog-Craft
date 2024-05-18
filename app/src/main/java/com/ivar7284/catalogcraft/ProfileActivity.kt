@@ -1,6 +1,7 @@
 package com.ivar7284.catalogcraft
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -17,12 +18,21 @@ import org.json.JSONObject
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var backBtn: LinearLayout
+    private lateinit var logoutBtn: Button
 
     private val URL = "http://panel.mait.ac.in:8012/auth/user-details/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
+        //logout button
+        logoutBtn = findViewById(R.id.logoutBtn)
+        logoutBtn.setOnClickListener {
+            deleteAccessToken()
+            startActivity(Intent(applicationContext, LoginRegisterActivity::class.java))
+            finish()
+        }
 
 
         //back button
@@ -60,6 +70,13 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
         requestQueue.add(jsonObjectRequest)
+    }
+
+    private fun deleteAccessToken() {
+        val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove("access_token")
+        editor.apply()
     }
 
     private fun getAccessToken(): String? {

@@ -25,17 +25,11 @@ class BarCodeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_bar_code, container, false)
 
         //top navigation
-        val form = view.findViewById<LinearLayout>(R.id.form_fill_ll)
-        val barCode = view.findViewById<LinearLayout>(R.id.bar_code_ll)
-        form.setOnClickListener {
+        val formView = view.findViewById<LinearLayout>(R.id.form_ll)
+        formView.setOnClickListener {
             val addCatalogItemFragment = AddCatalogItemFragment()
             val fragmentManager: FragmentManager? = fragmentManager
             fragmentManager?.beginTransaction()?.replace(R.id.homeFrame, addCatalogItemFragment)?.commit()
-        }
-        barCode.setOnClickListener {
-            val barcodeFragment = BarCodeFragment()
-            val fragmentManager: FragmentManager? = fragmentManager
-            fragmentManager?.beginTransaction()?.replace(R.id.homeFrame, barcodeFragment)?.commit()
         }
 
         barcodeBtn = view.findViewById(R.id.bar_code_btn)

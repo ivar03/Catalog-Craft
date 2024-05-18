@@ -2,34 +2,20 @@ package com.ivar7284.catalogcraft.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.speech.RecognizerIntent
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.textfield.TextInputEditText
@@ -45,7 +31,6 @@ import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
@@ -57,33 +42,39 @@ class AddCatalogItemFragment : Fragment() {
 
     private lateinit var quantity_layout: TextInputLayout
     private lateinit var gst_layout: TextInputLayout
-    private lateinit var unit_layout: TextInputLayout
+    private lateinit var additionalDescription_layout: TextInputLayout
     private lateinit var hsnCode_layout: TextInputLayout
-    private lateinit var buyPrice_layout: TextInputLayout
-    private lateinit var sellPrice_layout: TextInputLayout
-    private lateinit var MRP_layout: TextInputLayout
+    private lateinit var yourPrice_layout: TextInputLayout
+    private lateinit var upc_layout: TextInputLayout
+    private lateinit var sellerSku_layout: TextInputLayout
     private lateinit var productName_layout: TextInputLayout
     private lateinit var categoryName_layout: TextInputLayout
+    private lateinit var description_layout: TextInputLayout
+    private lateinit var sellingOffer_layout: TextInputLayout
 
     private lateinit var quantity: TextInputEditText
     private lateinit var gst: TextInputEditText
-    private lateinit var unit: TextInputEditText
+    private lateinit var additionalDescription: TextInputEditText
     private lateinit var hsnCode: TextInputEditText
-    private lateinit var buyPrice: TextInputEditText
-    private lateinit var sellPrice: TextInputEditText
-    private lateinit var MRP: TextInputEditText
+    private lateinit var yourPrice: TextInputEditText
+    private lateinit var sellerSku: TextInputEditText
+    private lateinit var description: TextInputEditText
+    private lateinit var sellingOffer: TextInputEditText
+    private lateinit var upc: TextInputEditText
     private lateinit var productName: TextInputEditText
     private lateinit var categoryName: TextInputEditText
 
     private lateinit var pnameMic: View
-    private lateinit var mrpMic: View
-    private lateinit var spriceMic: View
-    private lateinit var bpriceMic: View
+    private lateinit var sellerskuMic: View
+    private lateinit var yourpriceMic: View
     private lateinit var hsncodeMic: View
     private lateinit var gstMic: View
-    private lateinit var unitMic: View
+    private lateinit var additionaldescriptionMic: View
     private lateinit var quantityMic: View
     private lateinit var categoryMic: View
+    private lateinit var sellingofferMic: View
+    private lateinit var descriptionMic: View
+    private lateinit var upcMic: View
 
     private lateinit var image1: ImageView
     private lateinit var image2: ImageView
@@ -103,8 +94,6 @@ class AddCatalogItemFragment : Fragment() {
 
     private val REQUEST_CODE_SPEECH_INPUT = 1
 
-    private val req = JSONObject()
-
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -113,14 +102,8 @@ class AddCatalogItemFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_add_catalog_item, container, false)
 
         //top navigation
-        val form = view.findViewById<LinearLayout>(R.id.form_fill_ll)
-        val barCode = view.findViewById<LinearLayout>(R.id.bar_code_ll)
-        form.setOnClickListener {
-            val addCatalogItemFragment = AddCatalogItemFragment()
-            val fragmentManager: FragmentManager? = fragmentManager
-            fragmentManager?.beginTransaction()?.replace(R.id.homeFrame, addCatalogItemFragment)?.commit()
-        }
-        barCode.setOnClickListener {
+        val formView = view.findViewById<LinearLayout>(R.id.form_ll)
+        formView.setOnClickListener {
             val barcodeFragment = BarCodeFragment()
             val fragmentManager: FragmentManager? = fragmentManager
             fragmentManager?.beginTransaction()?.replace(R.id.homeFrame, barcodeFragment)?.commit()
@@ -129,33 +112,41 @@ class AddCatalogItemFragment : Fragment() {
         //form stuff
         quantity_layout = view.findViewById(R.id.quantityInputLayout)
         gst_layout = view.findViewById(R.id.gstInputLayout)
-        unit_layout = view.findViewById(R.id.unitInputLayout)
+        description_layout = view.findViewById(R.id.descriptionInputLayout)
         hsnCode_layout = view.findViewById(R.id.hsnCodeInputLayout)
-        buyPrice_layout = view.findViewById(R.id.buyPriceInputLayout)
-        sellPrice_layout = view.findViewById(R.id.sellPriceInputLayout)
-        MRP_layout = view.findViewById(R.id.mrpInputLayout)
+        yourPrice_layout = view.findViewById(R.id.yourPriceInputLayout)
+        sellerSku_layout = view.findViewById(R.id.sellerSkuInputLayout)
+        upc_layout = view.findViewById(R.id.upcInputLayout)
+        sellingOffer_layout = view.findViewById(R.id.sellingOfferInputLayout)
+        additionalDescription_layout = view.findViewById(R.id.additionalDescriptionInputLayout)
         productName_layout = view.findViewById(R.id.productNameInputLayout)
-        categoryName_layout = view.findViewById(R.id.categoryInputLayout)
+//        categoryName_layout = view.findViewById(R.id.categoryInputLayout)
+
 
         quantity = view.findViewById(R.id.quantity)
         gst = view.findViewById(R.id.gst)
-        unit = view.findViewById(R.id.unit)
+        yourPrice = view.findViewById(R.id.yourPrice)
         hsnCode = view.findViewById(R.id.hsnCode)
-        buyPrice = view.findViewById(R.id.buyPrize)
-        sellPrice = view.findViewById(R.id.sellPrize)
-        MRP = view.findViewById(R.id.MRP)
+        sellerSku = view.findViewById(R.id.sellerSku)
+        upc = view.findViewById(R.id.UPC)
+        description = view.findViewById(R.id.description)
         productName = view.findViewById(R.id.productName)
-        categoryName = view.findViewById(R.id.category)
+        additionalDescription = view.findViewById(R.id.additionalDescription)
+        sellingOffer = view.findViewById(R.id.sellingOffer)
+//        categoryName = view.findViewById(R.id.category)
 
         pnameMic = view.findViewById(R.id.mic_pname)
-        mrpMic = view.findViewById(R.id.mic_mrp)
-        spriceMic = view.findViewById(R.id.mic_sprice)
-        bpriceMic = view.findViewById(R.id.mic_bprice)
+        upcMic = view.findViewById(R.id.mic_upc)
+        sellerskuMic = view.findViewById(R.id.mic_sellerSku)
+        yourpriceMic = view.findViewById(R.id.mic_yourPrice)
         hsncodeMic = view.findViewById(R.id.mic_hsncode)
         gstMic = view.findViewById(R.id.mic_gst)
-        unitMic = view.findViewById(R.id.mic_unit)
+        descriptionMic = view.findViewById(R.id.mic_description)
         quantityMic = view.findViewById(R.id.mic_quantity)
-        categoryMic = view.findViewById(R.id.mic_category)
+        sellingofferMic = view.findViewById(R.id.mic_sellingOffer)
+        additionaldescriptionMic = view.findViewById(R.id.mic_additionalDescription)
+        quantityMic = view.findViewById(R.id.mic_quantity)
+//        categoryMic = view.findViewById(R.id.mic_category)
 
         image1 = view.findViewById(R.id.image1)
         image2 = view.findViewById(R.id.image2)
@@ -177,45 +168,45 @@ class AddCatalogItemFragment : Fragment() {
         }
         //suggestions regarding the categories we already have
 
-        categoryName.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
-                addCategoryIfNotExists()
-                true
-            } else {
-                false
-            }
-        }
+//        categoryName.setOnEditorActionListener { _, actionId, _ ->
+//            if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
+//                addCategoryIfNotExists()
+//                true
+//            } else {
+//                false
+//            }
+//        }
+//
+//
+//        categoryName.setOnFocusChangeListener { _, hasFocus ->
+//            if (hasFocus) {
+//                categoryName_layout.helperText = categoryList.joinToString(", ")
+//                addCategoryIfNotExists()
+//            } else {
+//                categoryName_layout.helperText = null
+//            }
+//        }
 
 
-        categoryName.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                categoryName_layout.helperText = categoryList.joinToString(", ")
-                addCategoryIfNotExists()
-            } else {
-                categoryName_layout.helperText = null
-            }
-        }
-
-
-        MRP.setOnFocusChangeListener { _, hasFocus ->
+        upc.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                MRP_layout.helperText = "info"
+                upc_layout.helperText = "info"
             }else{
-                MRP_layout.helperText = null
+                upc_layout.helperText = null
             }
         }
-        sellPrice.setOnFocusChangeListener { _, hasFocus ->
+        sellerSku.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                sellPrice_layout.helperText = "info"
+                sellerSku_layout.helperText = "info"
             }else{
-                sellPrice_layout.helperText = null
+                sellerSku_layout.helperText = null
             }
         }
-        buyPrice.setOnFocusChangeListener { _, hasFocus ->
+        yourPrice.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                buyPrice_layout.helperText = "info"
+                yourPrice_layout.helperText = "info"
             }else{
-                buyPrice_layout.helperText = null
+                yourPrice_layout.helperText = null
             }
         }
         hsnCode.setOnFocusChangeListener { _, hasFocus ->
@@ -225,11 +216,11 @@ class AddCatalogItemFragment : Fragment() {
                 hsnCode_layout.helperText = null
             }
         }
-        unit.setOnFocusChangeListener { _, hasFocus ->
+        description.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                unit_layout.helperText = "info"
+                description_layout.helperText = "info"
             }else{
-                unit_layout.helperText = null
+                description_layout.helperText = null
             }
         }
         gst.setOnFocusChangeListener { _, hasFocus ->
@@ -246,18 +237,34 @@ class AddCatalogItemFragment : Fragment() {
                 quantity_layout.helperText = null
             }
         }
+        additionalDescription.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                additionalDescription_layout.helperText = "info"
+            }else{
+                additionalDescription_layout.helperText = null
+            }
+        }
+        sellingOffer.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                sellingOffer_layout.helperText = "info"
+            }else{
+                sellingOffer_layout.helperText = null
+            }
+        }
 
         //setting up mics
         pnameMic.setOnClickListener {
             pnameMic.isActivated = true
-            mrpMic.isActivated = false
-            spriceMic.isActivated = false
-            bpriceMic.isActivated = false
+            upcMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
             gstMic.isActivated = false
             hsncodeMic.isActivated = false
-            unitMic.isActivated = false
+            descriptionMic.isActivated = false
             quantityMic.isActivated = false
-            categoryMic.isActivated = false
+//            categoryMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
@@ -268,16 +275,18 @@ class AddCatalogItemFragment : Fragment() {
                 Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
             }
         }
-        mrpMic.setOnClickListener {
+        upcMic.setOnClickListener {
             pnameMic.isActivated = false
-            mrpMic.isActivated = true
-            spriceMic.isActivated = false
-            bpriceMic.isActivated = false
+            upcMic.isActivated = true
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
             gstMic.isActivated = false
             hsncodeMic.isActivated = false
-            unitMic.isActivated = false
+            descriptionMic.isActivated = false
             quantityMic.isActivated = false
-            categoryMic.isActivated = false
+//            categoryMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
@@ -288,16 +297,18 @@ class AddCatalogItemFragment : Fragment() {
                 Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
             }
         }
-        spriceMic.setOnClickListener {
+        sellerskuMic.setOnClickListener {
             pnameMic.isActivated = false
-            mrpMic.isActivated = false
-            spriceMic.isActivated = true
-            bpriceMic.isActivated = false
+            upcMic.isActivated = false
+            sellerskuMic.isActivated = true
+            yourpriceMic.isActivated = false
             gstMic.isActivated = false
             hsncodeMic.isActivated = false
-            unitMic.isActivated = false
+            descriptionMic.isActivated = false
             quantityMic.isActivated = false
-            categoryMic.isActivated = false
+//            categoryMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
@@ -308,16 +319,18 @@ class AddCatalogItemFragment : Fragment() {
                 Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
             }
         }
-        bpriceMic.setOnClickListener {
+        yourpriceMic.setOnClickListener {
             pnameMic.isActivated = false
-            mrpMic.isActivated = false
-            spriceMic.isActivated = false
-            bpriceMic.isActivated = true
+            upcMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = true
             gstMic.isActivated = false
             hsncodeMic.isActivated = false
-            unitMic.isActivated = false
+            descriptionMic.isActivated = false
             quantityMic.isActivated = false
-            categoryMic.isActivated = false
+//            categoryMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
@@ -330,14 +343,16 @@ class AddCatalogItemFragment : Fragment() {
         }
         hsncodeMic.setOnClickListener {
             pnameMic.isActivated = false
-            mrpMic.isActivated = false
-            spriceMic.isActivated = false
-            bpriceMic.isActivated = false
+            upcMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
             gstMic.isActivated = false
             hsncodeMic.isActivated = true
-            unitMic.isActivated = false
+            descriptionMic.isActivated = false
             quantityMic.isActivated = false
-            categoryMic.isActivated = false
+//            categoryMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
@@ -350,14 +365,16 @@ class AddCatalogItemFragment : Fragment() {
         }
         gstMic.setOnClickListener {
             pnameMic.isActivated = false
-            mrpMic.isActivated = false
-            spriceMic.isActivated = false
-            bpriceMic.isActivated = false
+            upcMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
             gstMic.isActivated = true
             hsncodeMic.isActivated = false
-            unitMic.isActivated = false
+            descriptionMic.isActivated = false
             quantityMic.isActivated = false
-            categoryMic.isActivated = false
+//            categoryMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
@@ -368,16 +385,18 @@ class AddCatalogItemFragment : Fragment() {
                 Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
             }
         }
-        unitMic.setOnClickListener {
+        descriptionMic.setOnClickListener {
             pnameMic.isActivated = false
-            mrpMic.isActivated = false
-            spriceMic.isActivated = false
-            bpriceMic.isActivated = false
+            upcMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
             gstMic.isActivated = false
             hsncodeMic.isActivated = false
-            unitMic.isActivated = true
+            descriptionMic.isActivated = true
             quantityMic.isActivated = false
-            categoryMic.isActivated = false
+//            categoryMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
@@ -390,14 +409,16 @@ class AddCatalogItemFragment : Fragment() {
         }
         quantityMic.setOnClickListener {
             pnameMic.isActivated = false
-            mrpMic.isActivated = false
-            spriceMic.isActivated = false
-            bpriceMic.isActivated = false
+            upcMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
             gstMic.isActivated = false
             hsncodeMic.isActivated = false
-            unitMic.isActivated = false
+            descriptionMic.isActivated = false
             quantityMic.isActivated = true
-            categoryMic.isActivated = false
+//            categoryMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
@@ -408,26 +429,71 @@ class AddCatalogItemFragment : Fragment() {
                 Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
             }
         }
-        categoryMic.setOnClickListener {
+        additionaldescriptionMic.setOnClickListener {
             pnameMic.isActivated = false
-            mrpMic.isActivated = false
-            spriceMic.isActivated = false
-            bpriceMic.isActivated = false
+            upcMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
             gstMic.isActivated = false
             hsncodeMic.isActivated = false
-            unitMic.isActivated = false
+            descriptionMic.isActivated = false
             quantityMic.isActivated = false
-            categoryMic.isActivated = true
+//            categoryMic.isActivated = false
+            additionaldescriptionMic.isActivated = true
+            sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to text")
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak ttp text")
             try {
                 startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
-            } catch (e: Exception) {
+            }catch (e:Exception){
                 Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
             }
         }
+        sellingofferMic.setOnClickListener {
+            pnameMic.isActivated = false
+            upcMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
+            gstMic.isActivated = false
+            hsncodeMic.isActivated = false
+            descriptionMic.isActivated = false
+            quantityMic.isActivated = false
+//            categoryMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = true
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak ttp text")
+            try {
+                startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
+            }catch (e:Exception){
+                Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+//        categoryMic.setOnClickListener {
+//            pnameMic.isActivated = false
+//            mrpMic.isActivated = false
+//            spriceMic.isActivated = false
+//            bpriceMic.isActivated = false
+//            gstMic.isActivated = false
+//            hsncodeMic.isActivated = false
+//            unitMic.isActivated = false
+//            quantityMic.isActivated = false
+//            categoryMic.isActivated = true
+//            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+//            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+//            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+//            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to text")
+//            try {
+//                startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
+//            } catch (e: Exception) {
+//                Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
+//            }
+//        }
 
         //image picker
         image1.setOnClickListener {
@@ -490,24 +556,28 @@ class AddCatalogItemFragment : Fragment() {
 
     private fun uploadData() {
         val productNameText = productName.text.toString()
-        val mrpText = MRP.text.toString()
-        val sellPriceText = sellPrice.text.toString()
-        val buyPriceText = buyPrice.text.toString()
+        val upcText = upc.text.toString()
+        val sellerSkuText = sellerSku.text.toString()
+        val yourPriceText = yourPrice.text.toString()
         val hsnCodeText = hsnCode.text.toString()
         val gstText = gst.text.toString()
-        val unitText = unit.text.toString()
+        val descriptionText = description.text.toString()
         val quantityText = quantity.text.toString()
-        val categoryText = categoryName.text.toString()
+        val additionalDescriptionText = additionalDescription.text.toString()
+        val sellingOfferText = sellingOffer.text.toString()
+//        val categoryText = categoryName.text.toString()
 
         val productNameRequestBody = createPartFromString(productNameText)
-        val mrpRequestBody = createPartFromString(mrpText)
-        val sellPriceRequestBody = createPartFromString(sellPriceText)
-        val buyPriceRequestBody = createPartFromString(buyPriceText)
+        val upcRequestBody = createPartFromString(upcText)
+        val sellerSkuRequestBody = createPartFromString(sellerSkuText)
+        val yourPriceRequestBody = createPartFromString(yourPriceText)
         val hsnCodeRequestBody = createPartFromString(hsnCodeText)
         val gstRequestBody = createPartFromString(gstText)
-        val unitRequestBody = createPartFromString(unitText)
+        val descriptionRequestBody = createPartFromString(descriptionText)
         val quantityRequestBody = createPartFromString(quantityText)
-        val categoryNameRequestBody = createPartFromString(categoryText)
+        val additionalDescriptionRequestBody = createPartFromString(additionalDescriptionText)
+        val sellingOfferRequestBody = createPartFromString(sellingOfferText)
+//        val categoryNameRequestBody = createPartFromString(categoryText)
 
         val image1Part = imageToRequestBody("product_image_1", image1, "image1.jpg")
         val image2Part = imageToRequestBody("product_image_2", image2, "image2.jpg")
@@ -520,22 +590,22 @@ class AddCatalogItemFragment : Fragment() {
             try {
                 val response = apiService.uploadData(
                     productNameRequestBody,
-                    mrpRequestBody,
-                    3,
-                    sellPriceRequestBody,
-                    buyPriceRequestBody,
+                    upcRequestBody,
+                    sellerSkuRequestBody,
+                    yourPriceRequestBody,
                     hsnCodeRequestBody,
                     gstRequestBody,
-                    unitRequestBody,
+                    descriptionRequestBody,
                     quantityRequestBody,
-                    1,
-                    categoryNameRequestBody,
-                    1,
+                    additionalDescriptionRequestBody,
+                    sellingOfferRequestBody,
+                    null,
                     image1Part,
                     image2Part,
                     image3Part,
                     image4Part,
-                    image5Part
+                    image5Part,
+                    image6Part
                 )
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
@@ -565,17 +635,17 @@ class AddCatalogItemFragment : Fragment() {
                         // Fill product name EditText with the limited character input
                         productName.setText(limitCharacterInput(res[0]))
                     }
-                    mrpMic.isActivated -> {
+                    upcMic.isActivated -> {
                         // Fill mrp EditText with input as numbers
-                        MRP.setText(filterNumbers(res[0]))
+                        upc.setText(filterNumbers(res[0]))
                     }
-                    spriceMic.isActivated -> {
+                    sellerskuMic.isActivated -> {
                         // Fill sell price EditText with input as numbers
-                        sellPrice.setText(filterNumbers(res[0]))
+                        sellerSku.setText(filterNumbers(res[0]))
                     }
-                    bpriceMic.isActivated -> {
+                    yourpriceMic.isActivated -> {
                         // Fill buy price EditText with input as numbers
-                        buyPrice.setText(filterNumbers(res[0]))
+                        yourPrice.setText(filterNumbers(res[0]))
                     }
                     hsncodeMic.isActivated -> {
                         // Fill hsn code EditText with the limited character input
@@ -591,9 +661,13 @@ class AddCatalogItemFragment : Fragment() {
                             Toast.makeText(requireContext(), "Invalid GST input", Toast.LENGTH_SHORT).show()
                         }
                     }
-                    unitMic.isActivated -> {
+                    descriptionMic.isActivated -> {
                         // Fill unit EditText with input as numbers
-                        unit.setText(filterNumbers(res[0]))
+                        description.setText(limitCharacterInput(res[0]))
+                    }
+                    additionaldescriptionMic.isActivated -> {
+                        // Fill unit EditText with input as numbers
+                        additionalDescription.setText(limitCharacterInput(res[0]))
                     }
                     quantityMic.isActivated -> {
                         // Fill quantity EditText with input as numbers
@@ -602,6 +676,15 @@ class AddCatalogItemFragment : Fragment() {
                     categoryMic.isActivated -> {
                         // Fill category name EditText with the limited character input
                         categoryName.setText(limitCharacterInput(res[0]))
+                    }
+                    sellingofferMic.isActivated -> {
+                        val filteredInput = filterNumbers(res[0])
+                        if (filteredInput.isNotEmpty() && filteredInput.toInt() in 1..100) {
+                            gst.setText(filteredInput)
+                        } else {
+                            // Handle invalid input (not a number or out of range)
+                            Toast.makeText(requireContext(), "Invalid Selling Offer input", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }

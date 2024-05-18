@@ -8,13 +8,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.ivar7284.catalogcraft.HomeActivity
@@ -63,11 +61,11 @@ class LoginFragment : Fragment() {
         val mail = email.text.toString()
         val pass = password.text.toString()
 
-        val req = JSONObject()
-        req.put("email", mail)
-        req.put("password", pass)
+        val reqLogin = JSONObject()
+        reqLogin.put("email", mail)
+        reqLogin.put("password", pass)
 
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, URL, req,
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, URL, reqLogin,
             { response ->
                 try {
                     val token = response.getString("access")

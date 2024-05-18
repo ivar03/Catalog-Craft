@@ -86,6 +86,7 @@ class RegisterFragment : Fragment() {
                     try {
                         val message = response.getString("message")
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                        autoLogin(mail,pass)
                     } catch (e: JSONException) {
                         e.printStackTrace()
                         Log.e("JSON Error", e.message.toString())
@@ -101,6 +102,43 @@ class RegisterFragment : Fragment() {
 
         } else {
             cpassword.error = "Passwords do not match"
+        }
+    }
+
+    private fun autoLogin(mail:String, pass:String) {
+        val requestQueue = Volley.newRequestQueue(requireContext())
+
+        val reqLogin = JSONObject()
+        reqLogin.put("email", mail)
+        reqLogin.put("password", pass)
+        val url = "http://panel.mait.ac.in:8012/auth/login/"
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, reqLogin,
+            { response ->
+                try {
+                    val token = response.getString("access")
+                    saveAccessToken(token)
+                    Toast.makeText(requireContext(), "Login successful!", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(requireContext(), HomeActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                    Log.e("JSON Error", e.message.toString())
+                }
+            },
+            { error ->
+                registerBtn.revertAnimation()
+                Log.e("Volley Error", error.message.toString())
+                Toast.makeText(requireContext(), "Login failed!", Toast.LENGTH_SHORT).show()
+            })
+
+        requestQueue.add(jsonObjectRequest)
+    }
+    private fun saveAccessToken(token: String) {
+        val sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putString("access_token", token)
+            apply()
         }
     }
 }

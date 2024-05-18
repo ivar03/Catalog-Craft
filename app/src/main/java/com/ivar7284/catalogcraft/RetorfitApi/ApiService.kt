@@ -12,21 +12,21 @@ interface ApiService {
     @POST("catalogue/create/")
     suspend fun uploadData(
         @Part("product_name") product_name: RequestBody,
-        @Part("mrp") mrp: RequestBody,
-        @Part("seller") seller: Int,
+        @Part("upc") upc: RequestBody,
+        @Part("seller_sku") seller_sku: RequestBody,
         @Part("selling_prize") selling_prize: RequestBody,
-        @Part("buying_prize") buying_prize: RequestBody,
         @Part("hsn_code") hsn_code: RequestBody,
         @Part("gst_percentage") gst_percentage: RequestBody,
-        @Part("unit") unit: RequestBody,
+        @Part("description") description: RequestBody,
         @Part("quantity") quantity: RequestBody,
-        @Part("standardized") standardized: Int,
-        @Part("category") category: RequestBody,
-        @Part("mapped_to_master") mapped_to_master: Int,
+        @Part("additional_description") additional_description: RequestBody,
+        @Part("selling_offer") product_tax_report: RequestBody,
+        @Part("category") category: RequestBody?,
         @Part product_image_1: MultipartBody.Part?,
         @Part product_image_2: MultipartBody.Part?,
         @Part product_image_3: MultipartBody.Part?,
         @Part product_image_4: MultipartBody.Part?,
-        @Part product_image_5: MultipartBody.Part?
+        @Part product_image_5: MultipartBody.Part?,
+        @Part product_image_6: MultipartBody.Part
     ): Response<Any>
 }
