@@ -3,6 +3,13 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
+repositories {
+    google()
+    mavenCentral()
+    gradlePluginPortal()
+    maven ( url = "https://jitpack.io" )
+}
+
 android {
     namespace = "com.ivar7284.catalogcraft"
     compileSdk = 34
@@ -55,4 +62,20 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.google.zxing:core:3.5.3")
     implementation("com.google.android.material:material:1.5.0")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    implementation("br.com.simplepass:loading-button-android:2.2.0")
+    implementation ("com.google.android.material:material:1.3.0")
+
+    //camera x
+    val camerax_version = "1.3.3"
+    implementation ("androidx.camera:camera-core:${camerax_version}")
+    implementation ("androidx.camera:camera-camera2:${camerax_version}")
+    implementation ("androidx.camera:camera-lifecycle:${camerax_version}")
+    implementation ("androidx.camera:camera-video:${camerax_version}")
+    implementation ("androidx.camera:camera-view:${camerax_version}")
+    implementation ("androidx.camera:camera-extensions:${camerax_version}")
+
 }

@@ -107,7 +107,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
+            <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
                 android:id="@+id/login_btn"
                 android:layout_width="300dp"
                 android:layout_height="60dp"
@@ -118,7 +118,7 @@
                 android:shadowColor="@color/light_orange"
                 android:text="LOGIN"
                 android:textColor="#945133"
-                android:textSize="17sp" />
+                android:textSize="20dp"/>
 
 
         </LinearLayout>

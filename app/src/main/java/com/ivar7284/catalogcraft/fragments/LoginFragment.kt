@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -25,7 +26,7 @@ class LoginFragment : Fragment() {
 
     private lateinit var email: EditText
     private lateinit var password: EditText
-    private lateinit var loginBtn: Button
+    private lateinit var loginBtn: CircularProgressButton
     private lateinit var registerBtn: TextView
 
     val URL = "http://panel.mait.ac.in:8012/auth/login/"
@@ -50,6 +51,7 @@ class LoginFragment : Fragment() {
         }
 
         loginBtn.setOnClickListener {
+            loginBtn.startAnimation()
             loginUser()
         }
 
@@ -80,6 +82,7 @@ class LoginFragment : Fragment() {
                 }
             },
             { error ->
+                loginBtn.revertAnimation()
                 Log.e("Volley Error", error.message.toString())
                 Toast.makeText(requireContext(), "Login failed!", Toast.LENGTH_SHORT).show()
             })

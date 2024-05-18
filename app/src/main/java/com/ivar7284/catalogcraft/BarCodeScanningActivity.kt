@@ -1,8 +1,10 @@
 package com.ivar7284.catalogcraft
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,6 +17,10 @@ import com.ivar7284.catalogcraft.databinding.ActivityBarCodeScanningBinding
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
+import java.io.BufferedReader
+import java.io.FileReader
+import java.io.IOException
+import java.io.InputStreamReader
 
 class BarCodeScanningActivity : AppCompatActivity() {
     private val requestPermissionLauncher =
@@ -41,9 +47,16 @@ class BarCodeScanningActivity : AppCompatActivity() {
             }
         }
 
-    private fun setResult(string: String){
+    @SuppressLint("SetTextI18n")
+    private fun setResult(string: String) {
         binding.textresult.text = string
+
+        val URL = "http://panel.mait.ac.in:8012/csv-response/"
+
+        //endpoint volley code  
+
     }
+
 
     private fun showCamera() {
         val options = ScanOptions()

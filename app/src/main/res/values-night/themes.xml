@@ -2,12 +2,12 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.CatalogCraft" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <item name="colorPrimary">@color/my_white1</item>
-        <item name="colorOnPrimary">@color/my_white1</item>
-        <item name="colorPrimaryDark">@color/my_white1</item>
-        <item name="colorPrimaryVariant">@color/my_white1</item>
-        <item name="colorSurface">@color/my_white1</item>
-        <item name="colorOnSurface">@color/my_white1</item>
+        <item name="colorPrimary">@color/middle_orange</item>
+        <item name="colorOnPrimary">@color/middle_orange</item>
+        <item name="colorPrimaryDark">@color/middle_orange</item>
+        <item name="colorPrimaryVariant">@color/middle_orange</item>
+        <item name="colorSurface">@color/middle_orange</item>
+        <item name="colorOnSurface">@color/middle_orange</item>
         <item name="android:statusBarColor">@color/my_white1</item>
     </style>
 </resources>

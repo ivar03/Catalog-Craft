@@ -156,7 +156,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
+            <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
                 android:id="@+id/rregister_btn"
                 android:layout_width="300dp"
                 android:layout_height="60dp"
@@ -167,7 +167,7 @@
                 android:shadowColor="@color/light_orange"
                 android:text="REGISTER"
                 android:textColor="#945133"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
 
 

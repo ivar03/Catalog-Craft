@@ -72,6 +72,8 @@
             android:layout_height="200dp"
             android:backgroundTint="@color/middle_orange"
             android:text="bar code"
+            android:textColor="#945133"
+            android:textStyle="bold"
             android:textSize="20sp"/>
 
         <Button
@@ -80,6 +82,8 @@
             android:layout_height="200dp"
             android:backgroundTint="@color/middle_orange"
             android:text="Camera"
+            android:textStyle="bold"
+            android:textColor="#945133"
             android:textSize="20sp"/>
     </LinearLayout>
 

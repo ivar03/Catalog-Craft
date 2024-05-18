@@ -5,40 +5,75 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.speech.RecognizerIntent
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.ivar7284.catalogcraft.R
+import com.ivar7284.catalogcraft.RetorfitApi.ApiService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayOutputStream
 import java.util.Locale
 
 class AddCatalogItemFragment : Fragment() {
 
-    private lateinit var quantity: EditText
-    private lateinit var gst: EditText
-    private lateinit var unit: EditText
-    private lateinit var hsnCode: EditText
-    private lateinit var buyPrice: EditText
-    private lateinit var sellPrice: EditText
-    private lateinit var MRP: EditText
-    private lateinit var productName: EditText
-    private lateinit var categoryName: EditText
+    private val categoryList = arrayListOf("Category1", "Category2", "Category3")
+
+    private lateinit var quantity_layout: TextInputLayout
+    private lateinit var gst_layout: TextInputLayout
+    private lateinit var unit_layout: TextInputLayout
+    private lateinit var hsnCode_layout: TextInputLayout
+    private lateinit var buyPrice_layout: TextInputLayout
+    private lateinit var sellPrice_layout: TextInputLayout
+    private lateinit var MRP_layout: TextInputLayout
+    private lateinit var productName_layout: TextInputLayout
+    private lateinit var categoryName_layout: TextInputLayout
+
+    private lateinit var quantity: TextInputEditText
+    private lateinit var gst: TextInputEditText
+    private lateinit var unit: TextInputEditText
+    private lateinit var hsnCode: TextInputEditText
+    private lateinit var buyPrice: TextInputEditText
+    private lateinit var sellPrice: TextInputEditText
+    private lateinit var MRP: TextInputEditText
+    private lateinit var productName: TextInputEditText
+    private lateinit var categoryName: TextInputEditText
 
     private lateinit var pnameMic: View
     private lateinit var mrpMic: View
@@ -56,7 +91,9 @@ class AddCatalogItemFragment : Fragment() {
     private lateinit var image4: ImageView
     private lateinit var image5: ImageView
     private lateinit var image6: ImageView
-    private lateinit var uploadImg: Button
+    private lateinit var uploadImg: CircularProgressButton
+
+    private lateinit var apiService: ApiService
 
     private lateinit var sharedPreferences: SharedPreferences
     private val URL = "http://panel.mait.ac.in:8012/catalogue/create/"
@@ -90,6 +127,16 @@ class AddCatalogItemFragment : Fragment() {
         }
 
         //form stuff
+        quantity_layout = view.findViewById(R.id.quantityInputLayout)
+        gst_layout = view.findViewById(R.id.gstInputLayout)
+        unit_layout = view.findViewById(R.id.unitInputLayout)
+        hsnCode_layout = view.findViewById(R.id.hsnCodeInputLayout)
+        buyPrice_layout = view.findViewById(R.id.buyPriceInputLayout)
+        sellPrice_layout = view.findViewById(R.id.sellPriceInputLayout)
+        MRP_layout = view.findViewById(R.id.mrpInputLayout)
+        productName_layout = view.findViewById(R.id.productNameInputLayout)
+        categoryName_layout = view.findViewById(R.id.categoryInputLayout)
+
         quantity = view.findViewById(R.id.quantity)
         gst = view.findViewById(R.id.gst)
         unit = view.findViewById(R.id.unit)
@@ -120,6 +167,87 @@ class AddCatalogItemFragment : Fragment() {
 
         sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
+        //displaying info regarding fields in form
+        productName.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                productName_layout.helperText = "info"
+            }else{
+                productName_layout.helperText = null
+            }
+        }
+        //suggestions regarding the categories we already have
+
+        categoryName.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
+                addCategoryIfNotExists()
+                true
+            } else {
+                false
+            }
+        }
+
+
+        categoryName.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                categoryName_layout.helperText = categoryList.joinToString(", ")
+                addCategoryIfNotExists()
+            } else {
+                categoryName_layout.helperText = null
+            }
+        }
+
+
+        MRP.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                MRP_layout.helperText = "info"
+            }else{
+                MRP_layout.helperText = null
+            }
+        }
+        sellPrice.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                sellPrice_layout.helperText = "info"
+            }else{
+                sellPrice_layout.helperText = null
+            }
+        }
+        buyPrice.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                buyPrice_layout.helperText = "info"
+            }else{
+                buyPrice_layout.helperText = null
+            }
+        }
+        hsnCode.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                hsnCode_layout.helperText = "info"
+            }else{
+                hsnCode_layout.helperText = null
+            }
+        }
+        unit.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                unit_layout.helperText = "info"
+            }else{
+                unit_layout.helperText = null
+            }
+        }
+        gst.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                gst_layout.helperText = "info"
+            }else{
+                gst_layout.helperText = null
+            }
+        }
+        quantity.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                quantity_layout.helperText = "info"
+            }else{
+                quantity_layout.helperText = null
+            }
+        }
+
+        //setting up mics
         pnameMic.setOnClickListener {
             pnameMic.isActivated = true
             mrpMic.isActivated = false
@@ -301,6 +429,7 @@ class AddCatalogItemFragment : Fragment() {
             }
         }
 
+        //image picker
         image1.setOnClickListener {
             pickImages()
         }
@@ -320,74 +449,108 @@ class AddCatalogItemFragment : Fragment() {
             pickImages()
         }
         uploadImg.setOnClickListener {
-            val productNameText = productName.text.toString()
-            val mrpText = MRP.text.toString()
-            val sellPriceText = sellPrice.text.toString()
-            val buyPriceText = buyPrice.text.toString()
-            val hsnCodeText = hsnCode.text.toString()
-            val gstText = gst.text.toString()
-            val unitText = unit.text.toString()
-            val quantityText = quantity.text.toString()
-            val categoryText = categoryName.text.toString()
-
-
-            req.put("product_name", productNameText)
-            req.put("mrp", mrpText)
-            req.put("selling_prize", sellPriceText)
-            req.put("buying_prize", buyPriceText)
-            req.put("gst_percentage", gstText)
-            req.put("unit", unitText)
-            req.put("hsn_code", hsnCodeText)
-            req.put("quantity", quantityText)
-            req.put("category", categoryText)
-            req.put("seller", 1)
-            req.put("standardized", 1)
-            req.put("mapped_to_master", 1)
-
-            if (req.has("product_image_1")) {
-                uploadJson()
-            } else {
-                val builder = AlertDialog.Builder(requireContext())
-                builder.setTitle("Error!")
-                builder.setMessage("At least one image should be selected.")
-                builder.setPositiveButton("OK") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                val dialog = builder.create()
-                dialog.show()
-                val okButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-                okButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-
-            }
+            uploadImg.startAnimation()
+            uploadData()
         }
 
+        //request
+        val accessToken = sharedPreferences.getString("access_token", null)
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .addInterceptor { chain ->
+                val original = chain.request()
+                val requestBuilder = original.newBuilder()
+                    .header("Authorization", "Bearer $accessToken")
+                    .method(original.method, original.body)
+                val request = requestBuilder.build()
+                chain.proceed(request)
+            }
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://panel.mait.ac.in:8012/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+
+        apiService = retrofit.create(ApiService::class.java)
         return view
     }
 
-    private fun uploadJson() {
-        val accessToken = sharedPreferences.getString("access_token", null)
-        if (accessToken.isNullOrEmpty()) {
-            Log.e("fetchData", "Access token is null or empty")
-            return
+    private fun addCategoryIfNotExists() {
+        val inputText = categoryName.text.toString().trim()
+        if (inputText.isNotEmpty() && !categoryList.contains(inputText)) {
+            categoryList.add(inputText)
+            categoryName_layout.helperText = "Category added: $inputText\nSelect from: \n${categoryList.joinToString(", ")}\n"
+        } else {
+            categoryName_layout.helperText = "Select from: \n${categoryList.joinToString(", ")}\n"
         }
-        val requestQueue = Volley.newRequestQueue(requireContext())
-        val jsonObject = object : JsonObjectRequest(
-            Request.Method.POST, URL, req,
-            { response ->
-                Toast.makeText(requireContext(), "Upload Successfull: ${response.getString("message")}", Toast.LENGTH_SHORT).show()
-            },
-            { error ->
-                Toast.makeText(requireContext(), "Upload Unsuccessfull: ${error.message.toString()}", Toast.LENGTH_SHORT).show()
-                Log.i("error fetching", error.message.toString())
-            }) {
-            // Override the getHeaders() method to add the access token to the request headers
-            override fun getHeaders(): MutableMap<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Authorization"] = "Bearer $accessToken"
-                return headers
+        categoryName.text = null
+    }
+
+    private fun uploadData() {
+        val productNameText = productName.text.toString()
+        val mrpText = MRP.text.toString()
+        val sellPriceText = sellPrice.text.toString()
+        val buyPriceText = buyPrice.text.toString()
+        val hsnCodeText = hsnCode.text.toString()
+        val gstText = gst.text.toString()
+        val unitText = unit.text.toString()
+        val quantityText = quantity.text.toString()
+        val categoryText = categoryName.text.toString()
+
+        val productNameRequestBody = createPartFromString(productNameText)
+        val mrpRequestBody = createPartFromString(mrpText)
+        val sellPriceRequestBody = createPartFromString(sellPriceText)
+        val buyPriceRequestBody = createPartFromString(buyPriceText)
+        val hsnCodeRequestBody = createPartFromString(hsnCodeText)
+        val gstRequestBody = createPartFromString(gstText)
+        val unitRequestBody = createPartFromString(unitText)
+        val quantityRequestBody = createPartFromString(quantityText)
+        val categoryNameRequestBody = createPartFromString(categoryText)
+
+        val image1Part = imageToRequestBody("product_image_1", image1, "image1.jpg")
+        val image2Part = imageToRequestBody("product_image_2", image2, "image2.jpg")
+        val image3Part = imageToRequestBody("product_image_3", image3, "image3.jpg")
+        val image4Part = imageToRequestBody("product_image_4", image4, "image4.jpg")
+        val image5Part = imageToRequestBody("product_image_5", image5, "image5.jpg")
+        val image6Part = imageToRequestBody("product_image_6", image6, "image6.jpg")
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = apiService.uploadData(
+                    productNameRequestBody,
+                    mrpRequestBody,
+                    3,
+                    sellPriceRequestBody,
+                    buyPriceRequestBody,
+                    hsnCodeRequestBody,
+                    gstRequestBody,
+                    unitRequestBody,
+                    quantityRequestBody,
+                    1,
+                    categoryNameRequestBody,
+                    1,
+                    image1Part,
+                    image2Part,
+                    image3Part,
+                    image4Part,
+                    image5Part
+                )
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(context, "Data uploaded successfully", Toast.LENGTH_SHORT).show()
+                    } else {
+                        uploadImg.revertAnimation()
+                        Toast.makeText(context, "Upload failed: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Exception: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
-        requestQueue.add(jsonObject)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -443,44 +606,48 @@ class AddCatalogItemFragment : Fragment() {
                 }
             }
         }
-        //image upload
-        if(requestCode == PICK_IMAGES_REQUEST && resultCode == AppCompatActivity.RESULT_OK){
-            val clipData = data?.clipData
-            val imageList = mutableListOf<Uri>()
-
-            if (clipData != null) {
-                for (i in 0 until minOf(clipData.itemCount, Max_IMAGES)) {
-                    val uri = clipData.getItemAt(i).uri
-                    imageList.add(uri)
-
-                    // Display thumbnails using Glide
-                    when (i) {
-                        0 -> Glide.with(this).load(uri).apply(RequestOptions().centerCrop()).into(image1)
-                        1 -> Glide.with(this).load(uri).apply(RequestOptions().centerCrop()).into(image2)
-                        2 -> Glide.with(this).load(uri).apply(RequestOptions().centerCrop()).into(image3)
-                        3 -> Glide.with(this).load(uri).apply(RequestOptions().centerCrop()).into(image4)
-                        4 -> Glide.with(this).load(uri).apply(RequestOptions().centerCrop()).into(image5)
-                        5 -> Glide.with(this).load(uri).apply(RequestOptions().centerCrop()).into(image6)
+        //image request
+        if (requestCode == PICK_IMAGES_REQUEST && resultCode == AppCompatActivity.RESULT_OK) {
+            data?.let {
+                if (it.clipData != null) {
+                    val count = it.clipData!!.itemCount
+                    for (i in 0 until count) {
+                        val imageUri = it.clipData!!.getItemAt(i).uri
+                        when (i) {
+                            0 -> Glide.with(this)
+                                .load(imageUri)
+                                .apply(RequestOptions().override(image1.width, image1.height))
+                                .into(image1)
+                            1 -> Glide.with(this)
+                                .load(imageUri)
+                                .apply(RequestOptions().override(image2.width, image2.height))
+                                .into(image2)
+                            2 -> Glide.with(this)
+                                .load(imageUri)
+                                .apply(RequestOptions().override(image3.width, image3.height))
+                                .into(image3)
+                            3 -> Glide.with(this)
+                                .load(imageUri)
+                                .apply(RequestOptions().override(image4.width, image4.height))
+                                .into(image4)
+                            4 -> Glide.with(this)
+                                .load(imageUri)
+                                .apply(RequestOptions().override(image5.width, image5.height))
+                                .into(image5)
+                            5 -> Glide.with(this)
+                                .load(imageUri)
+                                .apply(RequestOptions().override(image6.width, image6.height))
+                                .into(image6)
+                        }
                     }
-                    if (clipData.itemCount > Max_IMAGES) {
-                        Toast.makeText(requireContext(), "You can only select up to 6 images", Toast.LENGTH_SHORT).show()
-                        return
-                    }
-                }
-            }
-            for (i in 0 until minOf(imageList.size, Max_IMAGES)) {
-                val imageUri = imageList[i]
-                val inputStream = requireContext().contentResolver.openInputStream(imageUri)
-                val byteArray = inputStream?.readBytes()
-                byteArray?.let {
-                    val base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT)
-                    req.put("product_image_${i + 1}", base64Image)
+                } else if (it.data != null) {
+                    val imageUri = it.data!!
+                    Glide.with(this).load(imageUri).into(image1)
                 }
             }
         }
     }
 
-    // This function will be used to limit the character input to 50 characters
     private fun limitCharacterInput(input: String): String {
         return if (input.length > 50) {
             input.substring(0, 50)
@@ -489,15 +656,26 @@ class AddCatalogItemFragment : Fragment() {
         }
     }
 
-    // This function will be used to filter input as numbers
     private fun filterNumbers(input: String): String {
         return input.filter { it.isDigit() }
     }
-    //pick images function
+
     private fun pickImages(){
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         startActivityForResult(intent,PICK_IMAGES_REQUEST)
+    }
+    private fun createPartFromString(text: String): RequestBody {
+        return RequestBody.create("text/plain".toMediaTypeOrNull(), text)
+    }
+
+    private fun imageToRequestBody(jangoKey: String, imageView: ImageView, imageName: String): MultipartBody.Part {
+        val drawable = (imageView.drawable as? BitmapDrawable)?.bitmap
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        drawable?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val imageBytes = byteArrayOutputStream.toByteArray()
+        val requestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageBytes)
+        return MultipartBody.Part.createFormData(jangoKey, imageName, requestBody)
     }
 }

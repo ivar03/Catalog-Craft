@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -28,7 +29,7 @@ class RegisterFragment : Fragment() {
     private lateinit var password: EditText
     private lateinit var cpassword: EditText
     private lateinit var loginBtn: TextView
-    private lateinit var registerBtn: Button
+    private lateinit var registerBtn: CircularProgressButton
 
     private val URL = "http://panel.mait.ac.in:8012/auth/register/"
 
@@ -47,6 +48,7 @@ class RegisterFragment : Fragment() {
         registerBtn = view.findViewById(R.id.rregister_btn)
 
         registerBtn.setOnClickListener {
+            registerBtn.startAnimation()
             registerUser()
         }
 
@@ -90,6 +92,7 @@ class RegisterFragment : Fragment() {
                     }
                 },
                 { error ->
+                    registerBtn.revertAnimation()
                     Log.e("Volley Error", error.message.toString())
                     Toast.makeText(requireContext(), "Registration failed!", Toast.LENGTH_SHORT).show()
                 })
