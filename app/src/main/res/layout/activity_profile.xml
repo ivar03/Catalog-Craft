@@ -39,8 +39,8 @@
 
         <ImageView
             android:id="@+id/profilePic"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:background="#34847A73"
             android:src="@drawable/account_icon"
             app:tint="@color/my_white1"/>
@@ -85,7 +85,6 @@
             android:drawablePadding="10dp"
             android:textColor="@color/dark_gray"
             android:textSize="18sp"
-            android:paddingVertical="20dp"
             android:paddingHorizontal="16dp"/>
 
         <TextView
@@ -97,19 +96,18 @@
             android:drawablePadding="10dp"
             android:textColor="@color/dark_gray"
             android:textSize="18sp"
-            android:paddingVertical="20dp"
             android:paddingHorizontal="16dp"/>
 
     </LinearLayout>
 
-    <Button
+    <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
         android:id="@+id/logoutBtn"
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:layout_below="@+id/PDetails"
         android:layout_marginTop="33dp"
         android:layout_centerInParent="true"
-        android:text="LOGOUT"
+        android:text="@string/logout"
         android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="#945133"

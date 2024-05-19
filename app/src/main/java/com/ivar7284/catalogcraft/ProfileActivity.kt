@@ -5,9 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
@@ -17,8 +20,8 @@ import org.json.JSONObject
 
 class ProfileActivity : AppCompatActivity() {
 
-    private lateinit var backBtn: LinearLayout
-    private lateinit var logoutBtn: Button
+    private lateinit var backBtn: ImageButton
+    private lateinit var logoutBtn: CircularProgressButton
 
     private val URL = "http://panel.mait.ac.in:8012/auth/user-details/"
 
@@ -29,14 +32,16 @@ class ProfileActivity : AppCompatActivity() {
         //logout button
         logoutBtn = findViewById(R.id.logoutBtn)
         logoutBtn.setOnClickListener {
+            logoutBtn.startAnimation()
             deleteAccessToken()
+            logoutBtn.revertAnimation()
             startActivity(Intent(applicationContext, LoginRegisterActivity::class.java))
             finish()
         }
 
 
         //back button
-        backBtn = findViewById(R.id.PBackBtn)
+        backBtn = findViewById(R.id.ib_backBtn)
         backBtn.setOnClickListener {
             finish()
         }

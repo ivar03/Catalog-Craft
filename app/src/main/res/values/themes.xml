@@ -8,7 +8,7 @@
          <item name="colorPrimaryVariant">@color/middle_orange</item>
          <item name="colorSurface">@color/middle_orange</item>
          <item name="colorOnSurface">@color/middle_orange</item>
-         <item name="android:statusBarColor">@color/my_white1</item>
+         <item name="android:statusBarColor">@color/middle_orange</item>
     </style>
 
     <style name="Theme.CatalogCraft" parent="Base.Theme.CatalogCraft" />

@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.ivar7284.catalogcraft.R
 import com.ivar7284.catalogcraft.RetorfitApi.ApiService
+import com.ivar7284.catalogcraft.SearchActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,6 +40,8 @@ import java.util.Locale
 class AddCatalogItemFragment : Fragment() {
 
     private val categoryList = arrayListOf("Category1", "Category2", "Category3")
+
+    private lateinit var searchBar: TextView
 
     private lateinit var quantity_layout: TextInputLayout
     private lateinit var gst_layout: TextInputLayout
@@ -107,6 +110,11 @@ class AddCatalogItemFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_add_catalog_item, container, false)
 
         //top navigation
+        searchBar = view.findViewById(R.id.search_catalog_et)
+        searchBar.setOnClickListener {
+            startActivity(Intent(requireContext(), SearchActivity::class.java))
+        }
+
         val formView = view.findViewById<LinearLayout>(R.id.form_ll)
         formView.setOnClickListener {
             val barcodeFragment = BarCodeFragment()
@@ -742,7 +750,7 @@ class AddCatalogItemFragment : Fragment() {
                     sellingofferMic.isActivated -> {
                         val filteredInput = filterNumbers(res[0])
                         if (filteredInput.isNotEmpty() && filteredInput.toInt() in 1..100) {
-                            gst.setText(filteredInput)
+                            sellingOffer.setText(filteredInput)
                         } else {
                             // Handle invalid input (not a number or out of range)
                             Toast.makeText(requireContext(), "Invalid Selling Offer input", Toast.LENGTH_SHORT).show()
