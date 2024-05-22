@@ -172,77 +172,81 @@ class AddCatalogItemFragment : Fragment() {
         //displaying info regarding fields in form
         productName.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                productName_layout.helperText = "info"
+                productName_layout.helperText = getString(R.string.enter_the_name_of_your_product)
             }else{
                 productName_layout.helperText = null
             }
         }
         upc.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                upc_layout.helperText = "info"
+                upc_layout.helperText = getString(R.string.enter_the_upc_code_of_your_product)
             }else{
                 upc_layout.helperText = null
             }
         }
         mrp.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                mrp_layout.helperText = "info"
+                mrp_layout.helperText = getString(R.string.enter_the_mrp_of_your_product)
             }else{
                 mrp_layout.helperText = null
             }
         }
         sellerSku.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                sellerSku_layout.helperText = "info"
+                sellerSku_layout.helperText = getString(R.string.enter_your_sku_number)
             }else{
                 sellerSku_layout.helperText = null
             }
         }
         yourPrice.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                yourPrice_layout.helperText = "info"
+                yourPrice_layout.helperText =
+                    getString(R.string.enter_the_price_at_which_you_want_to_sell_your_product)
             }else{
                 yourPrice_layout.helperText = null
             }
         }
         hsnCode.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                hsnCode_layout.helperText = "info"
+                hsnCode_layout.helperText = getString(R.string.enter_the_hsn_code_of_your_product)
             }else{
                 hsnCode_layout.helperText = null
             }
         }
         description.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                description_layout.helperText = "info"
+                description_layout.helperText =
+                    getString(R.string.enter_a_suitable_description_of_your_product)
             }else{
                 description_layout.helperText = null
             }
         }
         gst.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                gst_layout.helperText = "info"
+                gst_layout.helperText = getString(R.string.enter_the_gst_for_your_product)
             }else{
                 gst_layout.helperText = null
             }
         }
         quantity.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                quantity_layout.helperText = "info"
+                quantity_layout.helperText = getString(R.string.enter_the_quantity_of_your_product)
             }else{
                 quantity_layout.helperText = null
             }
         }
         additionalDescription.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                additionalDescription_layout.helperText = "info"
+                additionalDescription_layout.helperText =
+                    getString(R.string.enter_any_other_information_you_want_to_enter_about_your_product)
             }else{
                 additionalDescription_layout.helperText = null
             }
         }
         sellingOffer.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                sellingOffer_layout.helperText = "info"
+                sellingOffer_layout.helperText =
+                    getString(R.string.enter_the_selling_offer_for_your_product)
             }else{
                 sellingOffer_layout.helperText = null
             }
@@ -259,7 +263,6 @@ class AddCatalogItemFragment : Fragment() {
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
-//            categoryMic.isActivated = false
             additionaldescriptionMic.isActivated = false
             sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -282,7 +285,6 @@ class AddCatalogItemFragment : Fragment() {
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
-//            categoryMic.isActivated = false
             additionaldescriptionMic.isActivated = false
             sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -305,7 +307,6 @@ class AddCatalogItemFragment : Fragment() {
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
-//            categoryMic.isActivated = false
             additionaldescriptionMic.isActivated = false
             sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -328,7 +329,6 @@ class AddCatalogItemFragment : Fragment() {
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
-//            categoryMic.isActivated = false
             additionaldescriptionMic.isActivated = false
             sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -351,7 +351,6 @@ class AddCatalogItemFragment : Fragment() {
             hsncodeMic.isActivated = true
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
-//            categoryMic.isActivated = false
             additionaldescriptionMic.isActivated = false
             sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -374,7 +373,6 @@ class AddCatalogItemFragment : Fragment() {
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
-//            categoryMic.isActivated = false
             additionaldescriptionMic.isActivated = false
             sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -397,7 +395,6 @@ class AddCatalogItemFragment : Fragment() {
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
-//            categoryMic.isActivated = false
             additionaldescriptionMic.isActivated = false
             sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -420,7 +417,6 @@ class AddCatalogItemFragment : Fragment() {
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = true
             quantityMic.isActivated = false
-//            categoryMic.isActivated = false
             additionaldescriptionMic.isActivated = false
             sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -443,7 +439,6 @@ class AddCatalogItemFragment : Fragment() {
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = true
-//            categoryMic.isActivated = false
             additionaldescriptionMic.isActivated = false
             sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -466,7 +461,6 @@ class AddCatalogItemFragment : Fragment() {
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
-//            categoryMic.isActivated = false
             additionaldescriptionMic.isActivated = true
             sellingofferMic.isActivated = false
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -489,7 +483,6 @@ class AddCatalogItemFragment : Fragment() {
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
-//            categoryMic.isActivated = false
             additionaldescriptionMic.isActivated = false
             sellingofferMic.isActivated = true
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)

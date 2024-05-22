@@ -34,19 +34,14 @@
             android:name=".SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".TestingActivity"
-            android:exported="false" />
-        <activity
             android:name=".CameraActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BarCodeScanningActivity"
             android:exported="false" />
         <activity
             android:name=".MainCatalogItemActivity"
             android:exported="false" />
         <activity
             android:name=".ProfileActivity"
+            android:configChanges="locale|layoutDirection"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"

@@ -100,11 +100,45 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/subheading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/change_your_language"
+        android:layout_below="@+id/PDetails"
+        android:layout_marginHorizontal="60dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/dark_gray"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:id="@+id/language_spinner_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="70dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/subheading">
+        <Spinner
+            android:id="@+id/language_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/changeBtn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Change"
+            android:textColor="@color/dark_gray"
+            android:layout_weight="1.5"/>
+
+    </LinearLayout>
+
     <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
         android:id="@+id/logoutBtn"
         android:layout_width="200dp"
         android:layout_height="60dp"
-        android:layout_below="@+id/PDetails"
+        android:layout_below="@+id/language_spinner_ll"
         android:layout_marginTop="33dp"
         android:layout_centerInParent="true"
         android:text="@string/logout"

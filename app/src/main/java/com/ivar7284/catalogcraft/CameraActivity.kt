@@ -246,7 +246,8 @@ class CameraActivity : AppCompatActivity() {
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    val message = "Photo Capture Succeeded: ${outputFileResults.savedUri}"
+                    val message =
+                        getString(R.string.photo_capture_succeeded, outputFileResults.savedUri)
                     Toast.makeText(
                         applicationContext,
                         message,
@@ -324,7 +325,7 @@ class CameraActivity : AppCompatActivity() {
         }else{
             Toast.makeText(
                 this,
-                "Flash is not available",
+                getString(R.string.flash_is_not_available),
                 Toast.LENGTH_SHORT
             ).show()
             binding.flashIb.isEnabled = false

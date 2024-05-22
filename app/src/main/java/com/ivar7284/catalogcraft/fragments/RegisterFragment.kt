@@ -1,6 +1,7 @@
 package com.ivar7284.catalogcraft.fragments
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
@@ -101,7 +103,7 @@ class RegisterFragment : Fragment() {
             requestQueue.add(jsonObjectRequest)
 
         } else {
-            cpassword.error = "Passwords do not match"
+            showRequiredAlert()
         }
     }
 
@@ -140,5 +142,15 @@ class RegisterFragment : Fragment() {
             putString("access_token", token)
             apply()
         }
+    }
+
+    private fun showRequiredAlert() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(getString(R.string.password_match_error))
+            .setMessage(getString(R.string.confirm_password_do_not_match))
+            .setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+            }
+            .show()
     }
 }

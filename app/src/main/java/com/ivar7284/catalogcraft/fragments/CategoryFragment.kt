@@ -1,6 +1,7 @@
 package com.ivar7284.catalogcraft.fragments
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -48,11 +50,11 @@ class CategoryFragment : Fragment(), CategoryAdapter.OnItemClickListener {
         nextBtn = view.findViewById(R.id.next_btn)
         nextBtn.setOnClickListener {
             if (categoryName.text == null){
-                categoryName.error = "This field is required for you to proceed"
+                showCategoryNameRequiredAlert()
             }else{
                 val categoryText = categoryName.text.toString()
                 if (categoryText.isEmpty()) {
-                    categoryName.error = "This field is required for you to proceed"
+                    showCategoryNameRequiredAlert()
                 } else {
                     val addCatalogItemFragment = AddCatalogItemFragment()
                     val bundle = Bundle()
@@ -145,5 +147,15 @@ class CategoryFragment : Fragment(), CategoryAdapter.OnItemClickListener {
         } else {
             input
         }
+    }
+
+    private fun showCategoryNameRequiredAlert() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(getString(R.string.category_name_required))
+            .setMessage(getString(R.string.category_name_is_required_to_proceed))
+            .setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+            }
+            .show()
     }
 }

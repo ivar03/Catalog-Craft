@@ -22,7 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight=".25"
-            android:hint="Search"
+            android:hint="@string/search"
+            android:textSize="16sp"
             android:textColorHint="@color/dark_gray"
             android:textColor="@color/dark_gray"
             android:padding="10dp"
@@ -53,15 +54,11 @@
                 android:id="@+id/form_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:padding="10dp"
-                android:textStyle="bold"
                 android:src="@drawable/form_icon"
                 android:background="@drawable/circle"
                 android:backgroundTint="#E2D7CD"
-                android:textColor="@color/white"
                 android:layout_margin="10dp"
-                android:textSize="18sp"
                 app:tint="@color/dark_gray"/>
         </LinearLayout>
     </LinearLayout>
@@ -77,7 +74,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:backgroundTint="@color/middle_orange"
-            android:text="bar code"
+            android:text="@string/bar_code"
             android:textColor="#945133"
             android:textStyle="bold"
             android:textSize="20sp"/>
@@ -87,7 +84,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:backgroundTint="@color/middle_orange"
-            android:text="Camera"
+            android:text="@string/camera"
             android:textStyle="bold"
             android:textColor="#945133"
             android:textSize="20sp"/>
@@ -97,7 +94,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:backgroundTint="@color/middle_orange"
-            android:text="Model"
+            android:text="@string/model"
             android:textStyle="bold"
             android:textColor="#945133"
             android:textSize="20sp"/>
