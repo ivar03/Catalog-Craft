@@ -1,6 +1,8 @@
 package com.ivar7284.catalogcraft
 
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -26,7 +28,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.android.volley.Header
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.Volley
 import com.ivar7284.catalogcraft.databinding.ActivityCameraBinding
+import com.ivar7284.catalogcraft.utils.VolleyMultipartRequest
 import com.ivar7284.catalogcraft.utils.appSettingOpen
 import com.ivar7284.catalogcraft.utils.warningPermissionDialog
 import java.io.File
@@ -35,6 +42,8 @@ import java.util.Locale
 import kotlin.math.abs
 
 class CameraActivity : AppCompatActivity() {
+
+    val URL = "http://panel.mait.ac.in:8012/catalog/search-similar-images/"
 
     private val binding: ActivityCameraBinding by lazy {
         ActivityCameraBinding.inflate(layoutInflater)
@@ -230,7 +239,7 @@ class CameraActivity : AppCompatActivity() {
             .format(System.currentTimeMillis()) + ".jpg"
         val imageFile = File(imageFolder, fileName)
 
-        val outputOption = OutputFileOptions.Builder(imageFile).build()
+        val outputOption = ImageCapture.OutputFileOptions.Builder(imageFile).build()
 
         imageCapture.takePicture(
             outputOption,
@@ -243,6 +252,7 @@ class CameraActivity : AppCompatActivity() {
                         message,
                         Toast.LENGTH_SHORT
                     ).show()
+                    sendImageToServer(imageFile)
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -255,6 +265,50 @@ class CameraActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    private fun fileToByteArray(file: File): ByteArray {
+        return file.readBytes()
+    }
+
+    private fun sendImageToServer(imageFile: File) {
+
+        val accessToken = getAccessToken()
+        val byteArray = fileToByteArray(imageFile)
+        val url = "http://panel.mait.ac.in:8012/catalogue/search-similar-images/"
+
+        val multipartRequest = object : VolleyMultipartRequest(
+            Request.Method.POST, url,
+            Response.Listener { response ->
+                Log.i("Response", String(response.data))
+                val intent = Intent(applicationContext, HomeActivity::class.java).apply {
+                    putExtra("catalog_data", String(response.data))
+                }
+                startActivity(intent)
+                finish()
+            },
+            Response.ErrorListener { error ->
+                Log.e("Error", error.message ?: "Unknown error")
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "Bearer $accessToken"
+                return headers
+            }
+            override fun getByteData(): Map<String, DataPart> {
+                val params = HashMap<String, DataPart>()
+                params["image"] = DataPart("image.jpg", byteArray, "image/jpeg")
+                return params
+            }
+        }
+
+        Volley.newRequestQueue(this).add(multipartRequest)
+    }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("access_token", null)
     }
 
 

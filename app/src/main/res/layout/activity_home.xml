@@ -50,6 +50,7 @@
                 android:gravity="center">
 
                 <View
+                    android:id="@+id/home_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/home_icon"

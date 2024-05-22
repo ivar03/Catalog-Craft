@@ -2,7 +2,10 @@ package com.ivar7284.catalogcraft
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
@@ -10,14 +13,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.ivar7284.catalogcraft.fragments.AddCatalogItemFragment
 import com.ivar7284.catalogcraft.fragments.CatalogItemListFragment
+import com.ivar7284.catalogcraft.fragments.CategoryFragment
+import com.ivar7284.catalogcraft.fragments.TemplatesFragment
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var homeBtn: LinearLayout
     private lateinit var profileBtn: LinearLayout
     private lateinit var addCatalogBtn: View
+    private lateinit var homeIcon: View
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,10 +38,29 @@ class HomeActivity : AppCompatActivity() {
             insets
         }
 
-        val catalogItemList = CatalogItemListFragment()
-        loadfragment(catalogItemList)
+        //passing the data from camera activity
+        val catalogData = intent.getStringExtra("catalog_data")
+        val barCodeData = intent.getStringExtra("bar_code")
+        Log.i("intentData", catalogData.toString())
+        Log.i("intentData", barCodeData.toString())
+        if (catalogData != null || barCodeData != null) {
+            val addCatalogItemFragment = AddCatalogItemFragment().apply {
+                arguments = Bundle().apply {
+                    putString("catalog_data", catalogData)
+                    putString("bar_code", barCodeData)
+                }
+            }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.homeFrame, addCatalogItemFragment)
+                .commit()
+        } else {
+            val catalogItemList = CatalogItemListFragment()
+            loadFragment(catalogItemList)
+        }
+
 
         // nav bar
+        homeIcon = findViewById(R.id.home_icon)
         profileBtn = findViewById(R.id.profileLayout)
         homeBtn = findViewById(R.id.homeLayout)
         addCatalogBtn = findViewById(R.id.addCatalog)
@@ -43,13 +69,24 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(applicationContext, ProfileActivity::class.java))
         }
         addCatalogBtn.setOnClickListener {
-            val addCatalogFrag = AddCatalogItemFragment()
-            loadfragment(addCatalogFrag)
+            addCatalogBtn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#945133"))
+            homeIcon.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFE3E3EB"))
+            val templatesFrag = TemplatesFragment()
+            loadFragment(templatesFrag)
         }
         homeBtn.setOnClickListener {
+            addCatalogBtn.setBackgroundResource(R.drawable.circle)
             startActivity(Intent(applicationContext, HomeActivity::class.java))
             finish()
         }
+    }
+
+    private fun loadAddCatalogItemFragment() {
+        val addCatalogItemFragment = AddCatalogItemFragment()
+        val fragmentManager: FragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction()
+            .replace(R.id.homeFrame, addCatalogItemFragment)
+            .commit()
     }
 
     override fun onBackPressed() {
@@ -57,7 +94,7 @@ class HomeActivity : AppCompatActivity() {
         moveTaskToBack(true)
     }
 
-    private fun loadfragment(fragment: Fragment) {
+    private fun loadFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.homeFrame, fragment)
             .commit()

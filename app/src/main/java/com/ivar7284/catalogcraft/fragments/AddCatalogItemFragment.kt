@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.speech.RecognizerIntent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,25 +22,18 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.ivar7284.catalogcraft.R
-import com.ivar7284.catalogcraft.RetorfitApi.ApiService
 import com.ivar7284.catalogcraft.SearchActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
 import okhttp3.RequestBody
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.util.Locale
 
 class AddCatalogItemFragment : Fragment() {
 
-    private val categoryList = arrayListOf("Category1", "Category2", "Category3")
+    private var clicked: Boolean = false
 
     private lateinit var searchBar: TextView
 
@@ -52,7 +46,6 @@ class AddCatalogItemFragment : Fragment() {
     private lateinit var mrp_layout: TextInputLayout
     private lateinit var sellerSku_layout: TextInputLayout
     private lateinit var productName_layout: TextInputLayout
-    private lateinit var categoryName_layout: TextInputLayout
     private lateinit var description_layout: TextInputLayout
     private lateinit var sellingOffer_layout: TextInputLayout
 
@@ -79,7 +72,6 @@ class AddCatalogItemFragment : Fragment() {
     private lateinit var gstMic: View
     private lateinit var additionaldescriptionMic: View
     private lateinit var quantityMic: View
-    private lateinit var categoryMic: View
     private lateinit var sellingofferMic: View
     private lateinit var descriptionMic: View
     private lateinit var upcMic: View
@@ -92,8 +84,6 @@ class AddCatalogItemFragment : Fragment() {
     private lateinit var image6: ImageView
     private lateinit var uploadImg: CircularProgressButton
 
-    private lateinit var apiService: ApiService
-
     private lateinit var sharedPreferences: SharedPreferences
     private val URL = "http://panel.mait.ac.in:8012/catalogue/create/"
 
@@ -102,12 +92,20 @@ class AddCatalogItemFragment : Fragment() {
 
     private val REQUEST_CODE_SPEECH_INPUT = 1
 
+    private var selectedCategory: String? = null
+
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_catalog_item, container, false)
+
+        //save category to variable
+        arguments?.let {
+            selectedCategory = it.getString("selected_category")
+        }
+        Log.i("selectedCategory", selectedCategory.toString())
 
         //top navigation
         searchBar = view.findViewById(R.id.search_catalog_et)
@@ -134,8 +132,6 @@ class AddCatalogItemFragment : Fragment() {
         sellingOffer_layout = view.findViewById(R.id.sellingOfferInputLayout)
         additionalDescription_layout = view.findViewById(R.id.additionalDescriptionInputLayout)
         productName_layout = view.findViewById(R.id.productNameInputLayout)
-//        categoryName_layout = view.findViewById(R.id.categoryInputLayout)
-
 
         quantity = view.findViewById(R.id.quantity)
         gst = view.findViewById(R.id.gst)
@@ -148,7 +144,6 @@ class AddCatalogItemFragment : Fragment() {
         productName = view.findViewById(R.id.productName)
         additionalDescription = view.findViewById(R.id.additionalDescription)
         sellingOffer = view.findViewById(R.id.sellingOffer)
-//        categoryName = view.findViewById(R.id.category)
 
         pnameMic = view.findViewById(R.id.mic_pname)
         upcMic = view.findViewById(R.id.mic_upc)
@@ -182,28 +177,6 @@ class AddCatalogItemFragment : Fragment() {
                 productName_layout.helperText = null
             }
         }
-        //suggestions regarding the categories we already have
-
-//        categoryName.setOnEditorActionListener { _, actionId, _ ->
-//            if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
-//                addCategoryIfNotExists()
-//                true
-//            } else {
-//                false
-//            }
-//        }
-//
-//
-//        categoryName.setOnFocusChangeListener { _, hasFocus ->
-//            if (hasFocus) {
-//                categoryName_layout.helperText = categoryList.joinToString(", ")
-//                addCategoryIfNotExists()
-//            } else {
-//                categoryName_layout.helperText = null
-//            }
-//        }
-
-
         upc.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 upc_layout.helperText = "info"
@@ -534,29 +507,14 @@ class AddCatalogItemFragment : Fragment() {
         val additionalFieldsContainer: LinearLayout = view.findViewById(R.id.additional_fields_container)
         dropdown = view.findViewById(R.id.dropdown_menu)
         dropdown.setOnClickListener {
-            additionalFieldsContainer.visibility = View.VISIBLE
+            if(!clicked) {
+                additionalFieldsContainer.visibility = View.VISIBLE
+                clicked = true
+            }else {
+                additionalFieldsContainer.visibility = View.GONE
+                clicked = false
+            }
         }
-
-//        categoryMic.setOnClickListener {
-//            pnameMic.isActivated = false
-//            mrpMic.isActivated = false
-//            spriceMic.isActivated = false
-//            bpriceMic.isActivated = false
-//            gstMic.isActivated = false
-//            hsncodeMic.isActivated = false
-//            unitMic.isActivated = false
-//            quantityMic.isActivated = false
-//            categoryMic.isActivated = true
-//            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-//            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-//            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-//            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to text")
-//            try {
-//                startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
-//            } catch (e: Exception) {
-//                Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
-//            }
-//        }
 
         //image picker
         image1.setOnClickListener {
@@ -582,111 +540,39 @@ class AddCatalogItemFragment : Fragment() {
             uploadData()
         }
 
+        //data from camera activity
+        arguments?.getString("catalog_data")?.let { data ->
+            populateForm(data)
+        }
+
+        arguments?.getString("bar_code")?.let {data ->
+            fillForm(data)
+        }
+
         //request
-        val accessToken = sharedPreferences.getString("access_token", null)
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addInterceptor { chain ->
-                val original = chain.request()
-                val requestBuilder = original.newBuilder()
-                    .header("Authorization", "Bearer $accessToken")
-                    .method(original.method, original.body)
-                val request = requestBuilder.build()
-                chain.proceed(request)
-            }
-            .build()
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://panel.mait.ac.in:8012/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-
-        apiService = retrofit.create(ApiService::class.java)
         return view
     }
 
-    private fun addCategoryIfNotExists() {
-        val inputText = categoryName.text.toString().trim()
-        if (inputText.isNotEmpty() && !categoryList.contains(inputText)) {
-            categoryList.add(inputText)
-            categoryName_layout.helperText = "Category added: $inputText\nSelect from: \n${categoryList.joinToString(", ")}\n"
-        } else {
-            categoryName_layout.helperText = "Select from: \n${categoryList.joinToString(", ")}\n"
-        }
-        categoryName.text = null
+    private fun fillForm(data: String) {
+        val jsonObject = JSONObject(data)
+        productName.setText(jsonObject.getString("name"))
+        description.setText(jsonObject.getString("description"))
+        yourPrice.setText(jsonObject.getString("price"))
+        quantity.setText(jsonObject.getString("Qty"))
+    }
+
+    private fun populateForm(data: String) {
+        val jsonObject = JSONObject(data)
+        productName.setText(jsonObject.getString("product_name"))
+        mrp.setText(jsonObject.getString("mrp"))
+        gst.setText(jsonObject.getString("gst_percentage"))
+        upc.setText(jsonObject.getString("upc"))
     }
 
     private fun uploadData() {
-        val productNameText = productName.text.toString()
-        val upcText = upc.text.toString()
-        val sellerSkuText = sellerSku.text.toString()
-        val yourPriceText = yourPrice.text.toString()
-        val hsnCodeText = hsnCode.text.toString()
-        val gstText = gst.text.toString()
-        val mrpText = mrp.text.toString()
-        val descriptionText = description.text.toString()
-        val quantityText = quantity.text.toString()
-        val additionalDescriptionText = additionalDescription.text.toString()
-        val sellingOfferText = sellingOffer.text.toString()
-//        val categoryText = categoryName.text.toString()
-
-        val productNameRequestBody = createPartFromString(productNameText)
-        val upcRequestBody = createPartFromString(upcText)
-        val sellerSkuRequestBody = createPartFromString(sellerSkuText)
-        val yourPriceRequestBody = createPartFromString(yourPriceText)
-        val hsnCodeRequestBody = createPartFromString(hsnCodeText)
-        val mrpRequestBody = createPartFromString(mrpText)
-        val gstRequestBody = createPartFromString(gstText)
-        val descriptionRequestBody = createPartFromString(descriptionText)
-        val quantityRequestBody = createPartFromString(quantityText)
-        val additionalDescriptionRequestBody = createPartFromString(additionalDescriptionText)
-        val sellingOfferRequestBody = createPartFromString(sellingOfferText)
-//        val categoryNameRequestBody = createPartFromString(categoryText)
-
-        val image1Part = imageToRequestBody("product_image_1", image1, "image1.jpg")
-        val image2Part = imageToRequestBody("product_image_2", image2, "image2.jpg")
-        val image3Part = imageToRequestBody("product_image_3", image3, "image3.jpg")
-        val image4Part = imageToRequestBody("product_image_4", image4, "image4.jpg")
-        val image5Part = imageToRequestBody("product_image_5", image5, "image5.jpg")
-        val image6Part = imageToRequestBody("product_image_6", image6, "image6.jpg")
-
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val response = apiService.uploadData(
-                    productNameRequestBody,
-                    upcRequestBody,
-                    sellerSkuRequestBody,
-                    yourPriceRequestBody,
-                    hsnCodeRequestBody,
-                    mrpRequestBody,
-                    gstRequestBody,
-                    descriptionRequestBody,
-                    quantityRequestBody,
-                    additionalDescriptionRequestBody,
-                    sellingOfferRequestBody,
-                    null,
-                    image1Part,
-                    image2Part,
-                    image3Part,
-                    image4Part,
-                    image5Part,
-                    image6Part
-                )
-                withContext(Dispatchers.Main) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(context, "Data uploaded successfully", Toast.LENGTH_SHORT).show()
-                    } else {
-                        uploadImg.revertAnimation()
-                        Toast.makeText(context, "Upload failed: ${response.message()}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Exception: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+        val url = "http://panel.mait.ac.in:8012/catalogue/create/"
+        //
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -742,10 +628,6 @@ class AddCatalogItemFragment : Fragment() {
                     quantityMic.isActivated -> {
                         // Fill quantity EditText with input as numbers
                         quantity.setText(filterNumbers(res[0]))
-                    }
-                    categoryMic.isActivated -> {
-                        // Fill category name EditText with the limited character input
-                        categoryName.setText(limitCharacterInput(res[0]))
                     }
                     sellingofferMic.isActivated -> {
                         val filteredInput = filterNumbers(res[0])
@@ -818,9 +700,6 @@ class AddCatalogItemFragment : Fragment() {
         intent.type = "image/*"
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         startActivityForResult(intent,PICK_IMAGES_REQUEST)
-    }
-    private fun createPartFromString(text: String): RequestBody {
-        return RequestBody.create("text/plain".toMediaTypeOrNull(), text)
     }
 
     private fun imageToRequestBody(jangoKey: String, imageView: ImageView, imageName: String): MultipartBody.Part {

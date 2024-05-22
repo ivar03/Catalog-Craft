@@ -1,71 +1,84 @@
 package com.ivar7284.catalogcraft.fragments
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.ivar7284.catalogcraft.CameraActivity
+import com.ivar7284.catalogcraft.HomeActivity
 import com.ivar7284.catalogcraft.R
 import com.ivar7284.catalogcraft.SearchActivity
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
+import org.json.JSONException
+import org.json.JSONObject
 
 class BarCodeFragment : Fragment() {
     private lateinit var barcodeBtn: Button
     private lateinit var cameraBtn: Button
     private lateinit var searchBar: TextView
+    private lateinit var sharedPreferences: SharedPreferences
 
     private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()){
-                isGranted: Boolean ->
-            if (isGranted){
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
                 showCamera()
-            }else{
-                //
+            } else {
+                // Handle the case when the permission is not granted
+                Toast.makeText(requireContext(), "Camera Permission required", Toast.LENGTH_SHORT).show()
             }
         }
 
     private val scanLauncher =
-        registerForActivityResult(ScanContract()){ result: ScanIntentResult ->
+        registerForActivityResult(ScanContract()) { result: ScanIntentResult ->
             run {
                 if (result.contents == null) {
                     Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_SHORT).show()
                 } else {
                     setResult(result.contents)
-//                    view?.findViewById<TextView>(R.id.bar_code_tv)?.text = result.contents.toString()
                 }
-
             }
         }
 
     private fun setResult(string: String) {
         view?.findViewById<TextView>(R.id.bar_code_tv)?.text = string
-        val URL = "http://panel.mait.ac.in:8012/csv-response/"
-
-        //endpoint volley code
-
+        sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        fetchingData(string)
     }
 
     private fun showCamera() {
         val options = ScanOptions()
         options.setDesiredBarcodeFormats(
-            ScanOptions.QR_CODE, ScanOptions.DATA_MATRIX, ScanOptions.UPC_A, ScanOptions.UPC_E, ScanOptions.EAN_8, ScanOptions.EAN_13, ScanOptions.CODE_39, ScanOptions.CODE_93, ScanOptions.CODE_128, ScanOptions.ITF,
-            ScanOptions.PDF_417)
+            ScanOptions.QR_CODE,
+            ScanOptions.DATA_MATRIX,
+            ScanOptions.UPC_A,
+            ScanOptions.UPC_E,
+            ScanOptions.EAN_8,
+            ScanOptions.EAN_13,
+            ScanOptions.CODE_39,
+            ScanOptions.CODE_93,
+            ScanOptions.CODE_128,
+            ScanOptions.ITF,
+            ScanOptions.PDF_417
+        )
         options.setPrompt("SCAN QR CODE or BARCODE")
         options.setCameraId(0)
         options.setBeepEnabled(false)
@@ -74,15 +87,13 @@ class BarCodeFragment : Fragment() {
         scanLauncher.launch(options)
     }
 
-
-    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_bar_code, container, false)
 
-        //top navigation
+        // Top navigation
         searchBar = view.findViewById(R.id.search_catalog_et)
         searchBar.setOnClickListener {
             startActivity(Intent(requireContext(), SearchActivity::class.java))
@@ -119,5 +130,46 @@ class BarCodeFragment : Fragment() {
             }
         }
     }
+
+    private fun fetchingData(productName: String) {
+        val URL = "http://panel.mait.ac.in:8012/catalogue/csv/"
+        val requestQueue = Volley.newRequestQueue(requireContext())
+
+        val req = JSONObject()
+        try {
+            req.put("name", productName.trim())
+        } catch (e: JSONException) {
+            e.printStackTrace()
+            Log.e("JSON Error", "Error creating JSON object: ${e.message}")
+            return
+        }
+
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, URL, req,
+            { response ->
+                try {
+                    Log.i("responseCSV", response.optString("error").toString())
+                    Log.i("responseCSV", response.toString())
+                    val intent = Intent(requireContext(), HomeActivity::class.java).apply {
+                        putExtra("bar_code", response.toString())
+                    }
+                    startActivity(intent)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                    Log.e("JSON Error", "Error parsing JSON response: ${e.message}")
+                }
+            },
+            { error ->
+                error.networkResponse?.let {
+                    val statusCode = it.statusCode
+                    val data = it.data?.let { data -> String(data) }
+                    Log.e("Volley Error", "Status code: $statusCode, Data: $data")
+                } ?: run {
+                    Log.e("Volley Error", "Error: ${error.message}")
+                }
+            })
+
+        requestQueue.add(jsonObjectRequest)
+    }
+
 
 }

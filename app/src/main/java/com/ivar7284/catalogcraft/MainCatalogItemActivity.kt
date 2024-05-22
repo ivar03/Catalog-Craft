@@ -1,19 +1,13 @@
 package com.ivar7284.catalogcraft
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import org.json.JSONObject
 
@@ -39,7 +33,7 @@ class MainCatalogItemActivity : AppCompatActivity() {
         val productName = productData.optString("product_name").uppercase()
         val mrp = productData.optString("mrp")
         val category = productData.optString("category")
-        val seller = productData.optString("seller")
+        val upc = productData.optString("upc")
         val unit = productData.optString("unit")
         val quantity = productData.optString("quantity")
         val image1 = productData.optString("product_image_1")
@@ -53,7 +47,7 @@ class MainCatalogItemActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.mrp_tv).text = "Rs. $mrp"
         val descriptionTextView = findViewById<TextView>(R.id.description_tv)
         val details = "Category: $category\n" +
-                "Seller: $seller\n" +
+                "UPC: $upc\n" +
                 "Unit: $unit\n" +
                 "Quantity: $quantity"
         descriptionTextView.text = details

@@ -24,6 +24,7 @@
             android:layout_gravity="center"
             android:layout_weight=".25"
             android:hint="Search"
+            android:inputType="text"
             android:textColorHint="@color/dark_gray"
             android:textColor="@color/dark_gray"
             android:padding="10dp"

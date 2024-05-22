@@ -51,8 +51,8 @@
             android:background="@color/zxing_transparent">
             <ImageView
                 android:id="@+id/form_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:textAlignment="center"
                 android:padding="10dp"
                 android:textStyle="bold"
@@ -86,14 +86,13 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="If you want to Search for predefined Catalogs"
+                    android:text="Click above to search for predefined Catalogs"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:drawableStart="@drawable/arrow_upwards"
                     android:gravity="center"
-                    android:layout_margin="10dp"
-                    android:textColor="@color/dark_gray"
-                    android:layout_marginStart="16dp"/>
+                    android:layout_marginHorizontal="20dp"
+                    android:textColor="@color/dark_gray"/>
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -440,7 +439,7 @@
                             android:id="@+id/gst"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:hint="GST %"
                             android:textColorHint="@color/middle_orange"
                             android:textColor="@color/light_orange"
@@ -512,7 +511,8 @@
                         android:id="@+id/dropdown_menu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/my_white1"
+                        android:background="@drawable/edittext_bg"
+                        android:backgroundTint="#FAE1CE"
                         android:padding="16dp"
                         android:textSize="18sp"
                         android:inputType="none"
@@ -521,7 +521,8 @@
                         android:drawableEnd="@drawable/drop_arrow_icon"
                         android:drawableTint="@color/middle_orange"
                         android:textColorHint="@color/middle_orange"
-                        android:layout_marginHorizontal="30dp"/>
+                        android:layout_marginHorizontal="30dp"
+                        android:elevation="5dp"/>
 
                 </RelativeLayout>
 
@@ -559,6 +560,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="Additional Description"
+                                    android:inputType="text"
                                     android:textColorHint="@color/middle_orange"
                                     android:textColor="@color/light_orange"
                                     android:textSize="16sp"
@@ -600,6 +602,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="Selling Offer"
+                                    android:inputType="numberDecimal"
                                     android:textColorHint="@color/middle_orange"
                                     android:textColor="@color/light_orange"
                                     android:textSize="16sp"

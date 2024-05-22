@@ -32,7 +32,7 @@ class CatalogItemListAdapter(private var catalogArray: JSONArray) :
         val product_image_1: ShapeableImageView = itemView.findViewById(R.id.productImageView)
         val product_name: TextView = itemView.findViewById(R.id.productNameTextView)
         val mrp: TextView = itemView.findViewById(R.id.productPriceTextView)
-        val seller: TextView = itemView.findViewById(R.id.storeNameTextView)
+        val upc: TextView = itemView.findViewById(R.id.upcTextView)
         val category: TextView = itemView.findViewById(R.id.categoryNameTextView)
 
     }
@@ -60,10 +60,12 @@ class CatalogItemListAdapter(private var catalogArray: JSONArray) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = catalogArray.getJSONObject(position)
 
+        Log.i("details", currentItem.toString())
+
         // Retrieving data from JSONObject
         val productName = currentItem.optString("product_name")
         val mrp = "Rs. " + currentItem.optString("mrp")
-        val seller = "Seller: " + currentItem.optString("seller")
+        val seller = "UPC: " + currentItem.optString("upc")
         val productImage1 = URL + currentItem.optString("product_image_1")
         val category = "Category: " + currentItem.optString("category")
 
@@ -81,7 +83,7 @@ class CatalogItemListAdapter(private var catalogArray: JSONArray) :
 
         holder.product_name.text = productName
         holder.mrp.text = mrp
-        holder.seller.text = if (seller.isNotEmpty()) seller else "Unknown Store"
+        holder.upc.text = if (seller.isNotEmpty()) seller else "Unknown Store"
         holder.category.text = category
         holder.itemView.setOnClickListener {
             mListener?.onItemClick(position)
