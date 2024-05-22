@@ -25,6 +25,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var profileBtn: LinearLayout
     private lateinit var addCatalogBtn: View
     private lateinit var homeIcon: View
+    private lateinit var plusIcon: View
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +62,7 @@ class HomeActivity : AppCompatActivity() {
 
         // nav bar
         homeIcon = findViewById(R.id.home_icon)
+        plusIcon = findViewById(R.id.plus_icon)
         profileBtn = findViewById(R.id.profileLayout)
         homeBtn = findViewById(R.id.homeLayout)
         addCatalogBtn = findViewById(R.id.addCatalog)
@@ -71,6 +73,7 @@ class HomeActivity : AppCompatActivity() {
         addCatalogBtn.setOnClickListener {
             addCatalogBtn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#945133"))
             homeIcon.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFE3E3EB"))
+            plusIcon.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFE3E3EB"))
             val templatesFrag = TemplatesFragment()
             loadFragment(templatesFrag)
         }

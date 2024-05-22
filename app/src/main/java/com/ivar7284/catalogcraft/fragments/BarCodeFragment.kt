@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.ivar7284.catalogcraft.CameraActivity
 import com.ivar7284.catalogcraft.HomeActivity
+import com.ivar7284.catalogcraft.ModelViewActivity
 import com.ivar7284.catalogcraft.R
 import com.ivar7284.catalogcraft.SearchActivity
 import com.journeyapps.barcodescanner.ScanContract
@@ -32,6 +33,7 @@ import org.json.JSONException
 import org.json.JSONObject
 
 class BarCodeFragment : Fragment() {
+    private lateinit var modelBtn: Button
     private lateinit var barcodeBtn: Button
     private lateinit var cameraBtn: Button
     private lateinit var searchBar: TextView
@@ -59,7 +61,6 @@ class BarCodeFragment : Fragment() {
         }
 
     private fun setResult(string: String) {
-        view?.findViewById<TextView>(R.id.bar_code_tv)?.text = string
         sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         fetchingData(string)
     }
@@ -114,6 +115,11 @@ class BarCodeFragment : Fragment() {
         cameraBtn = view.findViewById(R.id.camera_btn)
         cameraBtn.setOnClickListener {
             startActivity(Intent(requireContext(), CameraActivity::class.java))
+        }
+
+        modelBtn = view.findViewById(R.id.model_btn)
+        modelBtn.setOnClickListener {
+            startActivity(Intent(requireContext(), ModelViewActivity::class.java))
         }
 
         return view
