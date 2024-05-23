@@ -43,7 +43,7 @@ import kotlin.math.abs
 
 class CameraActivity : AppCompatActivity() {
 
-    val URL = "http://panel.mait.ac.in:8012/catalog/search-similar-images/"
+    val URL = "http://panel.mait.ac.in:8012/catalogue/search-similar-images/"
 
     private val binding: ActivityCameraBinding by lazy {
         ActivityCameraBinding.inflate(layoutInflater)

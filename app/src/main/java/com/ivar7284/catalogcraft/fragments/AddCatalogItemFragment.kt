@@ -23,12 +23,15 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.ivar7284.catalogcraft.R
 import com.ivar7284.catalogcraft.SearchActivity
+import com.ivar7284.catalogcraft.dataclasses.Catalogue
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.io.Serializable
 import java.util.Locale
 
 class AddCatalogItemFragment : Fragment() {
@@ -537,14 +540,38 @@ class AddCatalogItemFragment : Fragment() {
         arguments?.getString("catalog_data")?.let { data ->
             populateForm(data)
         }
-
-        arguments?.getString("bar_code")?.let {data ->
+        //data from bar code
+        arguments?.getString("bar_code")?.let { data ->
             fillForm(data)
         }
 
         //request
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        arguments?.getString("catalogue")?.let {data ->
+            val jsonObject = JSONObject(data)
+            productName.setText(jsonObject.getString("product_name"))
+            mrp.setText(jsonObject.getString("mrp"))
+            gst.setText(jsonObject.getString("gst_percentage"))
+            upc.setText(jsonObject.getString("upc"))
+            val uri_1 = jsonObject.getString("product_image_1")
+            val uri_2 = jsonObject.getString("product_image_2")
+            //glide first two images
+            Glide.with(this)
+                .load("http://panel.mait.ac.in:8012$uri_1")
+                .apply(RequestOptions().override(image1.width, image1.height))
+                .into(image1)
+            Glide.with(this)
+                .load("http://panel.mait.ac.in:8012$uri_2")
+                .apply(RequestOptions().override(image2.width, image2.height))
+                .into(image2)
+        }
     }
 
     private fun fillForm(data: String) {
@@ -556,12 +583,23 @@ class AddCatalogItemFragment : Fragment() {
     }
 
     private fun populateForm(data: String) {
-        val jsonObject = JSONObject(data)
-        productName.setText(jsonObject.getString("product_name"))
-        mrp.setText(jsonObject.getString("mrp"))
-        gst.setText(jsonObject.getString("gst_percentage"))
-        upc.setText(jsonObject.getString("upc"))
+        try {
+            val jsonArray = JSONArray(data)
+            if (jsonArray.length() > 0) {
+                val jsonObject = jsonArray.getJSONObject(0)
+                productName.setText(jsonObject.getString("product_name"))
+                mrp.setText(jsonObject.getString("mrp"))
+                gst.setText(jsonObject.getString("gst_percentage"))
+                upc.setText(jsonObject.getString("upc"))
+
+            }
+
+        } catch (e: JSONException) {
+            e.printStackTrace()
+            Log.e("JSONException", "Error parsing JSON", e)
+        }
     }
+
 
     private fun uploadData() {
         val url = "http://panel.mait.ac.in:8012/catalogue/create/"

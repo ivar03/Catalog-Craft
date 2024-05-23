@@ -1,5 +1,6 @@
 package com.ivar7284.catalogcraft.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,8 @@ class CategoryAdapter(
         fun onItemClick(category: Category)
     }
 
+    private var selectedItemPosition: Int = RecyclerView.NO_POSITION
+
     class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val categoryName: TextView = view.findViewById(R.id.category_name)
     }
@@ -30,7 +33,21 @@ class CategoryAdapter(
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val category = categoryList[position]
         holder.categoryName.text = category.name
+
+        // Change background color based on selected item
+        if (position == selectedItemPosition) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#FFE3CD"))
+        } else {
+            holder.itemView.setBackgroundColor(Color.parseColor("#E2D7CD"))
+        }
+
         holder.itemView.setOnClickListener {
+            val previousItemPosition = selectedItemPosition
+            selectedItemPosition = holder.adapterPosition
+
+            notifyItemChanged(previousItemPosition)
+            notifyItemChanged(selectedItemPosition)
+
             itemClickListener.onItemClick(category)
         }
     }

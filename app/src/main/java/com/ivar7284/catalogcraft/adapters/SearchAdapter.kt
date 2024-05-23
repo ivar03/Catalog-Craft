@@ -6,31 +6,48 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.ivar7284.catalogcraft.dataclasses.Catalogue
+import org.json.JSONObject
 
-class SearchAdapter(private val context: Context, private var catalogueList: ArrayList<Catalogue>) :
-    RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+class SearchAdapter(
+    private val context: Context,
+    private var catalogueList: ArrayList<JSONObject>
+) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.list_item_search, parent, false)
-        return ViewHolder(view)
+    interface OnItemClickListener {
+        fun onItemClick(catalogue: JSONObject)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    private var listener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
+    class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val productName: TextView = itemView.findViewById(R.id.product_name)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.search_list, parent, false)
+        return SearchViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val catalogue = catalogueList[position]
-        holder.productName.text = catalogue.productName
+        holder.productName.text = catalogue.getString("product_name")
+
+        // Set click listener
+        holder.itemView.setOnClickListener {
+            listener?.onItemClick(catalogue)
+        }
     }
 
     override fun getItemCount(): Int {
         return catalogueList.size
     }
 
-    fun setData(newCatalogueList: ArrayList<Catalogue>) {
+    fun updateCatalogueList(newCatalogueList: ArrayList<JSONObject>) {
         catalogueList = newCatalogueList
         notifyDataSetChanged()
-    }
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val productName: TextView = itemView.findViewById(R.id.product_name)
     }
 }

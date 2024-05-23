@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.ivar7284.catalogcraft.dataclasses.Catalogue
 import com.ivar7284.catalogcraft.fragments.AddCatalogItemFragment
 import com.ivar7284.catalogcraft.fragments.CatalogItemListFragment
 import com.ivar7284.catalogcraft.fragments.CategoryFragment
@@ -39,14 +40,14 @@ class HomeActivity : AppCompatActivity() {
             insets
         }
 
-        //passing the data from camera activity
+        // Check for data from camera or barcode
         val catalogData = intent.getStringExtra("catalog_data")
+        val catalogue = intent.getStringExtra("catalogue")
         val barCodeData = intent.getStringExtra("bar_code")
-        Log.i("intentData", catalogData.toString())
-        Log.i("intentData", barCodeData.toString())
-        if (catalogData != null || barCodeData != null) {
+        if (catalogData != null || barCodeData != null || catalogue != null) {
             val addCatalogItemFragment = AddCatalogItemFragment().apply {
                 arguments = Bundle().apply {
+                    putString("catalogue", catalogue)
                     putString("catalog_data", catalogData)
                     putString("bar_code", barCodeData)
                 }
@@ -60,7 +61,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
 
-        // nav bar
+        // Navigation bar setup
         homeIcon = findViewById(R.id.home_icon)
         plusIcon = findViewById(R.id.plus_icon)
         profileBtn = findViewById(R.id.profileLayout)
@@ -82,14 +83,6 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(applicationContext, HomeActivity::class.java))
             finish()
         }
-    }
-
-    private fun loadAddCatalogItemFragment() {
-        val addCatalogItemFragment = AddCatalogItemFragment()
-        val fragmentManager: FragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction()
-            .replace(R.id.homeFrame, addCatalogItemFragment)
-            .commit()
     }
 
     override fun onBackPressed() {

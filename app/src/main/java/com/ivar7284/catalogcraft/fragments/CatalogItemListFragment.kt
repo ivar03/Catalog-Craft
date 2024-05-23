@@ -55,7 +55,6 @@ class CatalogItemListFragment : Fragment() {
 
         fetchData()
 
-
         return view
     }
 
