@@ -81,8 +81,8 @@ class ProfileActivity : AppCompatActivity() {
                 val email = response.getString("email")
                 val phone = response.getString("number")
 
-                findViewById<TextView>(R.id.PName).text = getString(R.string.name) + name
-                findViewById<TextView>(R.id.Pemail).text = getString(R.string.email) + email
+                findViewById<TextView>(R.id.PName).text = getString(R.string.name) + ": $name"
+                findViewById<TextView>(R.id.Pemail).text = getString(R.string.email) + ": $email"
                 findViewById<TextView>(R.id.Pphone).text = getString(R.string.mobile_no, phone)
             },
             { error ->
