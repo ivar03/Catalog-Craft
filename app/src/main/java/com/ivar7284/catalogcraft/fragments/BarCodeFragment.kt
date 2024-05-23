@@ -169,6 +169,7 @@ class BarCodeFragment : Fragment() {
                     val statusCode = it.statusCode
                     val data = it.data?.let { data -> String(data) }
                     Log.e("Volley Error", "Status code: $statusCode, Data: $data")
+                    Toast.makeText(requireContext(), "$data", Toast.LENGTH_LONG).show()
                 } ?: run {
                     Log.e("Volley Error", "Error: ${error.message}")
                 }

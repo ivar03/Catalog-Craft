@@ -638,7 +638,6 @@ class AddCatalogItemFragment : Fragment() {
                                         uploadImg.revertAnimation()
                                         Log.e("uploading error", "Error Code: ${response.code()}, Message: ${response.message()}, Error Body: $errorBody")
 
-                                        // Display the error message to the user
                                         Toast.makeText(requireContext(), "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
                                     }
                                 }
