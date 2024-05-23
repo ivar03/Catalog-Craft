@@ -28,7 +28,7 @@ class CatalogItemListFragment : Fragment() {
     private lateinit var catalogListAdapter: CatalogItemListAdapter
     private lateinit var sharedPreferences: SharedPreferences
 
-    val URL = "http://panel.mait.ac.in:8012/catalogue/get-all/"
+    val URL = "http://panel.mait.ac.in:8012/catalogue/get/"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

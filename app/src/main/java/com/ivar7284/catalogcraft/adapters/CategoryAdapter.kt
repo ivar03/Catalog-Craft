@@ -36,9 +36,9 @@ class CategoryAdapter(
 
         // Change background color based on selected item
         if (position == selectedItemPosition) {
-            holder.itemView.setBackgroundColor(Color.parseColor("#FFE3CD"))
+            holder.itemView.setBackgroundColor(Color.parseColor("#CEE5FA"))
         } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#E2D7CD"))
+            holder.itemView.setBackgroundColor(Color.parseColor("#CDD8E2"))
         }
 
         holder.itemView.setOnClickListener {

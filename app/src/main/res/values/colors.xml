@@ -5,8 +5,8 @@
     <color name="my_white">#E3E3EB</color>
     <color name="dark_gray">#1A232D</color>
     <color name="light_gray">#3B454E</color>
-    <color name="middle_orange">#ef8354</color>
-    <color name="light_orange">#ff7f51</color>
-    <color name="orange_yellow">#ff9b54</color>
-    <color name="my_white1">#FFF0E4</color>
+    <color name="middle_orange">#4AA1E0</color>
+    <color name="light_orange">#4AA1E0</color>
+    <color name="orange_yellow">#70BEF6</color>
+    <color name="my_white1">#EFF8FF</color>
 </resources>

@@ -31,7 +31,7 @@
             android:drawableStart="@drawable/search_icon"
             android:drawableTint="@color/dark_gray"
             android:background="@drawable/search_bg"
-            android:backgroundTint="#E2D7CD"
+            android:backgroundTint="#CDDAE2"
             android:layout_marginEnd="30dp"
             android:layout_marginStart="20dp"
             />
@@ -57,7 +57,7 @@
                 android:padding="10dp"
                 android:src="@drawable/camera_icon"
                 android:background="@drawable/circle"
-                android:backgroundTint="#E2D7CD"
+                android:backgroundTint="#CDDAE2"
                 android:layout_margin="10dp"
                 app:tint="@color/dark_gray"/>
         </LinearLayout>
@@ -509,7 +509,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_bg"
-                        android:backgroundTint="#FAE1CE"
+                        android:backgroundTint="#CEE5FA"
                         android:padding="16dp"
                         android:textSize="18sp"
                         android:inputType="none"
@@ -783,7 +783,7 @@
                         android:layout_height="60dp"
                         android:text="@string/upload"
                         android:textStyle="bold"
-                        android:textColor="#945133"
+                        android:textColor="#334B94"
                         android:textSize="20sp"
                         android:backgroundTint="@color/light_orange"
                         android:layout_below="@+id/third_row"

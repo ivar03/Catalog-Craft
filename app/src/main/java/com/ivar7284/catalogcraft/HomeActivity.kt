@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
@@ -13,11 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import com.ivar7284.catalogcraft.dataclasses.Catalogue
 import com.ivar7284.catalogcraft.fragments.AddCatalogItemFragment
 import com.ivar7284.catalogcraft.fragments.CatalogItemListFragment
-import com.ivar7284.catalogcraft.fragments.CategoryFragment
 import com.ivar7284.catalogcraft.fragments.TemplatesFragment
 
 class HomeActivity : AppCompatActivity() {
@@ -72,9 +68,9 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(applicationContext, ProfileActivity::class.java))
         }
         addCatalogBtn.setOnClickListener {
-            addCatalogBtn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#945133"))
-            homeIcon.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFE3E3EB"))
-            plusIcon.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFE3E3EB"))
+            addCatalogBtn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#334B94"))
+            homeIcon.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFEFF8FF"))
+            plusIcon.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFEFF8FF"))
             val templatesFrag = TemplatesFragment()
             loadFragment(templatesFrag)
         }

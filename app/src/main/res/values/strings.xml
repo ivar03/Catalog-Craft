@@ -68,4 +68,6 @@
     <string name="enter_any_other_information_you_want_to_enter_about_your_product">Enter any other information you want to enter about your Product</string>
     <string name="enter_the_selling_offer_for_your_product">Enter the selling offer for your Product</string>
     <string name="change_your_language">Change your language:</string>
+    <string name="all_field_are_required">All field are required</string>
+    <string name="you_have_missed_one_or_more_field_please_fill_all_the_fields_as_they_are_required">You have missed one or more field, please fill all the fields as they are required</string>
 </resources>

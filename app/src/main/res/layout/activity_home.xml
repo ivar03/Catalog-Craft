@@ -54,7 +54,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/home_icon"
-                    android:backgroundTint="#945133" />
+                    android:backgroundTint="#334B94" />
 
             </LinearLayout>
 
@@ -82,7 +82,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/account_icon"
-                    android:backgroundTint="@color/my_white" />
+                    android:backgroundTint="@color/my_white1" />
 
             </LinearLayout>
 

@@ -117,7 +117,7 @@
                 android:fontFamily="sans-serif-black"
                 android:shadowColor="@color/light_orange"
                 android:text="@string/login"
-                android:textColor="#945133"
+                android:textColor="#334B94"
                 android:textSize="20dp"/>
 
 

@@ -2,10 +2,12 @@ package com.ivar7284.catalogcraft.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.util.Log
@@ -13,25 +15,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+import com.android.volley.AuthFailureError
+import com.android.volley.Request
+import com.android.volley.toolbox.HttpHeaderParser
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.ivar7284.catalogcraft.R
 import com.ivar7284.catalogcraft.SearchActivity
-import com.ivar7284.catalogcraft.dataclasses.Catalogue
+import com.ivar7284.catalogcraft.utils.ApiService
+import com.ivar7284.catalogcraft.utils.VolleyMultipartRequest.DataPart
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
 import okhttp3.RequestBody
+import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
-import java.io.Serializable
+import java.io.InputStream
+import java.nio.charset.Charset
 import java.util.Locale
 
 class AddCatalogItemFragment : Fragment() {
@@ -63,7 +81,6 @@ class AddCatalogItemFragment : Fragment() {
     private lateinit var sellingOffer: TextInputEditText
     private lateinit var upc: TextInputEditText
     private lateinit var productName: TextInputEditText
-    private lateinit var categoryName: TextInputEditText
 
     private lateinit var dropdown: TextView
 
@@ -96,6 +113,8 @@ class AddCatalogItemFragment : Fragment() {
     private val REQUEST_CODE_SPEECH_INPUT = 1
 
     private var selectedCategory: String? = null
+
+    private val selectedImages = mutableListOf<Uri>()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -532,8 +551,112 @@ class AddCatalogItemFragment : Fragment() {
             pickImages()
         }
         uploadImg.setOnClickListener {
-            uploadImg.startAnimation()
-            uploadData()
+            if (productName.text.toString().isEmpty() || description.text.toString().isEmpty() || upc.text.toString().isEmpty() || sellerSku.text.toString().isEmpty() || mrp.text.toString().isEmpty() || yourPrice.text.toString().isEmpty() || quantity.text.toString().isEmpty() || gst.text.toString().isEmpty() || hsnCode.text.toString().isEmpty()){
+                showAlertDialog()
+            }else {
+                uploadImg.startAnimation()
+                val accessToken = sharedPreferences.getString("access_token", null)
+                val okHttpClient = OkHttpClient.Builder()
+                    .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .addInterceptor { chain ->
+                        val original = chain.request()
+                        val requestBuilder = original.newBuilder()
+                            .header("Authorization", "Bearer $accessToken")
+                            .method(original.method, original.body)
+                        val request = requestBuilder.build()
+                        chain.proceed(request)
+                    }
+                    .build()
+
+                //setting up retrofit
+                val retrofit = Retrofit.Builder()
+                    .baseUrl("http://panel.mait.ac.in:8012/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(okHttpClient)
+                    .build()
+
+                val apiService = retrofit.create(ApiService::class.java)
+                Log.i("requestData", selectedImages.toString())
+
+                val productNameRequestBody = createPartFromString(productName.text.toString())
+                val mrpRequestBody = createPartFromString(mrp.text.toString())
+                val descriptionRequestBody = createPartFromString(description.text.toString())
+                val sellingPriceRequestBody = createPartFromString(yourPrice.text.toString())
+                val upcRequestBody = createPartFromString(upc.text.toString())
+                val hsnCodeRequestBody = createPartFromString(hsnCode.text.toString())
+                val gstRequestBody = createPartFromString(gst.text.toString())
+                val sellerSkuRequestBody = createPartFromString(sellerSku.text.toString())
+                val quantityRequestBody = createPartFromString(quantity.text.toString())
+                val additionalDescriptionRequestBody = createPartFromString(additionalDescription.text.toString())
+                val categoryRequestBody = createPartFromString(selectedCategory.toString())
+                val sellingOfferRequestBody = createPartFromString(sellingOffer.text.toString())
+                val asinRequestBody = createPartFromString("123")
+
+                val image1Part = imageToRequestBody("product_image_1",image1, "image1.jpg")
+                val image2Part = imageToRequestBody("product_image_2",image2, "image2.jpg")
+                val image3Part = imageToRequestBody("product_image_3",image3, "image3.jpg")
+                val image4Part = imageToRequestBody("product_image_4",image4, "image4.jpg")
+                val image5Part = imageToRequestBody("product_image_5",image5, "image5.jpg")
+                val image6Part = imageToRequestBody("product_image_6",image6, "image6.jpg")
+
+                // Make the API call using CoroutineScope
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        val response = apiService.uploadData(
+                            productNameRequestBody,
+                            mrpRequestBody,
+                            asinRequestBody,
+                            descriptionRequestBody,
+                            sellingPriceRequestBody,
+                            upcRequestBody,
+                            hsnCodeRequestBody,
+                            gstRequestBody,
+                            sellerSkuRequestBody,
+                            quantityRequestBody,
+                            additionalDescriptionRequestBody,
+                            categoryRequestBody,
+                            sellingOfferRequestBody,
+                            image1Part,
+                            image2Part,
+                            image3Part,
+                            image4Part,
+                            image5Part,
+                            image6Part
+                        )
+
+                        withContext(Dispatchers.Main) {
+                            if (response != null) {
+                                //code 400-bad req 500-internal server error
+                                when (response.code()) {
+                                    201 -> {
+                                        Log.e("uploading success", "Data uploaded successfully")
+                                        uploadImg.revertAnimation()
+                                        Toast.makeText(requireContext(), "Data uploaded successfully", Toast.LENGTH_SHORT).show()
+                                    }
+                                    else -> {
+                                        val errorBody = response.errorBody()?.string()
+                                        uploadImg.revertAnimation()
+                                        Log.e("uploading error", "Error Code: ${response.code()}, Message: ${response.message()}, Error Body: $errorBody")
+
+                                        // Display the error message to the user
+                                        Toast.makeText(requireContext(), "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+
+                            } else {
+                                uploadImg.revertAnimation()
+                                Toast.makeText(requireContext(), "Error: Response is null", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            uploadImg.revertAnimation()
+                            Log.e("uploading error", "Error: ${e.message.toString()}")
+                            Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
         }
 
         //data from camera activity
@@ -545,9 +668,17 @@ class AddCatalogItemFragment : Fragment() {
             fillForm(data)
         }
 
-        //request
-
         return view
+    }
+
+    private fun showAlertDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(getString(R.string.all_field_are_required))
+            .setMessage(getString(R.string.you_have_missed_one_or_more_field_please_fill_all_the_fields_as_they_are_required))
+            .setPositiveButton(getString(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+            }
+            .show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -598,12 +729,6 @@ class AddCatalogItemFragment : Fragment() {
             e.printStackTrace()
             Log.e("JSONException", "Error parsing JSON", e)
         }
-    }
-
-
-    private fun uploadData() {
-        val url = "http://panel.mait.ac.in:8012/catalogue/create/"
-        //
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -679,6 +804,7 @@ class AddCatalogItemFragment : Fragment() {
                     val count = it.clipData!!.itemCount
                     for (i in 0 until count) {
                         val imageUri = it.clipData!!.getItemAt(i).uri
+                        selectedImages.add(imageUri)
                         when (i) {
                             0 -> Glide.with(this)
                                 .load(imageUri)
@@ -708,6 +834,7 @@ class AddCatalogItemFragment : Fragment() {
                     }
                 } else if (it.data != null) {
                     val imageUri = it.data!!
+                    selectedImages.add(imageUri)
                     Glide.with(this).load(imageUri).into(image1)
                 }
             }
@@ -733,12 +860,18 @@ class AddCatalogItemFragment : Fragment() {
         startActivityForResult(intent,PICK_IMAGES_REQUEST)
     }
 
+    fun createPartFromString(value: String): RequestBody {
+        return RequestBody.create("text/plain".toMediaTypeOrNull(), value)
+    }
+
     private fun imageToRequestBody(jangoKey: String, imageView: ImageView, imageName: String): MultipartBody.Part {
         val drawable = (imageView.drawable as? BitmapDrawable)?.bitmap
         val byteArrayOutputStream = ByteArrayOutputStream()
         drawable?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
         val imageBytes = byteArrayOutputStream.toByteArray()
+        // Use the imageBytes directly to create RequestBody
         val requestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageBytes)
+        Log.d("ImageRequestBody", "Converted image $imageName to RequestBody")
+        //Pass the RequestBody to create MultipartBody.Part
         return MultipartBody.Part.createFormData(jangoKey, imageName, requestBody)
-    }
-}
+    }}

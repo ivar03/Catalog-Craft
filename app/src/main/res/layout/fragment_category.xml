@@ -103,6 +103,8 @@
         android:layout_height="60dp"
         android:backgroundTint="@color/middle_orange"
         android:text="@string/next"
+        android:textColor="#334B94"
+        android:textStyle="bold"
         android:textSize="18sp"
         android:layout_marginHorizontal="100dp"
         android:layout_below="@+id/category_rv"/>

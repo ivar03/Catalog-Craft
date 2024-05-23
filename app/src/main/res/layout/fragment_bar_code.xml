@@ -31,7 +31,7 @@
             android:drawableStart="@drawable/search_icon"
             android:drawableTint="@color/dark_gray"
             android:background="@drawable/search_bg"
-            android:backgroundTint="#E2D7CD"
+            android:backgroundTint="#CDDAE2"
             android:layout_marginEnd="30dp"
             android:layout_marginStart="20dp"
             />
@@ -57,7 +57,7 @@
                 android:padding="10dp"
                 android:src="@drawable/form_icon"
                 android:background="@drawable/circle"
-                android:backgroundTint="#E2D7CD"
+                android:backgroundTint="#CDDAE2"
                 android:layout_margin="10dp"
                 app:tint="@color/dark_gray"/>
         </LinearLayout>
@@ -75,7 +75,7 @@
             android:layout_height="200dp"
             android:backgroundTint="@color/middle_orange"
             android:text="@string/bar_code"
-            android:textColor="#945133"
+            android:textColor="#334B94"
             android:textStyle="bold"
             android:textSize="20sp"/>
 
@@ -86,7 +86,7 @@
             android:backgroundTint="@color/middle_orange"
             android:text="@string/camera"
             android:textStyle="bold"
-            android:textColor="#945133"
+            android:textColor="#334B94"
             android:textSize="20sp"/>
 
         <Button
@@ -96,7 +96,7 @@
             android:backgroundTint="@color/middle_orange"
             android:text="@string/model"
             android:textStyle="bold"
-            android:textColor="#945133"
+            android:textColor="#334B94"
             android:textSize="20sp"/>
     </LinearLayout>
 

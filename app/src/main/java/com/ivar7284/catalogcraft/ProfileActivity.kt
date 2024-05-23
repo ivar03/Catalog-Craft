@@ -24,7 +24,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var myPreference: MyPreference
     private lateinit var languageSpinner: Spinner
 
-    val languageList = arrayOf("English", "Hindi")
+    val languageList = arrayOf("English", "Hindi", "Marathi", "Tamil", "Gujarati")
 
     private lateinit var backBtn: ImageButton
     private lateinit var logoutBtn: CircularProgressButton
@@ -81,8 +81,8 @@ class ProfileActivity : AppCompatActivity() {
                 val email = response.getString("email")
                 val phone = response.getString("number")
 
-                findViewById<TextView>(R.id.PName).text = getString(R.string.name, name)
-                findViewById<TextView>(R.id.Pemail).text = getString(R.string.email, email)
+                findViewById<TextView>(R.id.PName).text = getString(R.string.name) + name
+                findViewById<TextView>(R.id.Pemail).text = getString(R.string.email) + email
                 findViewById<TextView>(R.id.Pphone).text = getString(R.string.mobile_no, phone)
             },
             { error ->
@@ -101,6 +101,9 @@ class ProfileActivity : AppCompatActivity() {
         val languageCode = when (language) {
             "English" -> "en"
             "Hindi" -> "hi"
+            "Marathi" -> "mr"
+            "Tamil" -> "ta"
+            "Gujarati" -> "gu"
             else -> "en"
         }
 
