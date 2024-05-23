@@ -37,6 +37,32 @@
             android:layout_marginStart="20dp"
             />
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="40dp"
+            android:background="@color/dark_gray"
+            android:layout_marginTop="10dp"/>
+
+        <LinearLayout
+            android:id="@+id/form_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/zxing_transparent">
+            <ImageView
+                android:id="@+id/form_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:src="@drawable/camera_icon"
+                android:background="@drawable/circle"
+                android:backgroundTint="#CDDAE2"
+                android:layout_margin="10dp"
+                app:tint="@color/dark_gray"/>
+        </LinearLayout>
+
     </LinearLayout>
 
     <TextView

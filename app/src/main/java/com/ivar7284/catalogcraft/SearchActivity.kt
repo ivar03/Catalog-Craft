@@ -8,17 +8,20 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
+import com.ivar7284.catalogcraft.fragments.BarCodeFragment
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -41,6 +44,14 @@ class SearchActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        //camera opening
+        val formView = findViewById<LinearLayout>(R.id.form_ll)
+        formView.setOnClickListener {
+            val intent = Intent(applicationContext, HomeActivity::class.java)
+            intent.putExtra("LOAD_FRAGMENT", "BarcodeFragment")
+            startActivity(intent)
+        }
+
         recyclerView = findViewById(R.id.search_catalog_rv)
         searchBar = findViewById(R.id.search_catalog_et)
         heading = findViewById(R.id.heading)

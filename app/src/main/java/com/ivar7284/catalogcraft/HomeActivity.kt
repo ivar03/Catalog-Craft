@@ -6,17 +6,26 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.google.android.material.navigation.NavigationView
 import com.ivar7284.catalogcraft.fragments.AddCatalogItemFragment
+import com.ivar7284.catalogcraft.fragments.BarCodeFragment
 import com.ivar7284.catalogcraft.fragments.CatalogItemListFragment
 import com.ivar7284.catalogcraft.fragments.TemplatesFragment
 
 class HomeActivity : AppCompatActivity() {
+
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var drawerButton: ImageButton
 
     private lateinit var homeBtn: LinearLayout
     private lateinit var profileBtn: LinearLayout
@@ -36,7 +45,40 @@ class HomeActivity : AppCompatActivity() {
             insets
         }
 
+        //nav drawer
+        drawerLayout = findViewById(R.id.drawer_layout)
+        navigationView = findViewById(R.id.navigation_view)
+        drawerButton = findViewById(R.id.drawer_button)
+
+        drawerButton.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_barcode -> {
+                    startActivity(Intent(applicationContext, CameraActivity::class.java))
+                }
+                R.id.nav_camera -> {
+                    startActivity(Intent(applicationContext, CameraActivity::class.java))
+                }
+                R.id.nav_model -> {
+                    startActivity(Intent(applicationContext, ModelViewActivity::class.java))
+                }
+                R.id.nav_profile -> {
+                    startActivity(Intent(applicationContext, ProfileActivity::class.java))
+                }
+                R.id.nav_search_catalogues -> {
+                    startActivity(Intent(applicationContext, SearchActivity::class.java))
+                }
+            }
+            drawerLayout.closeDrawers()
+            true
+        }
+
         // Check for data from camera or barcode
+        //load barcode fragment from search activity
+        val loadFragment = intent.getStringExtra("LOAD_FRAGMENT")
         val catalogData = intent.getStringExtra("catalog_data")
         val catalogue = intent.getStringExtra("catalogue")
         val barCodeData = intent.getStringExtra("bar_code")
@@ -51,9 +93,16 @@ class HomeActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.homeFrame, addCatalogItemFragment)
                 .commit()
+            if (loadFragment == "BarcodeFragment") {
+                loadFragment(BarCodeFragment())
+            }
         } else {
-            val catalogItemList = CatalogItemListFragment()
-            loadFragment(catalogItemList)
+            if (loadFragment == "BarcodeFragment") {
+                loadFragment(BarCodeFragment())
+            }else {
+                val catalogItemList = CatalogItemListFragment()
+                loadFragment(catalogItemList)
+            }
         }
 
 
