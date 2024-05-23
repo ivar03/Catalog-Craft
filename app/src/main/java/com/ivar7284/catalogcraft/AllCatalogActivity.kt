@@ -1,71 +1,72 @@
-package com.ivar7284.catalogcraft.fragments
+package com.ivar7284.catalogcraft
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.fragment.app.Fragment
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.ivar7284.catalogcraft.AllCatalogActivity
-import com.ivar7284.catalogcraft.MainCatalogItemActivity
-import com.ivar7284.catalogcraft.R
 import com.ivar7284.catalogcraft.adapter.CatalogItemListAdapter
 import org.json.JSONArray
-import org.json.JSONObject
 
-class CatalogItemListFragment : Fragment() {
+class AllCatalogActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var catalogListAdapter: CatalogItemListAdapter
     private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var heading: TextView
-    private lateinit var allCatalogBtn: Button
+    private lateinit var yourCatalogBtn: Button
 
-    val URL = "http://panel.mait.ac.in:8012/catalogue/get/"
+    val URL = "http://panel.mait.ac.in:8012/catalogue/get-all/"
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_catalog_item_list, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        overridePendingTransition(0,0)
+        setContentView(R.layout.activity_all_catalog)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
-        recyclerView = view.findViewById(R.id.itemList_rv)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView = findViewById(R.id.itemList_rv)
+        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
         catalogListAdapter = CatalogItemListAdapter(JSONArray())
         catalogListAdapter.setOnItemClickListener(object : CatalogItemListAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val clickedItem = catalogListAdapter.getItem(position)
 
-                val intent = Intent(requireContext(), MainCatalogItemActivity::class.java)
+                val intent = Intent(applicationContext, MainCatalogItemActivity::class.java)
                 intent.putExtra("productData", clickedItem.toString())
                 startActivity(intent)
             }
         })
         recyclerView.adapter = catalogListAdapter
 
-        sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        sharedPreferences = applicationContext.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         fetchData()
-        heading = view.findViewById(R.id.heading)
+        heading = findViewById(R.id.heading)
 
-        allCatalogBtn = view.findViewById(R.id.allCatalog)
-        allCatalogBtn.setOnClickListener {
-            startActivity(Intent(requireContext(), AllCatalogActivity::class.java))
+        yourCatalogBtn = findViewById(R.id.allCatalog)
+        yourCatalogBtn.setOnClickListener {
+            startActivity(Intent(applicationContext, HomeActivity::class.java))
+            finish()
         }
 
-        return view
+
+
     }
 
     private fun fetchData() {
@@ -74,8 +75,9 @@ class CatalogItemListFragment : Fragment() {
             Log.e("fetchData", "Access token is null or empty")
             return
         }
-        val requestQueue = Volley.newRequestQueue(requireContext())
-        val jsonArrayRequest = object : JsonArrayRequest(Request.Method.GET, URL, null,
+        val requestQueue = Volley.newRequestQueue(applicationContext)
+        val jsonArrayRequest = object : JsonArrayRequest(
+            Request.Method.GET, URL, null,
             { response ->
                 Log.i("listingCatalog", response.toString())
                 val itemCount = response.length()
@@ -87,7 +89,6 @@ class CatalogItemListFragment : Fragment() {
             { error ->
                 Log.i("error fetching", error.message.toString())
             }) {
-            // Override the getHeaders() method to add the access token to the request headers
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 headers["Authorization"] = "Bearer $accessToken"
@@ -95,6 +96,11 @@ class CatalogItemListFragment : Fragment() {
             }
         }
         requestQueue.add(jsonArrayRequest)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        moveTaskToBack(false)
     }
 
 }
