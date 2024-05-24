@@ -8,7 +8,9 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="5dp"
+        android:layout_centerVertical="true"
         android:elevation="5dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:background="@drawable/catalog_list_item_view">
         <com.google.android.material.imageview.ShapeableImageView
@@ -44,7 +46,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
                 <TextView
                     android:id="@+id/upcTextView"
                     android:layout_width="wrap_content"

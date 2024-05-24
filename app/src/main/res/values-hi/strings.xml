@@ -67,4 +67,12 @@
     <string name="enter_the_quantity_of_your_product">अपने उत्पाद की मात्रा दर्ज करें</string>
     <string name="enter_any_other_information_you_want_to_enter_about_your_product">आप अपने उत्पाद के बारे में जो भी अन्य जानकारी दर्ज करना चाहते हैं उसे दर्ज करें</string>
     <string name="enter_the_selling_offer_for_your_product">अपने उत्पाद के लिए विक्रय प्रस्ताव दर्ज करें</string>
+    <string name="change_your_language">अपनी भाषा बदलें:</string>
+    <string name="all_field_are_required">सभी फ़ील्ड अनिवार्य हैं</string>
+    <string name="you_have_missed_one_or_more_field_please_fill_all_the_fields_as_they_are_required">आपने एक या अधिक फ़ील्ड छोड़ी हैं, कृपया सभी अनिवार्य फ़ील्ड भरें</string>
+    <string name="total">कुल</string>
+    <string name="items">आइटम्स</string>
+    <string name="all">यहां क्लिक करें सभी कैटलॉग देखने के लिए</string>
+    <string name="click_here_to_see_your_catalogues">अपने कैटलॉग देखने के लिए यहां क्लिक करें</string>
+    <string name="please_wait_while_fetching_details_about_your_picture">कृपया प्रतीक्षा करें, आपकी तस्वीर के बारे में विवरण लाया जा रहा है</string>
 </resources>

@@ -67,4 +67,12 @@
     <string name="enter_the_quantity_of_your_product">आपल्या उत्पादनाची मात्रा प्रविष्ट करा</string>
     <string name="enter_any_other_information_you_want_to_enter_about_your_product">आपल्या उत्पादनाबद्दल आपण प्रविष्ट करू इच्छित असलेली इतर कोणतीही माहिती प्रविष्ट करा</string>
     <string name="enter_the_selling_offer_for_your_product">आपल्या उत्पादनासाठी विक्री ऑफर प्रविष्ट करा</string>
+    <string name="change_your_language">तुमची भाषा बदला:</string>
+    <string name="all_field_are_required">सर्व फील्ड आवश्यक आहेत</string>
+    <string name="you_have_missed_one_or_more_field_please_fill_all_the_fields_as_they_are_required">तुम्ही एक किंवा अधिक फील्ड सोडल्या आहेत, कृपया सर्व आवश्यक फील्ड भरा</string>
+    <string name="total">एकूण</string>
+    <string name="items">वस्तू</string>
+    <string name="all">सर्व कॅटलॉग पाहण्यासाठी येथे क्लिक करा</string>
+    <string name="click_here_to_see_your_catalogues">तुमचे कॅटलॉग पाहण्यासाठी येथे क्लिक करा</string>
+    <string name="please_wait_while_fetching_details_about_your_picture">कृपया थांबा, तुमच्या चित्राबद्दल तपशील आणत आहे</string>
 </resources>

@@ -18,7 +18,7 @@
     <string name="additional_details">Additional Details</string>
     <string name="additional_description">Additional Description</string>
     <string name="selling_offer">Selling Offer</string>
-    <string name="upload_your_image">Upload Your Product Image:</string>
+    <string name="upload_your_image"><u>Upload Your Product Image:</u></string>
     <string name="tap_below_to_upload_your_images">Tap below to upload your images</string>
     <string name="upload">UPLOAD</string>
     <string name="bar_code">bar code</string>

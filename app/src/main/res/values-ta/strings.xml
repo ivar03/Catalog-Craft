@@ -67,4 +67,12 @@
     <string name="enter_the_quantity_of_your_product">உங்கள் தயாரிப்பின் அளவுகளை உள்ளிடவும்</string>
     <string name="enter_any_other_information_you_want_to_enter_about_your_product">உங்கள் தயாரிப்பின் பற்றி நீங்கள் உள்ளிட விரும்பும் மற்ற தகவல்களை உள்ளிடவும்</string>
     <string name="enter_the_selling_offer_for_your_product">உங்கள் தயாரிப்புக்கான விற்பனை சலுகையை உள்ளிடவும்</string>
+    <string name="change_your_language">உங்கள் மொழியை மாற்றவும்:</string>
+    <string name="all_field_are_required">எல்லா புலங்களும் அவசியம்</string>
+    <string name="you_have_missed_one_or_more_field_please_fill_all_the_fields_as_they_are_required">நீங்கள் ஒரு அல்லது அதற்கு மேற்பட்ட புலங்களை தவறவிட்டுள்ளீர்கள், தயவுசெய்து அனைத்து புலங்களையும் நிரப்பவும்</string>
+    <string name="total">மொத்தம்</string>
+    <string name="items">பொருட்கள்</string>
+    <string name="all">அனைத்து கணக்குகளைப் பார்க்க இங்கே கிளிக் செய்யவும்</string>
+    <string name="click_here_to_see_your_catalogues">உங்கள் கணக்குகளைப் பார்க்க இங்கே கிளிக் செய்யவும்</string>
+    <string name="please_wait_while_fetching_details_about_your_picture">உங்கள் படத்தின் விவரங்களை பெறுகிறோம், தயவுசெய்து காத்திருங்கள்</string>
 </resources>

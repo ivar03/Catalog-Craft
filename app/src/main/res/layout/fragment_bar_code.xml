@@ -71,8 +71,8 @@
         android:layout_marginTop="100dp">
         <Button
             android:id="@+id/bar_code_btn"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:backgroundTint="@color/middle_orange"
             android:text="@string/bar_code"
             android:textColor="#334B94"
@@ -81,8 +81,8 @@
 
         <Button
             android:id="@+id/camera_btn"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:backgroundTint="@color/middle_orange"
             android:text="@string/camera"
             android:textStyle="bold"
@@ -91,8 +91,8 @@
 
         <Button
             android:id="@+id/model_btn"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:backgroundTint="@color/middle_orange"
             android:text="@string/model"
             android:textStyle="bold"
