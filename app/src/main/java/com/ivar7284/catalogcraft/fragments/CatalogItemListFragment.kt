@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +34,7 @@ class CatalogItemListFragment : Fragment() {
 
     private lateinit var heading: TextView
     private lateinit var allCatalogBtn: Button
+    private lateinit var progressBar: ProgressBar
 
     val URL = "http://panel.mait.ac.in:8012/catalogue/get/"
 
@@ -55,6 +57,7 @@ class CatalogItemListFragment : Fragment() {
             }
         })
         recyclerView.adapter = catalogListAdapter
+        progressBar = view.findViewById(R.id.progressBar)
 
         sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         fetchData()
@@ -74,6 +77,7 @@ class CatalogItemListFragment : Fragment() {
             Log.e("fetchData", "Access token is null or empty")
             return
         }
+        progressBar.visibility = View.VISIBLE
         val requestQueue = Volley.newRequestQueue(requireContext())
         val jsonArrayRequest = object : JsonArrayRequest(Request.Method.GET, URL, null,
             { response ->
@@ -83,6 +87,7 @@ class CatalogItemListFragment : Fragment() {
                 val final : String = getString(R.string.your_catalog_item_list) + getString(R.string.total) + itemCount + getString(R.string.items)
                 heading.text = final
                 catalogListAdapter.updateData(response)
+                progressBar.visibility = View.GONE
             },
             { error ->
                 Log.i("error fetching", error.message.toString())

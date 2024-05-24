@@ -68,6 +68,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation("br.com.simplepass:loading-button-android:2.2.0")
     implementation ("com.google.android.material:material:1.11.0")
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
 
     //camera x
     val camerax_version = "1.3.3"

@@ -1,10 +1,12 @@
 package com.ivar7284.catalogcraft.adapters
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ivar7284.catalogcraft.R
 import com.ivar7284.catalogcraft.dataclasses.Category
@@ -35,11 +37,15 @@ class CategoryAdapter(
         holder.categoryName.text = category.name
 
         // Change background color based on selected item
+        val colorSelected = ColorStateList.valueOf(Color.parseColor("#CEE5FA"))
+        val colorDefault = ColorStateList.valueOf(Color.parseColor("#CDD8E2"))
+
         if (position == selectedItemPosition) {
-            holder.itemView.setBackgroundColor(Color.parseColor("#CEE5FA"))
+            ViewCompat.setBackgroundTintList(holder.itemView, colorSelected)
         } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#CDD8E2"))
+            ViewCompat.setBackgroundTintList(holder.itemView, colorDefault)
         }
+
 
         holder.itemView.setOnClickListener {
             val previousItemPosition = selectedItemPosition

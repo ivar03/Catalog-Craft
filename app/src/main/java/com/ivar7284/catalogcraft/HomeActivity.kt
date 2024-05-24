@@ -1,13 +1,16 @@
 package com.ivar7284.catalogcraft
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -15,6 +18,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.google.android.material.navigation.NavigationView
 import com.ivar7284.catalogcraft.fragments.AddCatalogItemFragment
 import com.ivar7284.catalogcraft.fragments.BarCodeFragment
@@ -32,6 +38,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var addCatalogBtn: View
     private lateinit var homeIcon: View
     private lateinit var plusIcon: View
+
+    private val URL = "http://panel.mait.ac.in:8012/auth/user-details/"
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,6 +136,39 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(applicationContext, HomeActivity::class.java))
             finish()
         }
+
+        //user info
+        //getting user info
+        val accessToken = getAccessToken()
+        val requestQueue = Volley.newRequestQueue(this)
+        val jsonObjectRequest = object : JsonObjectRequest(
+            Request.Method.GET, URL, null,
+            { response ->
+                val name = response.getString("name")
+                val email = response.getString("email")
+                setUserInfo(name, email)
+            },
+            { error ->
+                Log.i("error fetching", error.message.toString())
+            }) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "Bearer $accessToken"
+                return headers
+            }
+        }
+        requestQueue.add(jsonObjectRequest)
+
+    }
+
+
+    private fun setUserInfo(name: String, email: String) {
+        val headerView = navigationView.getHeaderView(0)
+        val navHeaderTitle = headerView.findViewById<TextView>(R.id.nav_header_title)
+        val navHeaderSubtitle = headerView.findViewById<TextView>(R.id.nav_header_subtitle)
+
+        navHeaderTitle.text = name
+        navHeaderSubtitle.text = email
     }
 
     override fun onBackPressed() {
@@ -139,5 +180,10 @@ class HomeActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.homeFrame, fragment)
             .commit()
+    }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("access_token", null)
     }
 }

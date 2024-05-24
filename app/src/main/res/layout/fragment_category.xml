@@ -20,7 +20,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/dark_gray"
                 android:textAlignment="center"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:textStyle="bold"/>
             <RelativeLayout
                 android:id="@+id/category_rl"
@@ -51,7 +51,7 @@
                         android:hint="@string/category"
                         android:textColorHint="@color/middle_orange"
                         android:textColor="@color/light_orange"
-                        android:background="@drawable/edittext_bg"
+                        android:background="@color/zxing_transparent"
                         android:textSize="16dp"
                         android:padding="15dp" />
 

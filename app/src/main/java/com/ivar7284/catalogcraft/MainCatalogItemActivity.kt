@@ -8,12 +8,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.ivar7284.catalogcraft.adapters.ImagePagerAdapter
 import org.json.JSONObject
 
 class MainCatalogItemActivity : AppCompatActivity() {
 
     private lateinit var backBtn: ImageButton
+    private lateinit var viewPager: ViewPager2
     private val BaseUrl: String = "http://panel.mait.ac.in:8012"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,11 +39,13 @@ class MainCatalogItemActivity : AppCompatActivity() {
         val upc = productData.optString("upc")
         val unit = productData.optString("unit")
         val quantity = productData.optString("quantity")
-        val image1 = productData.optString("product_image_1")
-        val image2 = productData.optString("product_image_2")
-        val image3 = productData.optString("product_image_3")
-        val image4 = productData.optString("product_image_4")
-        val image5 = productData.optString("product_image_5")
+        val images = listOf(
+            productData.optString("product_image_1"),
+            productData.optString("product_image_2"),
+            productData.optString("product_image_3"),
+            productData.optString("product_image_4"),
+            productData.optString("product_image_5")
+        )
 
         // Set details to corresponding views
         findViewById<TextView>(R.id.pName_tv).text = productName
@@ -53,11 +58,9 @@ class MainCatalogItemActivity : AppCompatActivity() {
         descriptionTextView.text = details
 
         // Load product image using Glide
-        loadProductImage(R.id.image_1, image1)
-        loadProductImage(R.id.image_2, image2)
-        loadProductImage(R.id.image_3, image3)
-        loadProductImage(R.id.image_4, image4)
-        loadProductImage(R.id.image_5, image5)
+        viewPager = findViewById(R.id.viewPager)
+        val adapter = ImagePagerAdapter(this, images)
+        viewPager.adapter = adapter
 
         //back button
         backBtn = findViewById(R.id.ib_backBtn_mainCatalog)
@@ -65,13 +68,4 @@ class MainCatalogItemActivity : AppCompatActivity() {
             finish()
         }
     }
-
-    private fun loadProductImage(imageViewId: Int, imageUrl: String?) {
-        val imageView = findViewById<ImageView>(imageViewId)
-        Glide.with(this)
-            .load(BaseUrl + imageUrl)
-            .override(1000, 4000)
-            .into(imageView)
-    }
-
 }

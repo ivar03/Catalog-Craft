@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CatalogCraft</string>
+    <string name="app_name">Catalog Craft</string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="logout">LOGOUT</string>
     <string name="search">Search</string>
@@ -74,4 +74,5 @@
     <string name="items">" items"</string>
     <string name="all">Click here to see all Catalogues</string>
     <string name="click_here_to_see_your_catalogues">click here to see your catalogues</string>
+    <string name="please_wait_while_fetching_details_about_your_picture">Please wait while fetching details about your picture</string>
 </resources>

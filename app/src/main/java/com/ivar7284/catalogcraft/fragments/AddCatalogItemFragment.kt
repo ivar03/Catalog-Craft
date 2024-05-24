@@ -105,10 +105,8 @@ class AddCatalogItemFragment : Fragment() {
     private lateinit var uploadImg: CircularProgressButton
 
     private lateinit var sharedPreferences: SharedPreferences
-    private val URL = "http://panel.mait.ac.in:8012/catalogue/create/"
 
     private val PICK_IMAGES_REQUEST = 123
-    private val Max_IMAGES = 6
 
     private val REQUEST_CODE_SPEECH_INPUT = 1
 
@@ -179,7 +177,6 @@ class AddCatalogItemFragment : Fragment() {
         sellingofferMic = view.findViewById(R.id.mic_sellingOffer)
         additionaldescriptionMic = view.findViewById(R.id.mic_additionalDescription)
         quantityMic = view.findViewById(R.id.mic_quantity)
-//        categoryMic = view.findViewById(R.id.mic_category)
 
         image1 = view.findViewById(R.id.image1)
         image2 = view.findViewById(R.id.image2)
@@ -632,12 +629,13 @@ class AddCatalogItemFragment : Fragment() {
                                         Log.e("uploading success", "Data uploaded successfully")
                                         uploadImg.revertAnimation()
                                         Toast.makeText(requireContext(), "Data uploaded successfully", Toast.LENGTH_SHORT).show()
+                                        val catalogItemListFrag = CatalogItemListFragment()
+                                        loadFragment(catalogItemListFrag)
                                     }
                                     else -> {
                                         val errorBody = response.errorBody()?.string()
                                         uploadImg.revertAnimation()
                                         Log.e("uploading error", "Error Code: ${response.code()}, Message: ${response.message()}, Error Body: $errorBody")
-
                                         Toast.makeText(requireContext(), "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
                                     }
                                 }
@@ -668,6 +666,13 @@ class AddCatalogItemFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.homeFrame, fragment)
+        fragmentTransaction.commit()
     }
 
     private fun showAlertDialog() {

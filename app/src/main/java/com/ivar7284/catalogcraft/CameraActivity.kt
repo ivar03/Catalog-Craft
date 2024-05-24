@@ -250,7 +250,7 @@ class CameraActivity : AppCompatActivity() {
                         getString(R.string.photo_capture_succeeded, outputFileResults.savedUri)
                     Toast.makeText(
                         applicationContext,
-                        message,
+                        getString(R.string.please_wait_while_fetching_details_about_your_picture),
                         Toast.LENGTH_SHORT
                     ).show()
                     sendImageToServer(imageFile)
