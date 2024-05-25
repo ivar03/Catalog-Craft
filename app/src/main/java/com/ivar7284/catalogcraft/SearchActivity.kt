@@ -63,7 +63,6 @@ class SearchActivity : AppCompatActivity() {
 
         searchAdapter.setOnItemClickListener(object : SearchAdapter.OnItemClickListener {
             override fun onItemClick(catalogue: JSONObject) {
-                // Navigate to HomeActivity and pass catalogue details
                 val intent = Intent(applicationContext, HomeActivity::class.java)
                 intent.putExtra("catalogue", catalogue.toString())
                 startActivity(intent)
@@ -120,6 +119,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun filter(text: String) {
+        if (text.isEmpty()) {
+            recyclerView.visibility = View.GONE
+            return
+        }
+        recyclerView.visibility = View.VISIBLE
         val filteredList = ArrayList<JSONObject>()
         for (item in catalogueList) {
             if (item.getString("product_name").toLowerCase().contains(text.toLowerCase())) {

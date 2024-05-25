@@ -1,5 +1,6 @@
 package com.ivar7284.catalogcraft.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +41,9 @@ class CategoryFragment : Fragment(), CategoryAdapter.OnItemClickListener {
     private lateinit var sharedPreferences: SharedPreferences
     private val categories = mutableListOf<Category>()
     private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var progressBar: ProgressBar
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -76,6 +80,8 @@ class CategoryFragment : Fragment(), CategoryAdapter.OnItemClickListener {
         categoryAdapter = CategoryAdapter(categories, this)
         category_rv.adapter = categoryAdapter
 
+        progressBar = view.findViewById(R.id.progressBar)
+
         categoryName = view.findViewById(R.id.categoryName)
         categoryMic = view.findViewById(R.id.mic_category)
         categoryMic.setOnClickListener {
@@ -101,7 +107,7 @@ class CategoryFragment : Fragment(), CategoryAdapter.OnItemClickListener {
             Log.e("fetchData", "Access token is null or empty")
             return
         }
-
+        progressBar.visibility = View.VISIBLE
         val jsonObjectRequest = object : JsonObjectRequest(Request.Method.GET, URL, null,
             { response ->
                 Log.i("categoryList", response.toString())
@@ -112,6 +118,7 @@ class CategoryFragment : Fragment(), CategoryAdapter.OnItemClickListener {
                         categories.add(Category(name))
                     }
                     categoryAdapter.notifyDataSetChanged()
+                    progressBar.visibility = View.GONE
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }

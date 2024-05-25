@@ -35,15 +35,13 @@ class SearchAdapter(
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val catalogue = catalogueList[position]
         holder.productName.text = catalogue.getString("product_name")
-
-        // Set click listener
         holder.itemView.setOnClickListener {
             listener?.onItemClick(catalogue)
         }
     }
 
     override fun getItemCount(): Int {
-        return catalogueList.size
+        return Math.min(catalogueList.size, 5)
     }
 
     fun updateCatalogueList(newCatalogueList: ArrayList<JSONObject>) {
