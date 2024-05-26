@@ -8,7 +8,7 @@
     <string name="add_details_for_your_product">अपने उत्पाद के लिए विवरण जोड़ें:</string>
     <string name="product_name">प्रोडक्ट का नाम</string>
     <string name="description">विवरण</string>
-    <string name="upc">यूपीसी</string>
+    <string name="ean">यूपीसी</string>
     <string name="seller_sku">विक्रेता एसकेयू</string>
     <string name="mrp">एम आर पी</string>
     <string name="your_price">आपका मूल्य</string>
@@ -57,7 +57,7 @@
     <string name="photo_capture_succeeded">फ़ोटो कैप्चर सफल हुआ: %1$s</string>
     <string name="mobile_no">मोबाइल नंबर: %1$s</string>
     <string name="enter_the_name_of_your_product">अपने उत्पाद का नाम दर्ज करें</string>
-    <string name="enter_the_upc_code_of_your_product">अपने उत्पाद का यूपीसी कोड दर्ज करें</string>
+    <string name="enter_the_ean_code_of_your_product">अपने उत्पाद का यूपीसी कोड दर्ज करें</string>
     <string name="enter_the_mrp_of_your_product">अपने उत्पाद की एमआरपी दर्ज करें</string>
     <string name="enter_your_sku_number">अपना एसकेयू नंबर दर्ज करें</string>
     <string name="enter_the_price_at_which_you_want_to_sell_your_product">वह कीमत दर्ज करें जिस पर आप अपना उत्पाद बेचना चाहते हैं</string>
@@ -75,4 +75,13 @@
     <string name="all">यहां क्लिक करें सभी कैटलॉग देखने के लिए</string>
     <string name="click_here_to_see_your_catalogues">अपने कैटलॉग देखने के लिए यहां क्लिक करें</string>
     <string name="please_wait_while_fetching_details_about_your_picture">कृपया प्रतीक्षा करें, आपकी तस्वीर के बारे में विवरण लाया जा रहा है</string>
+    <string name="additional_offer">अतिरिक्त ऑफ़र</string>
+    <string name="add_any_other_offers_that_you_want_to_apply">अन्य ऑफ़र जोड़ें जिन्हें आप लागू करना चाहते हैं</string>
+    <string name="brand">ब्रांड</string>
+    <string name="enter_the_name_of_the_brand_of_the_product">उत्पाद के ब्रांड का नाम दर्ज करें</string>
+    <string name="color">रंग</string>
+    <string name="enter_the_color_of_your_product">अपने उत्पाद का रंग दर्ज करें</string>
+    <string name="size">आकार</string>
+    <string name="enter_the_size_of_your_product">अपने उत्पाद का आकार दर्ज करें</string>
+    <string name="click_on_the_search_field_to_search">खोज करने के लिए खोज क्षेत्र पर क्लिक करें:</string>
 </resources>

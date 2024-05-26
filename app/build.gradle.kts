@@ -42,6 +42,9 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        //noinspection DataBindingWithoutKapt
+        dataBinding = true
+        mlModelBinding = true
     }
 }
 
@@ -52,6 +55,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.tensorflow.lite.support)
+    implementation(libs.tensorflow.lite.metadata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -69,6 +74,12 @@ dependencies {
     implementation("br.com.simplepass:loading-button-android:2.2.0")
     implementation ("com.google.android.material:material:1.11.0")
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
+    implementation("org.jetbrains.kotlinx:atomicfu:0.23.1")
+    implementation("io.ktor:ktor-client-core:2.2.0")
+    implementation("io.ktor:ktor-client-cio:2.2.0")
+    implementation("io.ktor:ktor-client-content-negotiation:2.2.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.0")
+    implementation ("org.tensorflow:tensorflow-lite:2.10.0")
 
     //camera x
     val camerax_version = "1.3.3"

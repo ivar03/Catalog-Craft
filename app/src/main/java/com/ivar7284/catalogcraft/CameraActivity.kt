@@ -8,19 +8,11 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.AspectRatio
-import androidx.camera.core.Camera
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.CameraSelector.LENS_FACING_BACK
-import androidx.camera.core.CameraSelector.LensFacing
-import androidx.camera.core.CameraX
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCapture.OutputFileOptions
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.core.resolutionselector.AspectRatioStrategy
 import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -28,7 +20,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.android.volley.Header
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley
@@ -38,7 +29,7 @@ import com.ivar7284.catalogcraft.utils.appSettingOpen
 import com.ivar7284.catalogcraft.utils.warningPermissionDialog
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 import kotlin.math.abs
 
 class CameraActivity : AppCompatActivity() {
@@ -67,6 +58,8 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var cameraSelector: CameraSelector
     var lensFacing = CameraSelector.LENS_FACING_BACK
 
+    private lateinit var loadingScreen: View
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -76,6 +69,8 @@ class CameraActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        loadingScreen = findViewById(R.id.loading_screen)
 
         if (checkMultiplePermission()) {
             startCamera()
@@ -253,6 +248,7 @@ class CameraActivity : AppCompatActivity() {
                         getString(R.string.please_wait_while_fetching_details_about_your_picture),
                         Toast.LENGTH_SHORT
                     ).show()
+                    showLoadingScreen()
                     sendImageToServer(imageFile)
                 }
 
@@ -282,6 +278,7 @@ class CameraActivity : AppCompatActivity() {
             Request.Method.POST, url,
             Response.Listener { response ->
                 Log.i("Response", String(response.data))
+                hideLoadingScreen()
                 val intent = Intent(applicationContext, HomeActivity::class.java).apply {
                     putExtra("catalog_data", String(response.data))
                 }
@@ -289,6 +286,7 @@ class CameraActivity : AppCompatActivity() {
                 finish()
             },
             Response.ErrorListener { error ->
+                hideLoadingScreen()
                 Log.e("Error", error.message ?: "Unknown error")
             }
         ) {
@@ -312,7 +310,6 @@ class CameraActivity : AppCompatActivity() {
         return sharedPreferences.getString("access_token", null)
     }
 
-
     private fun setFlashIcon(camera: Camera) {
         if (camera.cameraInfo.hasFlashUnit()){
             if(camera.cameraInfo.torchState.value == 0){
@@ -332,4 +329,11 @@ class CameraActivity : AppCompatActivity() {
         }
     }
 
+    private fun showLoadingScreen() {
+        loadingScreen.visibility = View.VISIBLE
+    }
+
+    private fun hideLoadingScreen() {
+        loadingScreen.visibility = View.GONE
+    }
 }

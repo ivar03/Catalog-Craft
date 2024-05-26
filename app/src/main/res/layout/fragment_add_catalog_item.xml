@@ -223,7 +223,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
-                                android:hint="@string/upc"
+                                android:hint="@string/ean"
                                 android:textColorHint="@color/middle_orange"
                                 android:textColor="@color/light_orange"
                                 android:textSize="16sp"
@@ -510,6 +510,138 @@
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/brandInputLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:boxStrokeColor="@color/middle_orange"
+                            app:helperTextTextColor="@color/middle_orange"
+                            app:helperTextTextAppearance="@color/middle_orange"
+                            app:counterTextColor="@color/middle_orange"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginTop="10dp"
+                            app:hintEnabled="false"
+                            android:textColorHint="@color/light_orange">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/brand"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:hint="@string/brand"
+                                android:textColorHint="@color/middle_orange"
+                                android:textColor="@color/light_orange"
+                                android:textSize="16sp"
+                                android:background="@color/zxing_transparent"
+                                android:padding="15dp"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <View
+                            android:id="@+id/mic_brand"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/mic_icon"
+                            android:backgroundTint="@color/light_orange"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/colorInputLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:boxStrokeColor="@color/middle_orange"
+                            app:helperTextTextColor="@color/middle_orange"
+                            app:helperTextTextAppearance="@color/middle_orange"
+                            app:counterTextColor="@color/middle_orange"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginTop="10dp"
+                            app:hintEnabled="false"
+                            android:textColorHint="@color/light_orange">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/color"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:hint="@string/color"
+                                android:textColorHint="@color/middle_orange"
+                                android:textColor="@color/light_orange"
+                                android:textSize="16sp"
+                                android:background="@color/zxing_transparent"
+                                android:padding="15dp"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <View
+                            android:id="@+id/mic_color"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/mic_icon"
+                            android:backgroundTint="@color/light_orange"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/sizeInputLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:boxStrokeColor="@color/middle_orange"
+                            app:helperTextTextColor="@color/middle_orange"
+                            app:helperTextTextAppearance="@color/middle_orange"
+                            app:counterTextColor="@color/middle_orange"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginTop="10dp"
+                            app:hintEnabled="false"
+                            android:textColorHint="@color/light_orange">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/size"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:hint="@string/size"
+                                android:textColorHint="@color/middle_orange"
+                                android:textColor="@color/light_orange"
+                                android:textSize="16sp"
+                                android:background="@color/zxing_transparent"
+                                android:padding="15dp"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <View
+                            android:id="@+id/mic_size"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/mic_icon"
+                            android:backgroundTint="@color/light_orange"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
 
                         <TextView
@@ -540,6 +672,48 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:visibility="gone">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/additionalOfferInputLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                                    app:boxStrokeWidth="1dp"
+                                    app:boxStrokeWidthFocused="2dp"
+                                    app:boxStrokeColor="@color/middle_orange"
+                                    app:helperTextTextColor="@color/middle_orange"
+                                    app:helperTextTextAppearance="@color/middle_orange"
+                                    app:counterTextColor="@color/middle_orange"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_marginTop="10dp"
+                                    app:hintEnabled="false"
+                                    android:textColorHint="@color/light_orange">
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/additionalOffer"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="@string/additional_offer"
+                                        android:inputType="text"
+                                        android:textColorHint="@color/middle_orange"
+                                        android:textColor="@color/light_orange"
+                                        android:textSize="16sp"
+                                        android:background="@color/zxing_transparent"
+                                        android:padding="15dp"
+                                        tools:ignore="TooDeepLayout" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                                <View
+                                    android:id="@+id/mic_additionalOffer"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:background="@drawable/mic_icon"
+                                    android:backgroundTint="@color/light_orange"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginRight="30dp"
+                                    android:layout_marginTop="20dp"/>
+                            </RelativeLayout>
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
@@ -607,7 +781,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="@string/selling_offer"
-                                        android:inputType="numberDecimal"
+                                        android:inputType="number"
                                         android:textColorHint="@color/middle_orange"
                                         android:textColor="@color/light_orange"
                                         android:textSize="16sp"

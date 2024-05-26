@@ -71,6 +71,7 @@ class SearchActivity : AppCompatActivity() {
 
         searchBar.setOnFocusChangeListener { _, hasFocus ->
             heading.visibility = if (hasFocus) View.VISIBLE else View.GONE
+            recyclerView.visibility = if (hasFocus) View.VISIBLE else View.GONE
         }
 
         searchBar.addTextChangedListener(object : TextWatcher {

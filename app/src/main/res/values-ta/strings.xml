@@ -8,7 +8,7 @@
     <string name="add_details_for_your_product">உங்கள் தயாரிப்புக்கு விவரங்களைச் சேர்:</string>
     <string name="product_name">தயாரிப்பு பெயர்</string>
     <string name="description">விளக்கம்</string>
-    <string name="upc">யுபிசி</string>
+    <string name="ean">யுபிசி</string>
     <string name="seller_sku">விற்பனையாளர் எஸ்கேயூ</string>
     <string name="mrp">எம்ஆர்பி</string>
     <string name="your_price">உங்கள் விலை</string>
@@ -57,7 +57,7 @@
     <string name="photo_capture_succeeded">புகைப்படம் பிடித்தல் வெற்றி: %1$s</string>
     <string name="mobile_no">மொபைல் எண்: %1$s</string>
     <string name="enter_the_name_of_your_product">உங்கள் தயாரிப்பின் பெயரை உள்ளிடவும்</string>
-    <string name="enter_the_upc_code_of_your_product">உங்கள் தயாரிப்பின் யுபிசி குறியீட்டை உள்ளிடவும்</string>
+    <string name="enter_the_ean_code_of_your_product">உங்கள் தயாரிப்பின் யுபிசி குறியீட்டை உள்ளிடவும்</string>
     <string name="enter_the_mrp_of_your_product">உங்கள் தயாரிப்பின் எம்ஆர்பி ஐ உள்ளிடவும்</string>
     <string name="enter_your_sku_number">உங்கள் எஸ்கேயூ எண்ணை உள்ளிடவும்</string>
     <string name="enter_the_price_at_which_you_want_to_sell_your_product">உங்கள் தயாரிப்பை விற்க விரும்பும் விலையை உள்ளிடவும்</string>
@@ -75,4 +75,13 @@
     <string name="all">அனைத்து கணக்குகளைப் பார்க்க இங்கே கிளிக் செய்யவும்</string>
     <string name="click_here_to_see_your_catalogues">உங்கள் கணக்குகளைப் பார்க்க இங்கே கிளிக் செய்யவும்</string>
     <string name="please_wait_while_fetching_details_about_your_picture">உங்கள் படத்தின் விவரங்களை பெறுகிறோம், தயவுசெய்து காத்திருங்கள்</string>
+    <string name="additional_offer">கூடுதல் சலுகை</string>
+    <string name="add_any_other_offers_that_you_want_to_apply">நீங்கள் விண்ணப்பிக்க விரும்பும் பிற சலுகைகளை சேர்க்கவும்</string>
+    <string name="brand">பிராண்ட்</string>
+    <string name="enter_the_name_of_the_brand_of_the_product">தயாரிப்புக்கான பிராண்ட் பெயரை உள்ளிடவும்</string>
+    <string name="color">நிறம்</string>
+    <string name="enter_the_color_of_your_product">உங்கள் தயாரிப்பின் நிறத்தை உள்ளிடவும்</string>
+    <string name="size">அளவு</string>
+    <string name="enter_the_size_of_your_product">உங்கள் தயாரிப்பின் அளவை உள்ளிடவும்</string>
+    <string name="click_on_the_search_field_to_search">தேடுவதற்கு தேடுவது புலத்தில் கிளிக் செய்க:</string>
 </resources>

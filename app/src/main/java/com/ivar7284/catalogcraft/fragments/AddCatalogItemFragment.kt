@@ -20,11 +20,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-import com.android.volley.AuthFailureError
-import com.android.volley.Request
-import com.android.volley.toolbox.HttpHeaderParser
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.textfield.TextInputEditText
@@ -32,7 +27,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.ivar7284.catalogcraft.R
 import com.ivar7284.catalogcraft.SearchActivity
 import com.ivar7284.catalogcraft.utils.ApiService
-import com.ivar7284.catalogcraft.utils.VolleyMultipartRequest.DataPart
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,8 +42,6 @@ import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.nio.charset.Charset
 import java.util.Locale
 
 class AddCatalogItemFragment : Fragment() {
@@ -61,9 +53,13 @@ class AddCatalogItemFragment : Fragment() {
     private lateinit var quantity_layout: TextInputLayout
     private lateinit var gst_layout: TextInputLayout
     private lateinit var additionalDescription_layout: TextInputLayout
+    private lateinit var additionalOffer_layout: TextInputLayout
     private lateinit var hsnCode_layout: TextInputLayout
+    private lateinit var brand_layout: TextInputLayout
+    private lateinit var color_layout: TextInputLayout
     private lateinit var yourPrice_layout: TextInputLayout
-    private lateinit var upc_layout: TextInputLayout
+    private lateinit var ean_layout: TextInputLayout
+    private lateinit var size_layout: TextInputLayout
     private lateinit var mrp_layout: TextInputLayout
     private lateinit var sellerSku_layout: TextInputLayout
     private lateinit var productName_layout: TextInputLayout
@@ -73,13 +69,17 @@ class AddCatalogItemFragment : Fragment() {
     private lateinit var quantity: TextInputEditText
     private lateinit var gst: TextInputEditText
     private lateinit var additionalDescription: TextInputEditText
+    private lateinit var additionalOffer: TextInputEditText
     private lateinit var hsnCode: TextInputEditText
+    private lateinit var brand: TextInputEditText
+    private lateinit var color: TextInputEditText
+    private lateinit var size: TextInputEditText
     private lateinit var yourPrice: TextInputEditText
     private lateinit var sellerSku: TextInputEditText
     private lateinit var description: TextInputEditText
     private lateinit var mrp: TextInputEditText
     private lateinit var sellingOffer: TextInputEditText
-    private lateinit var upc: TextInputEditText
+    private lateinit var ean: TextInputEditText
     private lateinit var productName: TextInputEditText
 
     private lateinit var dropdown: TextView
@@ -88,13 +88,17 @@ class AddCatalogItemFragment : Fragment() {
     private lateinit var sellerskuMic: View
     private lateinit var yourpriceMic: View
     private lateinit var hsncodeMic: View
+    private lateinit var brandMic: View
+    private lateinit var sizeMic: View
     private lateinit var mrpMic: View
+    private lateinit var colorMic: View
     private lateinit var gstMic: View
     private lateinit var additionaldescriptionMic: View
+    private lateinit var additionalofferMic: View
     private lateinit var quantityMic: View
     private lateinit var sellingofferMic: View
     private lateinit var descriptionMic: View
-    private lateinit var upcMic: View
+    private lateinit var eanMic: View
 
     private lateinit var image1: ImageView
     private lateinit var image2: ImageView
@@ -145,37 +149,49 @@ class AddCatalogItemFragment : Fragment() {
         gst_layout = view.findViewById(R.id.gstInputLayout)
         description_layout = view.findViewById(R.id.descriptionInputLayout)
         hsnCode_layout = view.findViewById(R.id.hsnCodeInputLayout)
+        brand_layout = view.findViewById(R.id.brandInputLayout)
+        size_layout = view.findViewById(R.id.sizeInputLayout)
+        color_layout = view.findViewById(R.id.colorInputLayout)
         yourPrice_layout = view.findViewById(R.id.yourPriceInputLayout)
         sellerSku_layout = view.findViewById(R.id.sellerSkuInputLayout)
-        upc_layout = view.findViewById(R.id.upcInputLayout)
+        ean_layout = view.findViewById(R.id.upcInputLayout)
         mrp_layout = view.findViewById(R.id.mrpInputLayout)
         sellingOffer_layout = view.findViewById(R.id.sellingOfferInputLayout)
         additionalDescription_layout = view.findViewById(R.id.additionalDescriptionInputLayout)
+        additionalOffer_layout = view.findViewById(R.id.additionalOfferInputLayout)
         productName_layout = view.findViewById(R.id.productNameInputLayout)
 
         quantity = view.findViewById(R.id.quantity)
         gst = view.findViewById(R.id.gst)
         yourPrice = view.findViewById(R.id.yourPrice)
         hsnCode = view.findViewById(R.id.hsnCode)
+        brand = view.findViewById(R.id.brand)
+        color = view.findViewById(R.id.color)
         sellerSku = view.findViewById(R.id.sellerSku)
-        upc = view.findViewById(R.id.UPC)
+        size = view.findViewById(R.id.size)
+        ean = view.findViewById(R.id.UPC)
         mrp = view.findViewById(R.id.mrp)
         description = view.findViewById(R.id.description)
         productName = view.findViewById(R.id.productName)
         additionalDescription = view.findViewById(R.id.additionalDescription)
+        additionalOffer = view.findViewById(R.id.additionalOffer)
         sellingOffer = view.findViewById(R.id.sellingOffer)
 
         pnameMic = view.findViewById(R.id.mic_pname)
-        upcMic = view.findViewById(R.id.mic_upc)
+        eanMic = view.findViewById(R.id.mic_upc)
         sellerskuMic = view.findViewById(R.id.mic_sellerSku)
         yourpriceMic = view.findViewById(R.id.mic_yourPrice)
         hsncodeMic = view.findViewById(R.id.mic_hsncode)
+        colorMic = view.findViewById(R.id.mic_color)
+        sizeMic = view.findViewById(R.id.mic_size)
+        brandMic = view.findViewById(R.id.mic_brand)
         gstMic = view.findViewById(R.id.mic_gst)
         mrpMic = view.findViewById(R.id.mic_mrp)
         descriptionMic = view.findViewById(R.id.mic_description)
         quantityMic = view.findViewById(R.id.mic_quantity)
         sellingofferMic = view.findViewById(R.id.mic_sellingOffer)
         additionaldescriptionMic = view.findViewById(R.id.mic_additionalDescription)
+        additionalofferMic = view.findViewById(R.id.mic_additionalOffer)
         quantityMic = view.findViewById(R.id.mic_quantity)
 
         image1 = view.findViewById(R.id.image1)
@@ -196,11 +212,11 @@ class AddCatalogItemFragment : Fragment() {
                 productName_layout.helperText = null
             }
         }
-        upc.setOnFocusChangeListener { _, hasFocus ->
+        ean.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
-                upc_layout.helperText = getString(R.string.enter_the_upc_code_of_your_product)
+                ean_layout.helperText = getString(R.string.enter_the_ean_code_of_your_product)
             }else{
-                upc_layout.helperText = null
+                ean_layout.helperText = null
             }
         }
         mrp.setOnFocusChangeListener { _, hasFocus ->
@@ -240,6 +256,28 @@ class AddCatalogItemFragment : Fragment() {
                 description_layout.helperText = null
             }
         }
+        color.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                color_layout.helperText = getString(R.string.enter_the_color_of_your_product)
+            }else{
+                color_layout.helperText = null
+            }
+        }
+        size.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                size_layout.helperText = getString(R.string.enter_the_size_of_your_product)
+            }else{
+                size_layout.helperText = null
+            }
+        }
+        brand.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                brand_layout.helperText =
+                    getString(R.string.enter_the_name_of_the_brand_of_the_product)
+            }else{
+                brand_layout.helperText = null
+            }
+        }
         gst.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 gst_layout.helperText = getString(R.string.enter_the_gst_for_your_product)
@@ -262,6 +300,14 @@ class AddCatalogItemFragment : Fragment() {
                 additionalDescription_layout.helperText = null
             }
         }
+        additionalOffer.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                additionalOffer_layout.helperText =
+                    getString(R.string.add_any_other_offers_that_you_want_to_apply)
+            }else{
+                additionalOffer_layout.helperText = null
+            }
+        }
         sellingOffer.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus){
                 sellingOffer_layout.helperText =
@@ -274,11 +320,15 @@ class AddCatalogItemFragment : Fragment() {
         //setting up mics
         pnameMic.setOnClickListener {
             pnameMic.isActivated = true
-            upcMic.isActivated = false
+            eanMic.isActivated = false
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
             mrpMic.isActivated = false
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -294,13 +344,17 @@ class AddCatalogItemFragment : Fragment() {
                 Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
             }
         }
-        upcMic.setOnClickListener {
+        eanMic.setOnClickListener {
             pnameMic.isActivated = false
-            upcMic.isActivated = true
+            eanMic.isActivated = true
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
             mrpMic.isActivated = false
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -318,11 +372,15 @@ class AddCatalogItemFragment : Fragment() {
         }
         sellerskuMic.setOnClickListener {
             pnameMic.isActivated = false
-            upcMic.isActivated = false
+            eanMic.isActivated = false
             sellerskuMic.isActivated = true
             yourpriceMic.isActivated = false
             mrpMic.isActivated = false
             gstMic.isActivated = false
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -340,11 +398,15 @@ class AddCatalogItemFragment : Fragment() {
         }
         yourpriceMic.setOnClickListener {
             pnameMic.isActivated = false
-            upcMic.isActivated = false
+            eanMic.isActivated = false
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = true
             gstMic.isActivated = false
             mrpMic.isActivated = false
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -362,10 +424,14 @@ class AddCatalogItemFragment : Fragment() {
         }
         hsncodeMic.setOnClickListener {
             pnameMic.isActivated = false
-            upcMic.isActivated = false
+            eanMic.isActivated = false
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             mrpMic.isActivated = false
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
             gstMic.isActivated = false
             hsncodeMic.isActivated = true
             descriptionMic.isActivated = false
@@ -384,11 +450,15 @@ class AddCatalogItemFragment : Fragment() {
         }
         gstMic.setOnClickListener {
             pnameMic.isActivated = false
-            upcMic.isActivated = false
+            eanMic.isActivated = false
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = true
             mrpMic.isActivated = false
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -406,11 +476,41 @@ class AddCatalogItemFragment : Fragment() {
         }
         mrpMic.setOnClickListener {
             pnameMic.isActivated = false
-            upcMic.isActivated = false
+            eanMic.isActivated = false
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
             mrpMic.isActivated = true
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
+            hsncodeMic.isActivated = false
+            descriptionMic.isActivated = false
+            quantityMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = false
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak ttp text")
+            try {
+                startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
+            }catch (e:Exception){
+                Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+        brandMic.setOnClickListener {
+            pnameMic.isActivated = false
+            eanMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
+            gstMic.isActivated = false
+            mrpMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
+            brandMic.isActivated = true
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -428,10 +528,14 @@ class AddCatalogItemFragment : Fragment() {
         }
         descriptionMic.setOnClickListener {
             pnameMic.isActivated = false
-            upcMic.isActivated = false
+            eanMic.isActivated = false
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
             mrpMic.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = true
@@ -448,10 +552,66 @@ class AddCatalogItemFragment : Fragment() {
                 Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
             }
         }
+        sizeMic.setOnClickListener {
+            pnameMic.isActivated = false
+            eanMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
+            gstMic.isActivated = false
+            mrpMic.isActivated = false
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            additionalOffer.isActivated = false
+            hsncodeMic.isActivated = false
+            sizeMic.isActivated = true
+            descriptionMic.isActivated = false
+            quantityMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = false
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak ttp text")
+            try {
+                startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
+            }catch (e:Exception){
+                Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+        colorMic.setOnClickListener {
+            pnameMic.isActivated = false
+            eanMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
+            gstMic.isActivated = false
+            brandMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
+            mrpMic.isActivated = false
+            hsncodeMic.isActivated = false
+            descriptionMic.isActivated = false
+            colorMic.isActivated = true
+            quantityMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            sellingofferMic.isActivated = false
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak ttp text")
+            try {
+                startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
+            }catch (e:Exception){
+                Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
         quantityMic.setOnClickListener {
             pnameMic.isActivated = false
-            upcMic.isActivated = false
+            eanMic.isActivated = false
             sellerskuMic.isActivated = false
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
             mrpMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
@@ -472,11 +632,15 @@ class AddCatalogItemFragment : Fragment() {
         }
         additionaldescriptionMic.setOnClickListener {
             pnameMic.isActivated = false
-            upcMic.isActivated = false
+            eanMic.isActivated = false
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
             mrpMic.isActivated = false
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
             hsncodeMic.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
@@ -492,14 +656,44 @@ class AddCatalogItemFragment : Fragment() {
                 Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
             }
         }
+        additionalofferMic.setOnClickListener {
+            pnameMic.isActivated = false
+            eanMic.isActivated = false
+            sellerskuMic.isActivated = false
+            yourpriceMic.isActivated = false
+            gstMic.isActivated = false
+            mrpMic.isActivated = false
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            hsncodeMic.isActivated = false
+            descriptionMic.isActivated = false
+            quantityMic.isActivated = false
+            additionaldescriptionMic.isActivated = false
+            additionalofferMic.isActivated = true
+            sellingofferMic.isActivated = false
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak ttp text")
+            try {
+                startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
+            }catch (e:Exception){
+                Toast.makeText(requireContext(), " " + e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
         sellingofferMic.setOnClickListener {
             pnameMic.isActivated = false
-            upcMic.isActivated = false
+            eanMic.isActivated = false
             sellerskuMic.isActivated = false
             yourpriceMic.isActivated = false
             gstMic.isActivated = false
             mrpMic.isActivated = false
             hsncodeMic.isActivated = false
+            brandMic.isActivated = false
+            colorMic.isActivated = false
+            size.isActivated = false
+            additionalOffer.isActivated = false
             descriptionMic.isActivated = false
             quantityMic.isActivated = false
             additionaldescriptionMic.isActivated = false
@@ -521,9 +715,11 @@ class AddCatalogItemFragment : Fragment() {
         dropdown.setOnClickListener {
             if(!clicked) {
                 additionalFieldsContainer.visibility = View.VISIBLE
+                additionalFieldsContainer.isClickable = true
                 clicked = true
             }else {
                 additionalFieldsContainer.visibility = View.GONE
+                additionalFieldsContainer.isClickable = false
                 clicked = false
             }
         }
@@ -548,7 +744,7 @@ class AddCatalogItemFragment : Fragment() {
             pickImages()
         }
         uploadImg.setOnClickListener {
-            if (productName.text.toString().isEmpty() || description.text.toString().isEmpty() || upc.text.toString().isEmpty() || sellerSku.text.toString().isEmpty() || mrp.text.toString().isEmpty() || yourPrice.text.toString().isEmpty() || quantity.text.toString().isEmpty() || gst.text.toString().isEmpty() || hsnCode.text.toString().isEmpty()){
+            if (productName.text.toString().isEmpty() || description.text.toString().isEmpty() || ean.text.toString().isEmpty() || sellerSku.text.toString().isEmpty() || mrp.text.toString().isEmpty() || yourPrice.text.toString().isEmpty() || quantity.text.toString().isEmpty() || gst.text.toString().isEmpty() || hsnCode.text.toString().isEmpty()){
                 showAlertDialog()
             }else {
                 uploadImg.startAnimation()
@@ -576,10 +772,14 @@ class AddCatalogItemFragment : Fragment() {
                 Log.i("requestData", selectedImages.toString())
 
                 val productNameRequestBody = createPartFromString(productName.text.toString())
+                val brandRequestBody = createPartFromString(brand.text.toString())
+                val sizeRequestBody = createPartFromString(size.text.toString())
+                val colorRequestBody = createPartFromString(color.text.toString())
+                val additionalOfferRequestBody = createPartFromString(additionalOffer.text.toString())
                 val mrpRequestBody = createPartFromString(mrp.text.toString())
                 val descriptionRequestBody = createPartFromString(description.text.toString())
                 val sellingPriceRequestBody = createPartFromString(yourPrice.text.toString())
-                val upcRequestBody = createPartFromString(upc.text.toString())
+                val eanRequestBody = createPartFromString(ean.text.toString())
                 val hsnCodeRequestBody = createPartFromString(hsnCode.text.toString())
                 val gstRequestBody = createPartFromString(gst.text.toString())
                 val sellerSkuRequestBody = createPartFromString(sellerSku.text.toString())
@@ -587,7 +787,7 @@ class AddCatalogItemFragment : Fragment() {
                 val additionalDescriptionRequestBody = createPartFromString(additionalDescription.text.toString())
                 val categoryRequestBody = createPartFromString(selectedCategory.toString())
                 val sellingOfferRequestBody = createPartFromString(sellingOffer.text.toString())
-                val asinRequestBody = createPartFromString("123")
+                val csinRequestBody = createPartFromString("csin123")
 
                 val image1Part = imageToRequestBody("product_image_1",image1, "image1.jpg")
                 val image2Part = imageToRequestBody("product_image_2",image2, "image2.jpg")
@@ -602,17 +802,21 @@ class AddCatalogItemFragment : Fragment() {
                         val response = apiService.uploadData(
                             productNameRequestBody,
                             mrpRequestBody,
-                            asinRequestBody,
+                            csinRequestBody,
                             descriptionRequestBody,
                             sellingPriceRequestBody,
-                            upcRequestBody,
+                            eanRequestBody,
                             hsnCodeRequestBody,
                             gstRequestBody,
                             sellerSkuRequestBody,
                             quantityRequestBody,
                             additionalDescriptionRequestBody,
                             categoryRequestBody,
+                            brandRequestBody,
+                            colorRequestBody,
+                            sizeRequestBody,
                             sellingOfferRequestBody,
+                            additionalOfferRequestBody,
                             image1Part,
                             image2Part,
                             image3Part,
@@ -689,32 +893,91 @@ class AddCatalogItemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        arguments?.getString("catalogue")?.let {data ->
-            val jsonObject = JSONObject(data)
-            productName.setText(jsonObject.getString("product_name"))
-            mrp.setText(jsonObject.getString("mrp"))
-            gst.setText(jsonObject.getString("gst_percentage"))
-            upc.setText(jsonObject.getString("upc"))
-            val uri_1 = jsonObject.getString("product_image_1")
-            val uri_2 = jsonObject.getString("product_image_2")
-            //glide first two images
-            Glide.with(this)
-                .load("http://panel.mait.ac.in:8012$uri_1")
-                .apply(RequestOptions().override(image1.width, image1.height))
-                .into(image1)
-            Glide.with(this)
-                .load("http://panel.mait.ac.in:8012$uri_2")
-                .apply(RequestOptions().override(image2.width, image2.height))
-                .into(image2)
+        arguments?.getString("catalogue")?.let { data ->
+            try {
+                val jsonObject = JSONObject(data)
+                if (jsonObject.has("product_name")) {
+                    productName.setText(jsonObject.getString("product_name"))
+                }
+                if (jsonObject.has("description")) {
+                    description.setText(jsonObject.getString("description"))
+                }
+                if (jsonObject.has("brand")) {
+                    brand.setText(jsonObject.getString("brand"))
+                }
+                if (jsonObject.has("color")) {
+                    color.setText(jsonObject.getString("color"))
+                }
+                if (jsonObject.has("size")) {
+                    size.setText(jsonObject.getString("size"))
+                }
+                if (jsonObject.has("additional_offer")) {
+                    additionalOffer.setText(jsonObject.getString("additional_offer"))
+                }
+                if (jsonObject.has("additional_description")) {
+                    additionalDescription.setText(jsonObject.getString("additional_description"))
+                }
+                if (jsonObject.has("quantity")) {
+                    quantity.setText(jsonObject.getString("quantity"))
+                }
+                if (jsonObject.has("hsn_code")) {
+                    hsnCode.setText(jsonObject.getString("hsn_code"))
+                }
+                if (jsonObject.has("mrp")) {
+                    mrp.setText(jsonObject.getString("mrp"))
+                }
+                if (jsonObject.has("gst_percentage")) {
+                    gst.setText(jsonObject.getString("gst_percentage"))
+                }
+                if (jsonObject.has("ean")) {
+                    ean.setText(jsonObject.getString("ean"))
+                }
+                if (jsonObject.has("product_image_1")) {
+                    val uri_1 = jsonObject.getString("product_image_1")
+                    Glide.with(this)
+                        .load("http://panel.mait.ac.in:8012$uri_1")
+                        .apply(RequestOptions().override(image1.width, image1.height))
+                        .into(image1)
+                }
+                if (jsonObject.has("product_image_2")) {
+                    val uri_2 = jsonObject.getString("product_image_2")
+                    Glide.with(this)
+                        .load("http://panel.mait.ac.in:8012$uri_2")
+                        .apply(RequestOptions().override(image2.width, image2.height))
+                        .into(image2)
+                }else{
+                    Glide.with(this)
+                        .load(R.drawable.images_icon)
+                        .apply(RequestOptions().override(image2.width, image2.height))
+                        .into(image2)
+                }
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                Log.i("jsonSearchResponse", e.message.toString())
+            }
         }
+
     }
 
     private fun fillForm(data: String) {
-        val jsonObject = JSONObject(data)
-        productName.setText(jsonObject.getString("name"))
-        description.setText(jsonObject.getString("description"))
-        yourPrice.setText(jsonObject.getString("price"))
-        quantity.setText(jsonObject.getString("Qty"))
+        try {
+            val jsonObject = JSONObject(data)
+            if (jsonObject.has("name")) {
+                productName.setText(jsonObject.getString("name"))
+            }
+            if (jsonObject.has("description")) {
+                description.setText(jsonObject.getString("description"))
+            }
+            if (jsonObject.has("price")) {
+                yourPrice.setText(jsonObject.getString("price"))
+            }
+            if (jsonObject.has("Qty")) {
+                quantity.setText(jsonObject.getString("Qty"))
+            }
+        } catch (e: JSONException) {
+            e.printStackTrace()
+            Log.i("jsonSearchResponse", e.message.toString())
+        }
     }
 
     private fun populateForm(data: String) {
@@ -722,18 +985,68 @@ class AddCatalogItemFragment : Fragment() {
             val jsonArray = JSONArray(data)
             if (jsonArray.length() > 0) {
                 val jsonObject = jsonArray.getJSONObject(0)
-                productName.setText(jsonObject.getString("product_name"))
-                mrp.setText(jsonObject.getString("mrp"))
-                gst.setText(jsonObject.getString("gst_percentage"))
-                upc.setText(jsonObject.getString("upc"))
-
+                if (jsonObject.has("product_name")) {
+                    productName.setText(jsonObject.getString("product_name"))
+                }
+                if (jsonObject.has("description")) {
+                    description.setText(jsonObject.getString("description"))
+                }
+                if (jsonObject.has("brand")) {
+                    brand.setText(jsonObject.getString("brand"))
+                }
+                if (jsonObject.has("color")) {
+                    color.setText(jsonObject.getString("color"))
+                }
+                if (jsonObject.has("size")) {
+                    size.setText(jsonObject.getString("size"))
+                }
+                if (jsonObject.has("additional_offer")) {
+                    additionalOffer.setText(jsonObject.getString("additional_offer"))
+                }
+                if (jsonObject.has("additional_description")) {
+                    additionalDescription.setText(jsonObject.getString("additional_description"))
+                }
+                if (jsonObject.has("quantity")) {
+                    quantity.setText(jsonObject.getString("quantity"))
+                }
+                if (jsonObject.has("hsn_code")) {
+                    hsnCode.setText(jsonObject.getString("hsn_code"))
+                }
+                if (jsonObject.has("mrp")) {
+                    mrp.setText(jsonObject.getString("mrp"))
+                }
+                if (jsonObject.has("gst_percentage")) {
+                    gst.setText(jsonObject.getString("gst_percentage"))
+                }
+                if (jsonObject.has("ean")) {
+                    ean.setText(jsonObject.getString("ean"))
+                }
+                if (jsonObject.has("product_image_1")) {
+                    val uri_1 = jsonObject.getString("product_image_1")
+                    Glide.with(this)
+                        .load("http://panel.mait.ac.in:8012$uri_1")
+                        .apply(RequestOptions().override(image1.width, image1.height))
+                        .into(image1)
+                }
+                if (jsonObject.has("product_image_2")) {
+                    val uri_2 = jsonObject.getString("product_image_2")
+                    Glide.with(this)
+                        .load("http://panel.mait.ac.in:8012$uri_2")
+                        .apply(RequestOptions().override(image2.width, image2.height))
+                        .into(image2)
+                }else{
+                    Glide.with(this)
+                        .load(R.drawable.images_icon)
+                        .apply(RequestOptions().override(image2.width, image2.height))
+                        .into(image2)
+                }
             }
-
         } catch (e: JSONException) {
             e.printStackTrace()
-            Log.e("JSONException", "Error parsing JSON", e)
+            Log.e("jsonSearchResponse", "Error parsing JSON", e)
         }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -747,17 +1060,21 @@ class AddCatalogItemFragment : Fragment() {
                         // Fill product name EditText with the limited character input
                         productName.setText(limitCharacterInput(res[0]))
                     }
-                    upcMic.isActivated -> {
+                    eanMic.isActivated -> {
                         // Fill mrp EditText with input as numbers
-                        upc.setText(filterNumbers(res[0]))
+                        ean.setText(filterNumbers(res[0]))
                     }
                     mrpMic.isActivated -> {
                         // Fill mrp EditText with input as numbers
                         mrp.setText(filterNumbers(res[0]))
                     }
+                    sizeMic.isActivated -> {
+                        // Fill sell price EditText with input as numbers
+                        size.setText(limitCharacterInput(res[0]))
+                    }
                     sellerskuMic.isActivated -> {
                         // Fill sell price EditText with input as numbers
-                        sellerSku.setText(filterNumbers(res[0]))
+                        sellerSku.setText(limitCharacterInput(res[0]))
                     }
                     yourpriceMic.isActivated -> {
                         // Fill buy price EditText with input as numbers
@@ -777,13 +1094,25 @@ class AddCatalogItemFragment : Fragment() {
                             Toast.makeText(requireContext(), "Invalid GST input", Toast.LENGTH_SHORT).show()
                         }
                     }
+                    colorMic.isActivated -> {
+                        // Fill unit EditText with input as numbers
+                        color.setText(limitCharacterInput(res[0]))
+                    }
                     descriptionMic.isActivated -> {
                         // Fill unit EditText with input as numbers
                         description.setText(limitCharacterInput(res[0]))
                     }
+                    brandMic.isActivated -> {
+                        // Fill unit EditText with input as numbers
+                        brand.setText(limitCharacterInput(res[0]))
+                    }
                     additionaldescriptionMic.isActivated -> {
                         // Fill unit EditText with input as numbers
                         additionalDescription.setText(limitCharacterInput(res[0]))
+                    }
+                    additionalofferMic.isActivated -> {
+                        // Fill unit EditText with input as numbers
+                        additionalOffer.setText(limitCharacterInput(res[0]))
                     }
                     quantityMic.isActivated -> {
                         // Fill quantity EditText with input as numbers

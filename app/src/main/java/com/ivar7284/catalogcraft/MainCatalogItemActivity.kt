@@ -1,5 +1,6 @@
 package com.ivar7284.catalogcraft
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
@@ -19,6 +20,7 @@ class MainCatalogItemActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private val BaseUrl: String = "http://panel.mait.ac.in:8012"
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_catalog_item)
@@ -36,8 +38,9 @@ class MainCatalogItemActivity : AppCompatActivity() {
         val productName = productData.optString("product_name").uppercase()
         val mrp = productData.optString("mrp")
         val category = productData.optString("category")
-        val upc = productData.optString("upc")
-        val unit = productData.optString("unit")
+        val csin = productData.optString("csin")
+        val description = productData.optString("description")
+        val color = productData.optString("color")
         val quantity = productData.optString("quantity")
         val images = listOf(
             productData.optString("product_image_1"),
@@ -49,12 +52,14 @@ class MainCatalogItemActivity : AppCompatActivity() {
 
         // Set details to corresponding views
         findViewById<TextView>(R.id.pName_tv).text = productName
+        findViewById<TextView>(R.id.subheading).text = "Description: $description"
         findViewById<TextView>(R.id.mrp_tv).text = "Rs. $mrp"
         val descriptionTextView = findViewById<TextView>(R.id.description_tv)
         val details = "Category: $category\n" +
-                "UPC: $upc\n" +
-                "Unit: $unit\n" +
-                "Quantity: $quantity"
+                "CSIN: $csin\n" +
+                "Color: $color\n" +
+                "Quantity: $quantity" +
+                "Category: $category"
         descriptionTextView.text = details
 
         // Load product image using Glide

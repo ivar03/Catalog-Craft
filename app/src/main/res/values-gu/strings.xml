@@ -8,7 +8,7 @@
     <string name="add_details_for_your_product">તમારા ઉત્પાદનના વિગતો ઉમેરો:</string>
     <string name="product_name">ઉત્પાદનનું નામ</string>
     <string name="description">વર્ણન</string>
-    <string name="upc">યૂપીસી</string>
+    <string name="ean">યૂપીસી</string>
     <string name="seller_sku">વિક્રેતા એસકેયુ</string>
     <string name="mrp">એમ આર પી</string>
     <string name="your_price">તમારી કિંમત</string>
@@ -57,7 +57,7 @@
     <string name="photo_capture_succeeded">ફોટો કૅપ્ચર સફળ: %1$s</string>
     <string name="mobile_no">મોબાઇલ નંબર: %1$s</string>
     <string name="enter_the_name_of_your_product">તમારા ઉત્પાદનનું નામ દાખલ કરો</string>
-    <string name="enter_the_upc_code_of_your_product">તમારા ઉત્પાદનનો યૂપીસી કોડ દાખલ કરો</string>
+    <string name="enter_the_ean_code_of_your_product">તમારા ઉત્પાદનનો યૂપીસી કોડ દાખલ કરો</string>
     <string name="enter_the_mrp_of_your_product">તમારા ઉત્પાદનની એમઆરપી દાખલ કરો</string>
     <string name="enter_your_sku_number">તમારો એસકેયુ નંબર દાખલ કરો</string>
     <string name="enter_the_price_at_which_you_want_to_sell_your_product">જેથી તમે તમારા ઉત્પાદનની વેચાણ કિંમત દાખલ કરો</string>
@@ -75,4 +75,13 @@
     <string name="all">તમામ કૅટલૉગ જોવા માટે અહીં ક્લિક કરો</string>
     <string name="click_here_to_see_your_catalogues">તમારા કૅટલૉગ જોવા માટે અહીં ક્લિક કરો</string>
     <string name="please_wait_while_fetching_details_about_your_picture">તમારી તસવીર વિશે વિગત મેળવી રહ્યા છે, કૃપા કરીને રાહ જુઓ</string>
+    <string name="additional_offer">વધુ ઑફર</string>
+    <string name="add_any_other_offers_that_you_want_to_apply">તમે લાગુ કરવા માંગતા અન્ય ઑફર ઉમેરો</string>
+    <string name="brand">બ્રાન્ડ</string>
+    <string name="enter_the_name_of_the_brand_of_the_product">ઉત્પાદનના બ્રાન્ડનું નામ દાખલ કરો</string>
+    <string name="color">રંગ</string>
+    <string name="enter_the_color_of_your_product">તમારા ઉત્પાદનનો રંગ દાખલ કરો</string>
+    <string name="size">માપ</string>
+    <string name="enter_the_size_of_your_product">તમારા ઉત્પાદનનો માપ દાખલ કરો</string>
+    <string name="click_on_the_search_field_to_search">શોધ કરવા માટે શોધ ક્ષેત્ર પર ક્લિક કરો:</string>
 </resources>

@@ -17,14 +17,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.ivar7284.catalogcraft.AllCatalogActivity
 import com.ivar7284.catalogcraft.MainCatalogItemActivity
 import com.ivar7284.catalogcraft.R
 import com.ivar7284.catalogcraft.adapter.CatalogItemListAdapter
 import org.json.JSONArray
-import org.json.JSONObject
 
 class CatalogItemListFragment : Fragment() {
 
@@ -60,13 +58,14 @@ class CatalogItemListFragment : Fragment() {
         progressBar = view.findViewById(R.id.progressBar)
 
         sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        fetchData()
         heading = view.findViewById(R.id.heading)
 
         allCatalogBtn = view.findViewById(R.id.allCatalog)
         allCatalogBtn.setOnClickListener {
             startActivity(Intent(requireContext(), AllCatalogActivity::class.java))
         }
+
+        fetchData()
 
         return view
     }
@@ -81,13 +80,17 @@ class CatalogItemListFragment : Fragment() {
         val requestQueue = Volley.newRequestQueue(requireContext())
         val jsonArrayRequest = object : JsonArrayRequest(Request.Method.GET, URL, null,
             { response ->
-                Log.i("listingCatalog", response.toString())
-                val itemCount = response.length()
-                Log.i("ItemCount", "Number of items in the response: $itemCount")
-                val final : String = getString(R.string.your_catalog_item_list) + getString(R.string.total) + itemCount + getString(R.string.items)
-                heading.text = final
-                catalogListAdapter.updateData(response)
-                progressBar.visibility = View.GONE
+                if (isAdded && activity != null) { // Check if fragment is added and activity is not null
+                    activity?.runOnUiThread {
+                        Log.i("listingCatalog", response.toString())
+                        val itemCount = response.length()
+                        Log.i("ItemCount", "Number of items in the response: $itemCount")
+                        val final = getString(R.string.your_catalog_item_list) + getString(R.string.total) + itemCount + getString(R.string.items)
+                        heading.text = final
+                        catalogListAdapter.updateData(response)
+                        progressBar.visibility = View.GONE
+                    }
+                }
             },
             { error ->
                 Log.i("error fetching", error.message.toString())

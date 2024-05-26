@@ -64,9 +64,6 @@ class HomeActivity : AppCompatActivity() {
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_barcode -> {
-                    startActivity(Intent(applicationContext, CameraActivity::class.java))
-                }
                 R.id.nav_camera -> {
                     startActivity(Intent(applicationContext, CameraActivity::class.java))
                 }
